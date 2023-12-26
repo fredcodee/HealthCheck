@@ -20,6 +20,8 @@ from backend.views import defualt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #Oauth
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
     path('api/account/', include('accountManagement.urls')),
     path('api/', include('backend.urls')),
     path('', defualt)
