@@ -9,6 +9,17 @@ const userSchema = new mongoose.Schema({
     email:{
        type:String,
        unique:true 
+    },
+    googleId:{
+        type:String
+    },
+    profileImage:{},
+    mode:{
+        type:String,  //Doctor or Patient
+        required:true
+    },
+    city:{
+        type:String
     }
 });
 
