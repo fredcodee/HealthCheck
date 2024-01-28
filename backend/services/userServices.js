@@ -51,13 +51,14 @@ async function checkIfUserIsRegistered(email){
     }
 }
 
-async function addUserToDb(name, email, password){
+async function addUserToDb(name, email, password, accountType){
     try {
         password = bcrypt.hashSync(password, 10)
          const user = new User({
              name : name || null,
              email: email || null,
-             password: password || null
+             password: password || null,
+             account_type: accountType || null
          });
          await user.save();
          return user;
@@ -66,14 +67,15 @@ async function addUserToDb(name, email, password){
     }
 }
 
-async function googleAuth(name, email, sub){
+async function googleAuth(name, email, sub, accountType){
     try {
         const user  = await User.findOne({email:email})
         if(!user){
             const user = new User({
                 name : name,
                 email: email,
-                googleId:sub
+                googleId:sub, 
+                account_type:accountType
             })
             await user.save()
             return user

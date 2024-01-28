@@ -13,8 +13,11 @@ const userSchema = new mongoose.Schema({
     googleId:{
         type:String
     },
-    profileImage:{},
-    mode:{
+    profileImage:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Image'
+    },
+    account_type:{
         type:String,  //Doctor or Patient
         required:true
     },
