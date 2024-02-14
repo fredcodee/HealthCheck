@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from "./context/AuthContext";
+import  PrivateRoute from './context/PrivateRoute';
 import HomePage from './pages/HomePage';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
@@ -14,12 +16,15 @@ function App() {
     <>
     <Navbar />
       <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage/>} />
-            <Route path="/register" element={<SignUpPage />} />
-            <Route path="/error" element={<Error />} />
-          </Routes>
+        <AuthProvider>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage/>} />
+                <Route path="/register" element={<SignUpPage />} />
+                <Route path="/error" element={<Error />} /> 
+                <Route path = "/dashBoard" element={<PrivateRoute> <DashBoard /> </PrivateRoute>} />
+              </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </>
   )

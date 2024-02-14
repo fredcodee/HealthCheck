@@ -1,6 +1,12 @@
 import React from 'react'
 
 const Navbar = () => {
+    const token = localStorage.getItem('token') || false
+
+    const handleLogout = async()=>{
+        localStorage.removeItem('token');
+        window.location.reload()
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
@@ -26,7 +32,12 @@ const Navbar = () => {
                             </div>
                         </div>
                         <a href="contact.html" className="nav-item nav-link">Contact</a>
-                        <a href="/login" className="nav-item nav-link">Login</a>
+                        {
+                            token ? <a href="#" className="nav-item nav-link" onClick={handleLogout}>Logout</a>:
+                            <a href="/login" className="nav-item nav-link">Login</a>
+                        }
+                        
+                        
                     </div>
                     <a href="/register" className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Appointment<i className="fa fa-arrow-right ms-3"></i></a>
                 </div>

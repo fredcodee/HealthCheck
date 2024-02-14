@@ -1,36 +1,19 @@
 import React from 'react'
-import {useState } from 'react'
-import Api from '../Api'
+import { useState, useContext } from 'react'
+import { GoogleLogin } from '@react-oauth/google'
+import AuthContext from '../context/AuthContext';
 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('')
-  const[password, setPassword] = useState('')
-  const[error, setError] = useState(null)
+  const [password, setPassword] = useState('')
+  const { loginUser, handleGoogleAuth, error } = useContext(AuthContext);
 
-
-  const handleSubmit = async(e) =>{
-    try{
-      e.preventDefault();
-      const response = await Api.post('/api/account/login', {
-        email,
-        password,
-      });
-
-      const data = await response.data;
-      if (response.status === 200) {
-        localStorage.setItem('authTokens', JSON.stringify(data.token));
-        setError("worked")
-        //window.location.href = '/dashboard';
-
-      } else {
-        setError('Wrong credentials or Try Again later');
-      }
-    }
-    catch(err){
-      setError('Wrong credentials or Try Again later')
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await loginUser(email, password);
   }
+
 
 
 
@@ -43,13 +26,13 @@ const LoginPage = () => {
           </div>
           <hr />
           <div className="modal-body">
-            <form action="" role="form">
+            <form action="" role="form" onSubmit={handleSubmit}>
               <div className="form-group">
                 <div className="input-group">
                   <span className="input-group-addon">
                     <span className="glyphicon glyphicon-user"></span>
                   </span>
-                  <input type="email" className="form-control" placeholder="Email"  onChange={e => setEmail(e.target.value)} />
+                  <input type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                 </div>
               </div>
               <div className="form-group">
@@ -64,14 +47,27 @@ const LoginPage = () => {
               </div>
 
               <div className="form-group text-center" style={{ paddingTop: '2rem' }}>
-                <button type="submit"  onClick={handleSubmit} className="btn btn-success btn-lg">Login</button>
+                <button type="submit" className="btn btn-success btn-lg">Login</button>
+              </div>
+              <div className='pt-3'>
+                {error && <div className='text-center' style={{ color: 'red' }}>{error}</div>}
               </div>
 
             </form>
           </div>
-          <div>
-              {error && <div className='text-center' style={{color:'red'}}>{error}</div>}
+          <hr />
+          <div className='pt-3 text-center'>
+            <p className='text-center font-bold'>or Login with</p>
+            <div className='pb-3 text-center'>
+              <GoogleLogin onSuccess={credentialResponse => {
+                handleGoogleAuth(credentialResponse.credential)
+              }} />
+            </div>
+
+            <br />
+            <small>Don't have an account yet  <span><a href="/register" className='text-blue-600'>Register here :)</a></span></small>
           </div>
+
         </div>
       </div>
 
