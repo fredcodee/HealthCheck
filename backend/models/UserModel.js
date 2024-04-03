@@ -24,7 +24,16 @@ const userSchema = new mongoose.Schema({
     free_trail_count:{
         default: 3,
         type: Number
-    }
+    },
+    subscription_Type:{
+        type:String,
+        default: "Free", //Free, Monthly, Yearly
+    },
+    subscription_Mode:{
+        type:Boolean,
+        default: false,
+    },
+
 });
 
 module.exports = mongoose.model('User', userSchema);

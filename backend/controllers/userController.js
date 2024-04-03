@@ -29,7 +29,7 @@ const login = async (req, res) => {
         const user = await userService.findAndVerifyUserCredentials(email, password);
         if (user) {
             const token = await userService.generateToken(user);
-            return res.json({ request: "user details are valid", token: token, accountType:user.account_type, freeTrail:user.free_trail_count})
+            return res.json({ request: "user details are valid", token: token, accountType:user.account_type, freeTrail:user.free_trail_count, subscription_mode: user.subscription_Mode})
         } else {
             return res.status(401).json({ message: 'Invalid Credentials' });
         }
@@ -45,7 +45,7 @@ const googleAuth = async (req, res) => {
         const { name, email, sub ,accountType} = req.body
         const userAuth = await userService.googleAuth(name, email, sub, accountType)
         const token = await userService.generateToken(userAuth)
-        return res.json({ request: "user details are valid", token: token, accountType:userAuth.account_type, freeTrail:userAuth.free_trail_count })
+        return res.json({ request: "user details are valid", token: token, accountType:userAuth.account_type, freeTrail:userAuth.free_trail_count, subscription_mode: userAuth.subscription_Mode})
     } catch (error) {
         errorHandler.errorHandler(error, res)
     }

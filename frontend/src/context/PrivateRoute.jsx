@@ -41,6 +41,7 @@ const PrivateRoute = ({ children, ...rest }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('AccountType')
     localStorage.removeItem('FreeTrail');
+    localStorage.removeItem('subscription_Mode')
     return <Navigate to="/login" />
   }
   return children

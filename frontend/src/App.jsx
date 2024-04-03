@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from "./context/AuthContext";
 import  PrivateRoute from './context/PrivateRoute';
+import SubscriptionCheck from './context/SubscriptionCheck';
 import HomePage from './pages/HomePage';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
@@ -23,7 +24,7 @@ function App() {
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<SignUpPage />} />
                 <Route path="/error" element={<Error />} /> 
-                <Route path = "/dashBoard" element={<PrivateRoute> <DashBoard /> </PrivateRoute>} />
+                <Route path = "/dashBoard" element={<PrivateRoute> {<SubscriptionCheck><DashBoard /> </SubscriptionCheck>}</PrivateRoute>} />
                 <Route path ="/pricing" element={<PrivateRoute><PricePage/> </PrivateRoute>} />
               </Routes>
         </AuthProvider>

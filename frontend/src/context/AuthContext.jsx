@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', JSON.stringify(data.token));
         localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
         localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
+        localStorage.setItem('subscription_Mode', JSON.stringify(response.data.subscription_mode))
         setError('')
         history('/dashboard')
 
@@ -95,6 +96,7 @@ export const AuthProvider = ({ children }) => {
               localStorage.setItem('token', JSON.stringify(response.data.token));
               localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
               localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
+              localStorage.setItem('subscription_Mode', JSON.stringify(response.data.subscription_mode))
               setError('')
               history('/dashboard');
             }
@@ -109,7 +111,8 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = async() => {
     localStorage.removeItem('token');
     localStorage.removeItem('AccountType')
-    localStorage.removeItem('FreeTrail');
+    localStorage.removeItem('FreeTrail')
+    localStorage.removeItem('subscription_Mode')
     setError('')
     history('/login');
   };
