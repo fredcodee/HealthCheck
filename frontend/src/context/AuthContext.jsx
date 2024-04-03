@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         setAuthTokens(data.token);
         localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
+        localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
         setError('')
         history('/dashboard')
 
@@ -91,6 +93,8 @@ export const AuthProvider = ({ children }) => {
             if (response.status == 200) {
               setAuthTokens(response.data.token);
               localStorage.setItem('token', JSON.stringify(response.data.token));
+              localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
+              localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
               setError('')
               history('/dashboard');
             }
@@ -104,6 +108,8 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = async() => {
     localStorage.removeItem('token');
+    localStorage.removeItem('AccountType')
+    localStorage.removeItem('FreeTrail');
     setError('')
     history('/login');
   };

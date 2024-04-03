@@ -10,9 +10,6 @@ const userSchema = new mongoose.Schema({
        type:String,
        unique:true 
     },
-    googleId:{
-        type:String
-    },
     profileImage:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Image'
@@ -23,6 +20,10 @@ const userSchema = new mongoose.Schema({
     },
     city:{
         type:String
+    },
+    free_trail_count:{
+        default: 3,
+        type: Number
     }
 });
 

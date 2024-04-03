@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashBoard from './pages/DashBoard';
 import Error from './pages/404';
+import PricePage from './pages/pricePage';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/register" element={<SignUpPage />} />
                 <Route path="/error" element={<Error />} /> 
                 <Route path = "/dashBoard" element={<PrivateRoute> <DashBoard /> </PrivateRoute>} />
+                <Route path ="/pricing" element={<PrivateRoute><PricePage/> </PrivateRoute>} />
               </Routes>
         </AuthProvider>
       </BrowserRouter>

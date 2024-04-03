@@ -38,7 +38,9 @@ const PrivateRoute = ({ children, ...rest }) => {
     checkToken()
   }
   else if (!validate) {
-    console.log(validate)
+    localStorage.removeItem('token');
+    localStorage.removeItem('AccountType')
+    localStorage.removeItem('FreeTrail');
     return <Navigate to="/login" />
   }
   return children
