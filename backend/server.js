@@ -3,8 +3,10 @@ const express = require('express')
 const cors =  require('cors')
 const appRoutes = require('./routes/appRoutes')
 const userRoutes = require('./routes/useRoutes')
+const stripeRoutes = require('./routes/stripeRoutes')
 const connectToMongoDB = require('./configs/database')
 const bodyParser = require('body-parser');
+
 
 //connect to db
 connectToMongoDB()
@@ -16,6 +18,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/api', appRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/stripe', stripeRoutes)
 app.use('/images', express.static('images')); //get static images
 
 app.listen(process.env.PORT,()=>{

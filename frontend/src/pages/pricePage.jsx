@@ -9,35 +9,67 @@ const pricePage = () => {
                     <p>Welcome, please choose a Subscription mode to avail all our features </p>
                 </div>
                 <div className="product">
-                    <div class="row">
-                        <div class="col description">
+                    <div className="row">
+                        <div className="col description">
                             <h3>Starter plan</h3>
-                            {accountType == "Patient" ? (<h5> $25.00 / month</h5> ): (<h5> $35.00 / month</h5>)}
-                            <form action="/create-checkout-session" method="POST">
-                                {/* Add a hidden field with the lookup_key of your Price */}
-                                <input type="hidden" name="lookup_key" value="{{PRICE_LOOKUP_KEY}}" />
-                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
-                                    Subscribe
-                                </button>
-                            </form>
+                            {accountType == "Patient" ? (
+                                <div>
+                                    <h5> $3.00 / month</h5>
+                                    <form action="/api/stripe/create-checkout-session" method="POST">
+                                        {/* Add a hidden field with the lookup_key of your Price */}
+                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_MONTH_PRICE_ID} />
+                                        <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
+                                            Subscribe
+                                        </button>
+                                    </form>
+                                </div>
+
+                            ) : (
+                                <div>
+                                    <h5> $15.00 / month</h5>
+                                    <form action="/api/stripe/create-checkout-session" method="POST">
+                                        {/* Add a hidden field with the lookup_key of your Price */}
+                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_MONTH_PRICE_ID} />
+                                        <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
+                                            Subscribe
+                                        </button>
+                                    </form>
+                                </div>
+                            )}
                         </div>
-                        <div class="col description">
+                        <div className="col description">
                             <h3>Yearly plan</h3>
-                            {accountType == "Patient" ? (<h5> $250.00 / year</h5> ): (<h5> $350.00 / year</h5>)}
-                            <form action="/create-checkout-session" method="POST">
-                                {/* Add a hidden field with the lookup_key of your Price */}
-                                <input type="hidden" name="lookup_key" value="{{PRICE_LOOKUP_KEY}}" />
-                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
-                                    Subscribe
-                                </button>
-                            </form>
+                            {accountType == "Patient" ? (
+                                <div>
+                                    <h5> $30.00 / year</h5>
+                                    <form action="/api/stripe/create-checkout-session" method="POST">
+                                        {/* Add a hidden field with the lookup_key of your Price */}
+                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_YEAR_PRICE_ID} />
+                                        <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
+                                            Subscribe
+                                        </button>
+                                    </form>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h5> $150.00 / year</h5>
+                                    <form action="/api/stripe/create-checkout-session" method="POST">
+                                        {/* Add a hidden field with the lookup_key of your Price */}
+                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_YEAR_PRICE_ID} />
+                                        <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
+                                            Subscribe
+                                        </button>
+                                    </form>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
                 <hr />
                 <div className='free-plan'>
                     <h3>Free plan</h3>
-                    <form action="/create-checkout-session" method="POST">
+                    <p>Get 3 free appointments scheduled for free</p>
+                    <form action="/api/stripe/create-checkout-session" method="POST">
                         {/* Add a hidden field with the lookup_key of your Price */}
                         <input type="hidden" name="lookup_key" value="{{PRICE_LOOKUP_KEY}}" />
                         <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
