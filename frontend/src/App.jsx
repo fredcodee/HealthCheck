@@ -26,7 +26,7 @@ function App() {
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<SignUpPage />} />
                 <Route path="/error" element={<Error />} /> 
-                <Route path = "/dashBoard" element={<PrivateRoute> {<SubscriptionCheck><DashBoard /> </SubscriptionCheck>}</PrivateRoute>} />
+                <Route path = "/dashboard" element={<PrivateRoute> {<SubscriptionCheck><DashBoard /> </SubscriptionCheck>}</PrivateRoute>} />
                 <Route path ="/pricing" element={<PrivateRoute><PricePage/> </PrivateRoute>} />
                 <Route path ="/success" element={<PrivateRoute><SuccessPage/> </PrivateRoute>} />
                 <Route path ="/cancelled" element={<PrivateRoute><CancelPage/> </PrivateRoute>} />

@@ -5,16 +5,11 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 const createCheckoutSession = async (req, res) => {
     try {
-        const prices = await stripe.prices.list({
-            lookup_keys: [req.body.lookup_key],
-            expand: ['data.product'],
-          });
-
           const session = await stripe.checkout.sessions.create({
             billing_address_collection: 'auto',
             line_items: [
               {
-                price: prices.data[0].id,
+                price: req.body.lookup_key,
                 quantity: 1,
         
               },
@@ -24,9 +19,9 @@ const createCheckoutSession = async (req, res) => {
             cancel_url: `${process.env.DOMAIN}/cancelled`,
           });
         
-          res.redirect(303, session.url);
+          res.json({url: session.url}) 
     } catch (error) {
-        errorHandler(error, res)
+        errorHandler.errorHandler(error, res)
     }
 }
 

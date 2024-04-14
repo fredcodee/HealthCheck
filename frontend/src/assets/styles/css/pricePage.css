@@ -10,3 +10,7 @@ hr{
 .free-plan{
     margin-top: 2rem;
 }
+.error-message{
+    margin-top: 3rem;
+    color: red;
+}

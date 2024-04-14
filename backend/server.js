@@ -6,6 +6,7 @@ const userRoutes = require('./routes/useRoutes')
 const stripeRoutes = require('./routes/stripeRoutes')
 const connectToMongoDB = require('./configs/database')
 const bodyParser = require('body-parser');
+const allowedOrigins = require('./configs/allowedOrigins')
 
 
 //connect to db
@@ -15,7 +16,9 @@ const app = express()
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json())
 
-app.use(cors())
+// enable CORS - Cross Origin Resource Sharing
+app.use(cors({origin: allowedOrigins, credentials: true }));
+
 app.use('/api', appRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/stripe', stripeRoutes)
