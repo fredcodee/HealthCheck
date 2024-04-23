@@ -4,7 +4,6 @@ const cors =  require('cors')
 const appRoutes = require('./routes/appRoutes')
 const userRoutes = require('./routes/useRoutes')
 const stripeRoutes = require('./routes/stripeRoutes')
-const stripeWebHook = require('./controllers/stripeController')
 const connectToMongoDB = require('./configs/database')
 const bodyParser = require('body-parser');
 const allowedOrigins = require('./configs/allowedOrigins')
@@ -32,7 +31,6 @@ app.use(cors({origin: allowedOrigins, credentials: true }));
 app.use('/api', appRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/stripe', stripeRoutes)
-//app.use('/api/stripe/webhook', stripeWebHook.webhook, express.raw({ type: 'application/json' }))
 app.use('/images', express.static('images')); //get static images
 
 app.listen(process.env.PORT,()=>{
