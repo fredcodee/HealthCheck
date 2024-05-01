@@ -5,31 +5,33 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 
 const createCheckoutSession = async (req, res) => {
-    try {
-          const session = await stripe.checkout.sessions.create({
-            billing_address_collection: 'auto',
-            line_items: [
-              {
-                price: req.body.lookup_key,
-                quantity: 1,
-        
-              },
-            ],
-            mode: 'subscription',
-            success_url: `${process.env.DOMAIN}/success`,
-            cancel_url: `${process.env.DOMAIN}/cancelled`,
-          });
-        
-          res.json({url: session.url}) 
-    } catch (error) {
-        errorHandler.errorHandler(error, res)
-    }
+  try {
+    const session = await stripe.checkout.sessions.create({
+      billing_address_collection: 'auto',
+      line_items: [
+        {
+          price: req.body.lookup_key,
+          quantity: 1,
+
+        },
+      ],
+      mode: 'subscription',
+      success_url: `${process.env.DOMAIN}/success`,
+      cancel_url: `${process.env.DOMAIN}/cancelled`,
+    });
+
+    res.json({ url: session.url })
+  } catch (error) {
+    errorHandler.errorHandler(error, res)
+  }
 }
 
-const webhook =  async (req, res) => {
+const webhook = async (req, res) => {
   let event = req.body;
+  const user = req.user
+
   const endpointSecret = process.env.STRIPE_ENDPOINTSECRET
-  if(endpointSecret){
+  if (endpointSecret) {
     const signature = req.headers['stripe-signature'];
     try {
       event = stripe.webhooks.constructEvent(
@@ -45,42 +47,108 @@ const webhook =  async (req, res) => {
     // Handle the event
     let paymentIntent = null;
     let subscription = null;
-  switch (event.type) {
-    case 'payment_intent.succeeded':
-      paymentIntent = event.data.object;
-      console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`);
-      // Then define and call a method to handle the successful payment intent.
-      // handlePaymentIntentSucceeded(paymentIntent);
-      break;
-    case 'payment_intent.payment_failed':
-      paymentIntent = event.data.object;
-      console.log(`Payment failed: ${paymentIntent.last_payment_error.message}`);
-      break;
-    case 'payment_intent.canceled':
-      paymentIntent = event.data.object;
-      console.log(`Payment failed: ${paymentIntent.last_payment_error.message}`);
-      break;
-    case 'customer.subscription.created':
-      subscription = event.data.object;
-      console.log(`Subscription created: ${subscription.id}`);
-      break;
-    case 'customer.subscription.trial_will_end':
-      subscription = event.data.object;
-      console.log(`Subscription trial will end: ${subscription.id}`);
-      break;
-    case 'invoice.payment_failed':
-      const invoice = event.data.object;
-      console.log(`Payment failed: ${invoice.last_payment_error.message}`);
-      break;
+    let invoice = null;
+    switch (event.type) {
 
-    default:
-      // Unexpected event type
-      console.log(`Unhandled event type ${event.type}.`);
-  }
+      //failed
+      case 'payment_intent.payment_failed':
+        paymentIntent = event.data.object;
+        console.log(`Payment failed: ${paymentIntent.last_payment_error.message}`);
+        break;
+      case 'payment_intent.canceled':
+        paymentIntent = event.data.object;
+        console.log(`Payment failed: ${paymentIntent.last_payment_error.message}`);
+        break;
+      case 'invoice.payment_failed':
+        invoice = event.data.object;
+        console.log(`Payment failed: ${invoice.last_payment_error.message}`);
+        break;
 
-  // Return a 200 response to acknowledge receipt of the event
-  res.send();
+      //Success
+      case 'payment_intent.succeeded':
+        const paymentIntentSucceeded = event.data.object;
+        paymentIntent = true
+        console.log(`PaymentIntent for ${paymentIntentSucceeded.amount} was successful!`);
+        // Then define and call a method to handle the successful payment intent.
+        await handlePaymentIntentSucceeded(paymentIntent, invoice, user,'month',true);
+        break;
+      case 'customer.subscription.created':
+        subscription = event.data.object;
+        //notification for new paid subscription
+        console.log(`Subscription created: ${subscription.id}`);
+        break;
+      case 'customer.subscription.updated' :
+        subscription = event.data.object;
+        stripeSubId = subscription.id
+        mode = subscription.items.data[0].price.recurring.interval // "month" or "year"
+
+        //for renewal
+        if (subscription.status === 'canceled' && subscription.cancel_at_period_end) {
+          const renewedSubscription = await renewSubscription(subscription);
+          // Optionally, notify the customer about the renewal
+          notifyCustomer(renewedSubscription);
+        }
+        //for subscription update
+        await appService.updateSubscription(user.email,mode.UpperCase() ,subscription.status === 'active' ? true : false);
+
+        console.log(`Subscription updated: ${subscription.id}`);
+        break;
+
+        //sub automatic renewal
+      case 'customer.subscription.deleted':
+        subscription = event.data.object;
+        if (subscription.status === 'canceled' && subscription.cancel_at_period_end) {
+          // Automatically renew the subscription
+          const renewedSubscription = await renewSubscription(subscription);
+          // Optionally, notify the customer about the renewal
+          notifyCustomer(renewedSubscription);
+        }
+        break
+      case 'invoice.payment_succeeded':
+        invoiceSucceeded = event.data.object;
+        invoice = true
+        console.log(`Payment succeeded: ${invoiceSucceeded.number}`);
+        break
+      default:
+        // Unexpected event type
+        console.log(`Unhandled event type ${event.type}.`);
+    }
+
+    // Return a 200 response to acknowledge receipt of the event
+    res.send();
   }
 }
+
+
+async function handlePaymentIntentSucceeded(paymentIntent, invoice, user,type, mode) {
+  if(paymentIntent || invoice) {
+    await appService.updateSubscription(user.email, type, mode)
+  }
+}
+
+// Function to renew the subscription
+async function renewSubscription(subscription) {
+  try {
+    // Create a new subscription for the customer with the same plan
+    const renewedSubscription = await stripe.subscriptions.create({
+      customer: subscription.customer,
+      items: [{ price: subscription.items.data[0].price.id }], // Use the same price as the expired subscription
+      expand: ['latest_invoice.payment_intent'],
+    });
+    
+    return renewedSubscription;
+  } catch (error) {
+    console.error('Error renewing subscription:', error.message);
+    throw error;
+  }
+}
+
+// Function to notify the customer about the renewal
+function notifyCustomer(subscription) {
+  // Implement notification logic (e.g., send an email, push notification, etc.)
+  console.log('Customer notified about subscription renewal:', subscription.id);
+}
+
+
 
 module.exports = { createCheckoutSession, webhook }

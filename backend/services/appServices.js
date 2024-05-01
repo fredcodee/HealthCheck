@@ -21,21 +21,6 @@ async function subToFreeTrail(email) {
     }
 }
 
-
-//subscription
-async function subscribe(email, type) {
-    try {
-            const getUser = await User.findOne({ email: email })
-            getUser.subscription_Mode = true
-            getUser.subscription_Type = type
-            getUser.free_trail_count = 0
-            getUser.save()
-        
-    } catch (error) {
-        throw Error(`Cant sub to monthly ${error}`)
-    }
-}
-
 //update subscription
 async function updateSubscription(email, type, subscriptionMode) {
     try {
@@ -53,4 +38,4 @@ async function updateSubscription(email, type, subscriptionMode) {
 
 
 
-module.exports = {subToFreeTrail, subscribe, updateSubscription}
+module.exports = {subToFreeTrail, updateSubscription}
