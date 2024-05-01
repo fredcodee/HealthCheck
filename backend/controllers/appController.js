@@ -1,8 +1,19 @@
 const errorHandler = require("../middlewares/errorHandler")
 const appService = require("../services/appServices")
+const userService =  require("../services/userServices")
 
 const health = async (req, res) => {
     return res.json({ 'status': 'ok' })
+}
+
+const subscriptionCheck = async(req, res) => {
+    try{
+        const user = req.user
+        return res.json({subscription: user.subscription_Mode, type: user.subscription_Type})
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
 }
 
 const freeTrail = async (req, res) => {
@@ -22,4 +33,4 @@ const freeTrail = async (req, res) => {
 }
 
 
-module.exports = { health, freeTrail}
+module.exports = { health, freeTrail, subscriptionCheck }
