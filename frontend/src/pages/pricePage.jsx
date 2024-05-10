@@ -24,7 +24,15 @@ const pricePage = () => {
             }
 
             const { url } = await response.json();
-            if (url) {
+            if(url.includes('/success')){
+                localStorage.removeItem('token');
+                localStorage.removeItem('AccountType');
+                localStorage.removeItem('FreeTrail');
+                localStorage.removeItem('subscription_Mode');
+                localStorage.removeItem('type');
+                window.location.href = url;
+            }
+            else{
                 window.location.href = url;
             }
         } catch (error) {

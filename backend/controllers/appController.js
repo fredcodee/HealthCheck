@@ -9,7 +9,7 @@ const health = async (req, res) => {
 const subscriptionCheck = async(req, res) => {
     try{
         const user = req.user
-        return res.json({subscription: user.subscription_Mode, type: user.subscription_Type})
+        return res.json({subscription_mode: user.subscription_Mode, type: user.subscription_Type})
     }
     catch(error){
         errorHandler.errorHandler(error, res)

@@ -8,6 +8,7 @@ const createCheckoutSession = async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
       billing_address_collection: 'auto',
+      customer_email: req.user.email,
       line_items: [
         {
           price: req.body.lookup_key,
@@ -28,7 +29,6 @@ const createCheckoutSession = async (req, res) => {
 
 const webhook = async (req, res) => {
   let event = req.body;
-  const user = req.user
 
   const endpointSecret = process.env.STRIPE_ENDPOINTSECRET
   if (endpointSecret) {
@@ -69,8 +69,6 @@ const webhook = async (req, res) => {
         const paymentIntentSucceeded = event.data.object;
         paymentIntent = true
         console.log(`PaymentIntent for ${paymentIntentSucceeded.amount} was successful!`);
-        // Then define and call a method to handle the successful payment intent.
-        await handlePaymentIntentSucceeded(paymentIntent, invoice, user,'month',true);
         break;
       case 'customer.subscription.created':
         subscription = event.data.object;
@@ -81,6 +79,7 @@ const webhook = async (req, res) => {
         subscription = event.data.object;
         stripeSubId = subscription.id
         mode = subscription.items.data[0].price.recurring.interval // "month" or "year"
+        const customer = await stripe.customers.retrieve(subscription.customer);
 
         //for renewal
         if (subscription.status === 'canceled' && subscription.cancel_at_period_end) {
@@ -89,7 +88,7 @@ const webhook = async (req, res) => {
           notifyCustomer(renewedSubscription);
         }
         //for subscription update
-        await appService.updateSubscription(user.email,mode.UpperCase() ,subscription.status === 'active' ? true : false);
+        await appService.updateSubscription(customer.email, mode.charAt(0).toUpperCase() + mode.slice(1), subscription.status === 'active' ? true : false);
 
         console.log(`Subscription updated: ${subscription.id}`);
         break;
@@ -120,11 +119,11 @@ const webhook = async (req, res) => {
 }
 
 
-async function handlePaymentIntentSucceeded(paymentIntent, invoice, user,type, mode) {
-  if(paymentIntent || invoice) {
-    await appService.updateSubscription(user.email, type, mode)
-  }
-}
+// async function handlePaymentIntentSucceeded(paymentIntent, invoice, userEmail,type, mode) {
+//   if(paymentIntent || invoice) {
+//     await appService.updateSubscription(userEmail, type, mode)
+//   }
+// }
 
 // Function to renew the subscription
 async function renewSubscription(subscription) {

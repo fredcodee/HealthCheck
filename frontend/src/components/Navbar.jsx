@@ -5,6 +5,10 @@ const Navbar = () => {
 
     const handleLogout = async()=>{
         localStorage.removeItem('token');
+        localStorage.removeItem('AccountType');
+        localStorage.removeItem('FreeTrail');
+        localStorage.removeItem('subscription_Mode');
+        localStorage.removeItem('type');
         window.location.reload()
     }
     return (
