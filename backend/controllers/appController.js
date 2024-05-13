@@ -20,7 +20,6 @@ const freeTrail = async (req, res) => {
     try {
         const user = req.user
         const sub = await appService.subToFreeTrail(user.email)
-        console.log(sub)
         if(sub){
             return res.json({ message: 'success' })
         }
