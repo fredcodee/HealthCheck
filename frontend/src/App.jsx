@@ -12,6 +12,7 @@ import Error from './pages/404';
 import PricePage from './pages/pricePage';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
+import AppointmentPage from './pages/AppointmentPage';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                 <Route path ="/pricing" element={<PrivateRoute><PricePage/> </PrivateRoute>} />
                 <Route path ="/success" element={<PrivateRoute><SuccessPage/> </PrivateRoute>} />
                 <Route path ="/cancelled" element={<PrivateRoute><CancelPage/> </PrivateRoute>} />
+                <Route path ="/appointment" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentPage/> </SubscriptionCheck>} </PrivateRoute>} />
               </Routes>
         </AuthProvider>
       </BrowserRouter>
