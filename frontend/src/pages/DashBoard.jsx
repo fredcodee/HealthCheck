@@ -7,10 +7,13 @@ const DashBoard = () => {
   return (
     <div>
       <div>
-        {
+        { type ?(
           type.replace(/"/g, '') == 'Free' ?
-            <div className='text-center' style={{ color: 'black' , fontFamily: 'cursive'}}>You currently using a free trial, <span style={{ color: 'green' }}> <a href="/pricing">Upgrade your plan to have no restriction</a></span></div> :
-            <div></div>
+          <div className='text-center' style={{ color: 'black' , fontFamily: 'cursive'}}>You currently using a free trial, <span style={{ color: 'green' }}> <a href="/pricing">Upgrade your plan to have no restriction</a></span></div> :
+          <div></div>
+        ):(
+          <div></div>
+        )
         }
       </div>
 

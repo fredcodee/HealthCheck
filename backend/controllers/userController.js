@@ -67,4 +67,14 @@ const checkToken = async (req, res) => {
     }
 }
 
-module.exports = { register, checkToken, googleAuth, login }
+const getUserDetails = async (req, res) => {
+    try{
+        const user = await userService.getUserById(req.user.id)
+        return res.json(user)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+module.exports = { register, checkToken, googleAuth, login, getUserDetails }

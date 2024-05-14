@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema({
     city:{
         type:String
     },
+    age:{
+        type:Number
+    }, 
     free_trail_count:{
         default: 3,
         type: Number
