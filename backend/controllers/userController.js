@@ -77,4 +77,16 @@ const getUserDetails = async (req, res) => {
     }
 }
 
-module.exports = { register, checkToken, googleAuth, login, getUserDetails }
+const editProfile = async (req, res) => {
+    try{
+        const {name, bio, city, age} = req.body
+        const user = await userService.editUserProfile(name, req.user.email, bio, city, age)
+        return res.json(user)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+
+module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile}

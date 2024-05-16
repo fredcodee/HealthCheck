@@ -10,6 +10,9 @@ const userSchema = new mongoose.Schema({
        type:String,
        unique:true 
     },
+    bio:{
+        type:String
+    },
     profileImage:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'Image'

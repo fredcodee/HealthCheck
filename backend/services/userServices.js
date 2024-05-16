@@ -86,4 +86,19 @@ async function googleAuth(name, email, sub, accountType){
     }
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb}
+async function editUserProfile(name, email,bio,city, age){
+    try {
+        const user  = await User.findOne({email:email})
+        user.name = name || user.name
+        user.bio = bio || user.bio
+        user.city = city || user.city
+        user.age = age || user.age
+        user.save()
+        return user
+    }
+    catch(err){
+        throw new Error(`cant edit user profile ${err}`)
+    }
+}
+
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile}
