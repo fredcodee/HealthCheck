@@ -17,11 +17,20 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'Image'
     },
+    phone:{
+        type:String},
+    gender:{
+        type:String
+
+    },
     account_type:{
         type:String,  //Doctor or Patient
         required:true
     },
     city:{
+        type:String
+    },
+    country:{
         type:String
     },
     age:{

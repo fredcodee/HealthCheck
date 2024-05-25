@@ -153,3 +153,24 @@ footer h4 a {
   text-decoration: none;
   color: #3498db;
 }
+.description-profile p{
+  color: black;
+}
+
+.description-profile span{
+  color: #566965;
+}
+
+.pb-3 label{
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+#submitButton{
+  position: relative;
+  width: auto;
+  border-radius: 0;
+}
+#closeModal{
+  color: #927927;
+}
