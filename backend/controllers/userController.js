@@ -79,8 +79,8 @@ const getUserDetails = async (req, res) => {
 
 const editProfile = async (req, res) => {
     try{
-        const {name, bio, city, age} = req.body
-        const user = await userService.editUserProfile(name, req.user.email, bio, city, age)
+        const {name, bio, city, age, country,gender,phone} = req.body
+        const user = await userService.editUserProfile(name, req.user.email, bio, city, age, country,gender,phone)
         return res.json(user)
     }
     catch(error){
@@ -88,5 +88,14 @@ const editProfile = async (req, res) => {
     }
 }
 
+const editProfilePicForDoctors = async (req, res) => {
+    try{
+        
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
 
-module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile}
+
+module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile, editProfilePicForDoctors}

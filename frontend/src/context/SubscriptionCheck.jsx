@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import Api from '../Api'
 
 const SubscriptionCheck = ({ children, ...rest }) => {
-  const subscriptionMode = localStorage.getItem('subscription_Mode') || "false"
+  let subscriptionMode = localStorage.getItem('subscription_Mode') || "false"
   const token = localStorage.getItem('token') || false
 
   useEffect(() => {

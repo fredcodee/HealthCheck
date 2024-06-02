@@ -16,9 +16,10 @@ const ProfilePage = () => {
     const [country, setCountry] = useState('')
     const [city, setCity] = useState('')
     const [error, setError] = useState('')
-    const [showPopUpForEditProfile, setShowPopUpForEditProfile] =useState(false)
+    const [success, setSuccess] = useState('')
+    const [showPopUpForEditProfile, setShowPopUpForEditProfile] = useState(false)
 
-    const togglePopUpForEditprofile= () =>{
+    const togglePopUpForEditprofile = () => {
         setShowPopUpForEditProfile(!showPopUpForEditProfile)
     }
 
@@ -37,6 +38,13 @@ const ProfilePage = () => {
                 .then((response) => {
                     if (response.status == 200) {
                         setUser(response.data)
+                        setName(response.data.name)
+                        setBio(response.data.bio)
+                        setAge(response.data.age)
+                        setGender(response.data.gender)
+                        setPhone(response.data.phone)
+                        setCountry(response.data.country)
+                        setCity(response.data.city)
                     } else {
                         setError(response.data.message)
                     }
@@ -48,7 +56,36 @@ const ProfilePage = () => {
     }
 
     const editProfile = async (data) => {
+        try {
+            const data = {
+                name: name,
+                bio: bio,
+                age: age,
+                gender: gender,
+                phone: phone,
+                country: country,
+                city: city
+            }
 
+            await Api.post('api/user/edit-profile', data, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            })
+                .then((response) => {
+                    if (response.status == 200) {
+                        getUserProfile()
+                        setSuccess("Profile updated successfully")
+                        togglePopUpForEditprofile()
+                    } else {
+                        setError(response.data.message)
+                    }
+                })
+
+        }
+        catch (error) {
+            setError(error.response.data.message)
+        }
     }
 
     const handleImageChange = async (e) => {
@@ -57,6 +94,10 @@ const ProfilePage = () => {
 
     return (
         <div>
+            <div className='text-center'>
+                {error && <div className="alert alert-danger">{error}</div>}
+                {success && <div className="alert alert-success">{success}</div>}
+            </div>
             {/* view for doctors */}
             {user && user.account_type == 'Doctor' ? (
                 <div className="content-profile-page">
@@ -67,108 +108,134 @@ const ProfilePage = () => {
                         </div>
                         <button onClick={togglePopUpForEditprofile} >Edit Profile</button>
                         {/* for popup for editing profile*/}
-                        {showPopUpForEditProfile&& <PopUp
-                content={<>
-                    <div id="staticModal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                        <div className="relative w-full max-w-2xl max-h-full" style={{ margin: "auto" }}>
-                            <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700 ">
+                        {showPopUpForEditProfile && <PopUp
+                            content={<>
+                                <div id="staticModal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div className="relative w-full max-w-2xl max-h-full" style={{ margin: "auto" }}>
+                                        <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700 ">
 
-                                <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 text-center">
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                       Edit Your Profile
-                                    </h3>
-                                </div>
-                                <div className="p-6 space-y-6">
-                                    <div>
-                                        <div className='pb-3'>
-                                            <label htmlFor="name">
-                                                Name
-                                            </label>
-                                            <input type="text"  
-                                                value={user.name} onChange={(e) => setName(e.target.value)} 
-                                                id="name" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                        </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="bio">
-                                             Bio
-                                            </label>
-                                            <textarea 
-                                                id="age" 
-                                                rows="3" 
-                                                value={user.bio} onChange={(e) => setBio(e.target.value)} 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" ></textarea>
+                                            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 text-center">
+                                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    Edit Your Profile
+                                                </h3>
                                             </div>
-                                        <div className='pb-3'>
-                                            <label htmlFor="Picture">
-                                                Change Profile Picture
-                                            </label>
-                                            <input 
-                                                type="file" 
-                                                id="Picture"
-                                                accept=".jpg, .jpeg, .png"
-                                                onChange={handleImageChange}
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                        </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="gender">
-                                            Gender
-                                            </label>
-                                            {/* change to option ------------------------------ */}
-                                            <input type="text"  
-                                                value={user.gender} onChange={(e) => setGender(e.target.value)} 
-                                                id="gender" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="age">
-                                            Age
-                                            </label>
-                                            <input type="text"  
-                                                value={user.age} onChange={(e) => setName(e.target.value)} 
-                                                id="age" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="Phone">
-                                            Phone
-                                            </label>
-                                            <input type="text"  
-                                                value={user.phone} onChange={(e) => setPhone(e.target.value)} 
-                                                id="Phone" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="Country">
-                                            Country
-                                            </label>
-                                            <input type="text"  
-                                                value={user.country} onChange={(e) => setCountry(e.target.value)} 
-                                                id="Country" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="city">
-                                            City
-                                            </label>
-                                            <input type="text"  
-                                                value={user.city} onChange={(e) => setCity(e.target.value)} 
-                                                id="city" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='text-center'>
-                                          <button type="button" id='submitButton' onClick={editProfile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Save Changes</button> 
-                                          <button type="button" id='submitButton' style={{backgroundColor: '#927927', marginLeft:'1rem'}} onClick={togglePopUpForEditprofile}  className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Cancel</button>
-                                        </div>
+                                            <div className="p-6 space-y-6">
+                                                <div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="name">
+                                                            Name
+                                                        </label>
+                                                        <input type="text"
+                                                            value={name} onChange={(e) => setName(e.target.value)}
+                                                            id="name"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="bio">
+                                                            Bio
+                                                        </label>
+                                                        <textarea
+                                                            id="age"
+                                                            rows="3"
+                                                            value={bio} onChange={(e) => setBio(e.target.value)}
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" ></textarea>
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="Picture">
+                                                            Change Profile Picture
+                                                        </label>
+                                                        <input
+                                                            type="file"
+                                                            id="Picture"
+                                                            accept=".jpg, .jpeg, .png"
+                                                            onChange={handleImageChange}
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="gender">
+                                                            Gender
+                                                        </label>
+                                                        <select id="gender" name="gender" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={gender} onChange={(e) => setGender(e.target.value)}>
+                                                            <option>Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="Others">Others</option>
 
+                                                        </select>
+                                                       </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="age">
+                                                            Age
+                                                        </label>
+                                                        <input type="number"
+                                                            value={age} onChange={(e) => setAge(e.target.value)}
+                                                            id="age"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="Phone">
+                                                            Phone
+                                                        </label>
+                                                        <input type="text"
+                                                            value={phone} onChange={(e) => setPhone(e.target.value)}
+                                                            id="Phone"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="Country">
+                                                            Country
+                                                        </label>
+                                                        <select id="Country" name="country" class=" options form-control" value={country} onChange={(e) => setCountry(e.target.value)}>
+                                                            <option>Select Country</option>
+                                                            <option value="US">US</option>
+                                                            <option value="Canada">Canada</option>
+                                                            <option value="UK">UK</option>
+                                                        </select>
+
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="city">
+                                                            City
+                                                        </label>
+
+
+                                                        {user.country == "US" || country == "US" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="NY">New York</option>
+                                                                <option value="LA">Los Angeles</option>
+                                                                <option value="SE">Seattle</option>
+                                                            </select>
+                                                        ) : user.country == "CA" || country == "CA" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="TR">Toronto</option>
+                                                                <option value="VA">Vancouver</option>
+                                                            </select>
+                                                        ) : user.country == "UK" || country == "UK" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="LDN">London</option>
+                                                                <option value="MAN">Manchester</option>
+                                                            </select>
+                                                        ) : (
+                                                            <></>
+                                                        )}
+
+                                                    </div>
+                                                    <div className='text-center'>
+                                                        <button type="button" id='submitButton' onClick={editProfile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Save Changes</button>
+                                                        <button type="button" id='submitButton' style={{ backgroundColor: '#927927', marginLeft: '1rem' }} onClick={togglePopUpForEditprofile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Cancel</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </>}
-            />}
-              
+                            </>}
+                        />}
+
                         <div className="user-profile-data">
                             <h1>{user.name}</h1>
                             <p className='account-type-text'>{user.account_type}</p>
@@ -185,7 +252,7 @@ const ProfilePage = () => {
                             <p>Gender: {user.gender}</p>
                         </div>
                         <ul className="data-user">
-                        <li><a><strong>3390</strong><span>Appointments</span></a></li>
+                            <li><a><strong>3390</strong><span>Appointments</span></a></li>
                             <li><a><strong>499</strong><span>cancelled</span></a></li>
                             <li><a><strong>9.0/10</strong><span>Ratings</span></a></li>
                             <li><a><strong>444</strong><span>Reviews</span></a></li>
@@ -203,89 +270,114 @@ const ProfilePage = () => {
                             <img className="avatar" src={userImg} alt="jofpin" />
                         </div>
                         <button onClick={togglePopUpForEditprofile}>Edit Profile</button>
-                        {showPopUpForEditProfile&& <PopUp
-                content={<>
-                    <div id="staticModal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                        <div className="relative w-full max-w-2xl max-h-full" style={{ margin: "auto" }}>
-                            <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700 ">
+                        {showPopUpForEditProfile && <PopUp
+                            content={<>
+                                <div id="staticModal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div className="relative w-full max-w-2xl max-h-full" style={{ margin: "auto" }}>
+                                        <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700 ">
 
-                                <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 text-center">
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                       Edit Your Profile
-                                    </h3>
-                                </div>
-                                <div className="p-6 space-y-6">
-                                    <div>
-                                        <div className='pb-3'>
-                                            <label htmlFor="name">
-                                                Name
-                                            </label>
-                                            <input type="text"  
-                                                value={user.name} onChange={(e) => setName(e.target.value)} 
-                                                id="name" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                        </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="gender">
-                                            Gender
-                                            </label>
-                                            {/* change to option ------------------------------ */}
-                                            <input type="text"  
-                                                value={user.gender} onChange={(e) => setGender(e.target.value)} 
-                                                id="gender" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
+                                            <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 text-center">
+                                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    Edit Your Profile
+                                                </h3>
                                             </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="age">
-                                            Age
-                                            </label>
-                                            <input type="text"  
-                                                value={user.age} onChange={(e) => setName(e.target.value)} 
-                                                id="age" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="Phone">
-                                            Phone
-                                            </label>
-                                            <input type="text"  
-                                                value={user.phone} onChange={(e) => setPhone(e.target.value)} 
-                                                id="Phone" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="Country">
-                                            Country
-                                            </label>
-                                            <input type="text"  
-                                                value={user.country} onChange={(e) => setCountry(e.target.value)} 
-                                                id="Country" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='pb-3'> 
-                                            <label htmlFor="city">
-                                            City
-                                            </label>
-                                            <input type="text"  
-                                                value={user.city} onChange={(e) => setCity(e.target.value)} 
-                                                id="city" 
-                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"/>
-                                            </div>
-                                        <div className='text-center'>
-                                          <button type="button" id='submitButton' onClick={editProfile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Save Changes</button> 
-                                          <button type="button" id='submitButton' style={{backgroundColor: '#927927', marginLeft:'1rem'}} onClick={togglePopUpForEditprofile}  className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Cancel</button>
-                                        </div>
+                                            <div className="p-6 space-y-6">
+                                                <div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="name">
+                                                            Name
+                                                        </label>
+                                                        <input type="text"
+                                                            value={name} onChange={(e) => setName(e.target.value)}
+                                                            id="name"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="gender">
+                                                            Gender
+                                                        </label>
+                                                        <select id="gender" name="gender" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={gender} onChange={(e) => setGender(e.target.value)}>
+                                                            <option>Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                            <option value="Others">Others</option>
+                                                        </select>
+                                                       </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="age">
+                                                            Age
+                                                        </label>
+                                                        <input type="number"
+                                                            value={age} onChange={(e) => setAge(e.target.value)}
+                                                            id="age"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="Phone">
+                                                            Phone
+                                                        </label>
+                                                        <input type="text"
+                                                            value={phone} onChange={(e) => setPhone(e.target.value)}
+                                                            id="Phone"
+                                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="Country">
+                                                            Country
+                                                        </label>
+                                                        <select id="Country" name="country" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={country} onChange={(e) => setCountry(e.target.value)}>
+                                                            <option>Select Country</option>
+                                                            <option value="US">US</option>
+                                                            <option value="CA">Canada</option>
+                                                            <option value="UK">UK</option>
+                                                        </select>
 
+                                                    </div>
+                                                    <div className='pb-3'>
+                                                        <label htmlFor="city">
+                                                            City
+                                                        </label>
+
+
+                                                        {user.country == "US" || country == "US" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="NY">New York</option>
+                                                                <option value="LA">Los Angeles</option>
+                                                                <option value="SE">Seattle</option>
+                                                            </select>
+                                                        ) : user.country == "CA" || country == "CA" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="TR">Toronto</option>
+                                                                <option value="VA">Vancouver</option>
+                                                            </select>
+                                                        ) : user.country == "UK" || country == "UK" ? (
+                                                            <select id="City" name="city" className="options form-select block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" value={city} onChange={(e) => setCity(e.target.value)}>
+                                                                <option>Select City</option>
+                                                                <option value="LDN">London</option>
+                                                                <option value="MAN">Manchester</option>
+                                                            </select>
+                                                        ) : (
+                                                            <></>
+                                                        )}
+
+                                                    </div>
+                                                    <div className='text-center'>
+                                                        <button type="button" id='submitButton' onClick={editProfile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Save Changes</button>
+                                                        <button type="button" id='submitButton' style={{ backgroundColor: '#927927', marginLeft: '1rem' }} onClick={togglePopUpForEditprofile} className="text-white text-xl bg-green-500 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg  px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Cancel</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </>}
-            />}
+                            </>}
+                        />}
                         <div className="user-profile-data">
                             <h1>{user.name}</h1>
-                            <p style={{color: "#3498db"}}>{user.account_type}</p>
+                            <p style={{ color: "#3498db" }}>{user.account_type}</p>
                         </div>
                         <div className="description-profile">
                             <p>Country: <span>{user.country}</span> </p>

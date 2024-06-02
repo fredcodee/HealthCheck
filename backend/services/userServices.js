@@ -86,13 +86,19 @@ async function googleAuth(name, email, sub, accountType){
     }
 }
 
-async function editUserProfile(name, email,bio,city, age){
+async function editUserProfile(name, email,bio,city, age,country,gender,phone){
     try {
         const user  = await User.findOne({email:email})
+        if (!user) {
+            throw new Error(`user not found`)
+        }
         user.name = name || user.name
         user.bio = bio || user.bio
         user.city = city || user.city
         user.age = age || user.age
+        user.country =   country ||user.country
+        user.gender = gender || user.gender
+        user.phone = phone || user.phone 
         user.save()
         return user
     }

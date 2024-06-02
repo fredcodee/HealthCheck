@@ -174,3 +174,7 @@ footer h4 a {
 #closeModal{
   color: #927927;
 }
+.options{
+  width: 15rem;
+    margin-left: 5rem;
+}
