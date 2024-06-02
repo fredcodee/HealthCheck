@@ -240,10 +240,7 @@ const ProfilePage = () => {
                             <h1>{user.name}</h1>
                             <p className='account-type-text'>{user.account_type}</p>
                         </div>
-                        <div className="description-profile">
-                            dedicated physician specializing in [Your Specialty]. With over [X] years of experience in the medical field, I am committed to providing comprehensive and compassionate care to all my patients. I believe in a patient-centered approach, ensuring that each individual receives personalized treatment tailored to their unique needs.
-
-                            I stay updated with the latest advancements in medical science and continuously strive to enhance my skills through ongoing education and training. My goal is to improve the health and well-being of my patients by delivering high-quality, evidence-based medical care.</div>
+                        <div className="description-profile" style={{ paddingBottom: '2rem', fontSize: '15px' }}>{user.bio}</div>
                         <div className="description-profile">
                             <p>Country: {user.country}</p>
                             <p>City: {user.city}</p>
@@ -252,9 +249,8 @@ const ProfilePage = () => {
                             <p>Gender: {user.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li><a><strong>3390</strong><span>Appointments</span></a></li>
-                            <li><a><strong>499</strong><span>cancelled</span></a></li>
-                            <li><a><strong>9.0/10</strong><span>Ratings</span></a></li>
+                            <li><a><strong>339</strong><span>Appointments</span></a></li>
+                            <li><a><strong>9/10</strong><span>Ratings</span></a></li>
                             <li><a><strong>444</strong><span>Reviews</span></a></li>
 
                         </ul>

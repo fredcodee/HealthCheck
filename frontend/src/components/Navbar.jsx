@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Navbar = () => {
-    const token = localStorage.getItem('token') || false
+    const [token, setToken] =useState(null)
+
+    useEffect(()=>{
+        setToken(localStorage.getItem('token'))
+    },[])
+
+
 
     const handleLogout = async()=>{
         localStorage.removeItem('token');

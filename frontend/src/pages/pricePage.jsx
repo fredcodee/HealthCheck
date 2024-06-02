@@ -2,10 +2,24 @@ import React, { useState, useEffect } from 'react'
 import '../assets/styles/css/pricePage.css'
 import Api from '../Api';
 const pricePage = () => {
-    const accountType = localStorage.getItem('AccountType').replace(/"/g, '')
-    const token = localStorage.getItem('token')
-    const type = localStorage.getItem('type').replace(/"/g, '') || false
-    const [error, setError] = useState('')
+    const [accountType, setAccountType] = useState(null);
+    const [token, setToken] = useState(null);
+    const [type, setType] = useState(null);
+    const [subscription_Mode, setSubscription_Mode] = useState(null);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        const storedAccountType = localStorage.getItem('AccountType') ? localStorage.getItem('AccountType').replace(/"/g, '') : null;
+        const storedToken = localStorage.getItem('token');
+        const storedType = localStorage.getItem('type') ? localStorage.getItem('type').replace(/"/g, ''): false;
+        const storedSubscription_Mode = localStorage.getItem('subscription_Mode') ? localStorage.getItem('subscription_Mode').replace(/"/g, '') : false;
+
+        setAccountType(storedAccountType);
+        setToken(storedToken);
+        setType(storedType);
+        setSubscription_Mode(storedSubscription_Mode);
+    }, []);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -170,7 +184,7 @@ const pricePage = () => {
                     <p>Get 3 free appointments scheduled for free</p>
                     <form onSubmit={handleFreeTrial}>
                         {
-                            type == "Free" || !type ? (
+                            type == "Free" && subscription_Mode == "true" ? (
                                 <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
                                     <i class="fa fa-lock" aria-hidden="true"></i>
                                     Current plan
