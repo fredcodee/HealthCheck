@@ -80,7 +80,7 @@ const getUserDetails = async (req, res) => {
         if(user.account_type === 'Doctor'){
             const profileImage = await Image.findOne({user_id: user._id})
             user.profile_image = profileImage.url
-        }
+            user.profile_image_name = profileImage.name        }
 
         return res.json(user)
     }

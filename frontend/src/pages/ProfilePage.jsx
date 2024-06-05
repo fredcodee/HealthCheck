@@ -18,7 +18,8 @@ const ProfilePage = () => {
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [showPopUpForEditProfile, setShowPopUpForEditProfile] = useState(false)
-
+    const [selectedImage, setSelectedImage] = useState(null);
+    const imageSrc = import.meta.env.VITE_MODE == 'Production' ? import.meta.env.VITE_API_BASE_URL_PROD : import.meta.env.VITE_API_BASE_URL_DEV
     const togglePopUpForEditprofile = () => {
         setShowPopUpForEditProfile(!showPopUpForEditProfile)
     }
@@ -72,8 +73,18 @@ const ProfilePage = () => {
                     Authorization: `Bearer ${token.replace(/"/g, '')}`
                 }
             })
-                .then((response) => {
+                .then(async(response) => {
                     if (response.status == 200) {
+                        if(selectedImage){
+                            const formData = new FormData();
+                            formData.append('image', selectedImage);
+                            await Api.post('/api/user/profile/image/upload', formData, {
+                                headers: {
+                                  'Content-Type': 'multipart/form-data',
+                                  Authorization: `Bearer ${token.replace(/"/g, '')}`
+                                }
+                              })
+                        }
                         getUserProfile()
                         setSuccess("Profile updated successfully")
                         togglePopUpForEditprofile()
@@ -88,9 +99,13 @@ const ProfilePage = () => {
         }
     }
 
-    const handleImageChange = async (e) => {
-
-    }
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+    
+        if (file) {
+          setSelectedImage(file);
+        }
+      };
 
     return (
         <div>
@@ -104,7 +119,7 @@ const ProfilePage = () => {
                     <div className="profile-user-page card">
                         <div className="img-user-profile">
                             <img className="profile-bgHome" src={bg} />
-                            <img className="avatar" src="http://gravatar.com/avatar/288ce55a011c709f4e17aef7e3c86c64?s=200" alt="jofpin" />
+                            <img className="avatar" src={`${imageSrc}/images/${user.profile_image_name}` || userImg} alt="jofpin" />
                         </div>
                         <button onClick={togglePopUpForEditprofile} >Edit Profile</button>
                         {/* for popup for editing profile*/}

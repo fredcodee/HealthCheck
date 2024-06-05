@@ -110,6 +110,15 @@ async function editUserProfile(name, email,bio,city, age,country,gender,phone){
 
 async function addUpdateProfileImage(imageName,path,userId){
     try {
+        //check if user already has profile image
+        const image = await Image.findOne({user_id:userId})
+        if(image){
+            //update image
+            image.name = imageName
+            image.url = path
+            image.save()
+            return true
+        }
         const newImage = new Image({
             name:imageName,
             url:path,
