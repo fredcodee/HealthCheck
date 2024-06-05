@@ -2,6 +2,8 @@ const errorHandler = require('../middlewares/errorHandler')
 const userService = require('../services/userServices')
 const decode = require("jwt-decode")
 const jwt = require('jsonwebtoken')
+const Image = require('../models/ImageModel')
+const User = require('../models/UserModel')
 
 
 const register = async (req, res) => {
@@ -69,7 +71,17 @@ const checkToken = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
     try{
-        const user = await userService.getUserById(req.user.id)
+        const user = await User.findById(req.user.id).lean()
+
+        if(!user){
+            return res.status(404).json({message: "user not found"})
+        }
+
+        if(user.account_type === 'Doctor'){
+            const profileImage = await Image.findOne({user_id: user._id})
+            user.profile_image = profileImage.url
+        }
+
         return res.json(user)
     }
     catch(error){
@@ -89,13 +101,29 @@ const editProfile = async (req, res) => {
 }
 
 const editProfilePicForDoctors = async (req, res) => {
-    try{
-        
-    }
-    catch(error){
+    try {
+        const file = req.file;
+        const user = req.user
+
+        //error handling if file is not jpg or jpeg
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return res.status(400).send('Please upload a image file')
+        }
+
+        //check if user is doctor
+        if(user.account_type !== 'Doctor'){
+            return res.status(400).send('Only doctors accoung can add profile image')
+        }
+
+        // save image
+        await userService.addUpdateProfileImage(file.filename,file.path, user._id)
+        return res.json({massage:"Profile Picture Updated"})
+    } catch (error) {
         errorHandler.errorHandler(error, res)
     }
 }
+
+
 
 
 module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile, editProfilePicForDoctors}

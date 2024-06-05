@@ -1,6 +1,5 @@
 const errorHandler = require("../middlewares/errorHandler")
 const appService = require("../services/appServices")
-const userService =  require("../services/userServices")
 
 const health = async (req, res) => {
     return res.json({ 'status': 'ok' })
@@ -31,5 +30,4 @@ const freeTrail = async (req, res) => {
     }
 }
 
-
-module.exports = { health, freeTrail, subscriptionCheck }
+module.exports = { health, freeTrail, subscriptionCheck}

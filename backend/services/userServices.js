@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/UserModel')
+const Image = require('../models/ImageModel')
 const bcrypt = require('bcrypt')
 
 
@@ -16,7 +17,7 @@ async function generateToken(user) {
 
 async function getUserById(id) {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id)
         return user;
     } catch (error) {
         throw new Error(`Cant get user details ${error}`);
@@ -107,4 +108,19 @@ async function editUserProfile(name, email,bio,city, age,country,gender,phone){
     }
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile}
+async function addUpdateProfileImage(imageName,path,userId){
+    try {
+        const newImage = new Image({
+            name:imageName,
+            url:path,
+            user_id:userId
+        })
+        await newImage.save()
+        return true
+    } catch (error) {
+        throw new Error(`Error updating store image ${error.message}`)
+    }
+
+}
+
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage}
