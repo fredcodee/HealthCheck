@@ -4,6 +4,7 @@ import bg from '../assets/img/bg1.jpg'
 import userImg from '../assets/img/user.jpg'
 import PopUp from '../components/Popup'
 import Api from '../Api'
+
 const ProfilePage = () => {
     const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
     const token = localStorage.getItem('token') || false

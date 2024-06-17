@@ -3,9 +3,11 @@ import React from 'react'
 const DashBoard = () => {
   const token = localStorage.getItem('token') || false
   const type =  localStorage.getItem('type') || false
+  const accountType = localStorage.getItem('AccountType') ? localStorage.getItem('AccountType').replace(/"/g, '') : null;
+
 
   return (
-    <div>
+    <div className='container'>
       <div>
         { type ?(
           type.replace(/"/g, '') == 'Free' ?
@@ -16,8 +18,79 @@ const DashBoard = () => {
         )
         }
       </div>
+      <div className="text-center pt-3">
+        <h1>Dashboard</h1>
+      </div>
+      {accountType == 'Doctor' ? 
+        (
+          <div>
+            <div>
+              <div className='card'>
+                <a href= "/create-schedule">
+                  <div className='card-body'>
+                    Create your Schedule
+                  </div>
+                </a>
+              </div>
+              
+              <div className='card'>
+                <a href="">
+                  <div className='card-body'>
+                  Appointments and status
+                  </div>
+                </a>
+              </div>
 
-      <h1>Dashboard</h1>
+              <div className='card'>
+                <a href="">
+                  <div className='card-body'>
+                  Reports, Reviews and comments
+                  </div>
+                </a>
+              </div>
+              <hr />
+              <div className='text-center'>
+                <h3>Upcoming Appointments</h3>
+              </div>
+
+            </div>
+          </div>
+        ) 
+          : 
+        (
+          <div>
+            <div>
+              <div className='card'>
+                <a href="">
+                  <div className='card-body'>
+                  Book an Appointment
+                  </div>
+                </a>
+              </div>
+              
+              <div className='card'>
+                <a href="">
+                  <div className='card-body'>
+                  View your Appointments and status
+                  </div>
+                </a>
+              </div>
+
+              <div className='card'>
+                <a href="">
+                  <div className='card-body'>
+                  View your Reports, Reviews and comments
+                  </div>
+                </a>
+              </div>
+              <hr />
+              <div className='text-center'>
+                <h3>Upcoming Appointments</h3>
+              </div>
+
+            </div>
+          </div>
+        ) }
     </div>
   )
 }

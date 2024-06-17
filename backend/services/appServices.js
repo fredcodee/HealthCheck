@@ -1,4 +1,6 @@
 const User = require('../models/UserModel')
+const Appointments = require('../models/Appointments')
+const Schedules = require('../models/SchedulesModel')
 
 
 
@@ -34,8 +36,31 @@ async function updateSubscription(email, type, subscriptionMode) {
     }
 }
 
+//set schedule (doctor)
+async function setSchedule(email, schedule) {
+    try {
+        const getUser = await User.findOne({ email: email })    
+        if (getUser) {
+            //
+        }
+    } catch (error) {
+        throw Error(`Cant set schedule ${error}`)
+    }
+}
+
+
+//get schedule (doctor)
+async function getSchedule(email) {
+    try {
+        const getUser = await User.findOne({ email: email })    
+        //
+    } catch (error) {
+        throw Error(`Cant get schedule ${error}`)
+    }
+}
 
 
 
 
-module.exports = {subToFreeTrail, updateSubscription}
+
+module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule}

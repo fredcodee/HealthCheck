@@ -30,4 +30,32 @@ const freeTrail = async (req, res) => {
     }
 }
 
-module.exports = { health, freeTrail, subscriptionCheck}
+//set schedule (doctor)
+const setSchedule = async (req, res) => {
+    try {
+        const user = req.user
+        const { schedule } = req.body
+        const sub = await appService.setSchedule(user.email, schedule)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'Free trail not allowed' })
+    }
+    catch (error) {
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+//get schedule (doctor)
+const getSchedule = async (req, res) => {
+    try {
+        const user = req.user
+        const schedule = await appService.getSchedule(user.email)
+        return res.json( schedule )
+    }
+    catch (error) {
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule}
