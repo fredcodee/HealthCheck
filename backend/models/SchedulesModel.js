@@ -5,7 +5,12 @@ const schedulesSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    availableTime:{
+    date:{
+        type: Date},
+    startTime:{
+        type: Date
+    },
+    endTime:{
         type: Date
     },
     taken:{

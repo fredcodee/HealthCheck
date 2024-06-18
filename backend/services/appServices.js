@@ -37,16 +37,70 @@ async function updateSubscription(email, type, subscriptionMode) {
 }
 
 //set schedule (doctor)
-async function setSchedule(email, schedule) {
+async function setSchedule(email, dates, startTime, endTime) {
     try {
         const getUser = await User.findOne({ email: email })    
         if (getUser) {
-            //
+            for (const date of dates) {
+                const combinedDateStartTime = await combineDateAndTime(date, startTime)
+                const combinedDateEndTime = await combineDateAndTime(date, endTime)
+                const newSchedule = new Schedules({
+                    doctor_id: getUser._id,
+                    date: new Date(date),
+                    startTime: combinedDateStartTime,
+                    endTime: combinedDateEndTime
+                })
+                await newSchedule.save()
+                console.log(newSchedule)
+            }
         }
+        return true
     } catch (error) {
         throw Error(`Cant set schedule ${error}`)
     }
 }
+
+
+
+// const dateObj = new Date('Wed Jun 19 2024 00:18:22 GMT+0800 (Taipei Standard Time)');
+// const timeStr = '1:15:00 AM GMT+8';
+const combineDateAndTime = async (dateObj, timeStr) => {
+    dateObj = new Date(dateObj);
+    if (!(dateObj instanceof Date)) {
+        throw new Error("Invalid date object");
+    }
+
+    // Extract date components from dateObj
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth();
+    const day = dateObj.getDate();
+
+    // Extract time components from timeStr
+    const timeParts = timeStr.match(/(\d+):(\d+):(\d+)\s(AM|PM)\sGMT([+-]\d+)/);
+    let hours = parseInt(timeParts[1], 10);
+    const minutes = parseInt(timeParts[2], 10);
+    const seconds = parseInt(timeParts[3], 10);
+    const period = timeParts[4];
+    const timezone = timeParts[5];
+
+    // Convert to 24-hour format
+    if (period === 'PM' && hours !== 12) {
+        hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    // Combine the date and time parts into a new Date object
+    const combinedDate = new Date(year, month, day, hours, minutes, seconds);
+
+    // Apply timezone offset
+    const offsetMinutes = combinedDate.getTimezoneOffset();
+    combinedDate.setMinutes(combinedDate.getMinutes() - offsetMinutes);
+
+    return combinedDate;
+};
+
+
 
 
 //get schedule (doctor)

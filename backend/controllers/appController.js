@@ -34,8 +34,8 @@ const freeTrail = async (req, res) => {
 const setSchedule = async (req, res) => {
     try {
         const user = req.user
-        const { schedule } = req.body
-        const sub = await appService.setSchedule(user.email, schedule)
+        const { dates, startTime, endTime } = req.body
+        const sub = await appService.setSchedule(user.email, dates, startTime, endTime)
         if(sub){
             return res.json({ message: 'success' })
         }

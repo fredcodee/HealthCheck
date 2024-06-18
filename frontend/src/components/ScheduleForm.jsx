@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import TimePicker from 'react-time-picker';
 
 const ScheduleForm = () => {
     const [selectedDates, setSelectedDates] = useState([new Date()]);
@@ -12,8 +11,8 @@ const ScheduleForm = () => {
         event.preventDefault();
         // Process the form data here
         console.log('Selected Dates:', selectedDates);
-        console.log('Start Time:', startTime);
-        console.log('End Time:', endTime);
+        console.log('Start Time:', startTime.toLocaleTimeString('en-US', { timeZoneName: 'short' }));
+        console.log('End Time:', endTime.toLocaleTimeString('en-US', { timeZoneName: 'short' }));
     };
 
     const handleDateChange = (dates) => {
