@@ -44,14 +44,16 @@ async function setSchedule(email, dates, startTime, endTime) {
             for (const date of dates) {
                 const combinedDateStartTime = await combineDateAndTime(date, startTime)
                 const combinedDateEndTime = await combineDateAndTime(date, endTime)
-                const newSchedule = new Schedules({
-                    doctor_id: getUser._id,
-                    date: new Date(date),
-                    startTime: combinedDateStartTime,
-                    endTime: combinedDateEndTime
-                })
-                await newSchedule.save()
-                console.log(newSchedule)
+                const checkScheduleExists = await Schedules.findOne({ doctor_id: getUser._id, startTime: combinedDateStartTime, endTime: combinedDateEndTime })
+                if (!checkScheduleExists) {
+                    const newSchedule = new Schedules({
+                        doctor_id: getUser._id,
+                        date: new Date(date),
+                        startTime: combinedDateStartTime,
+                        endTime: combinedDateEndTime
+                    })
+                    await newSchedule.save()
+                }
             }
         }
         return true
@@ -106,8 +108,11 @@ const combineDateAndTime = async (dateObj, timeStr) => {
 //get schedule (doctor)
 async function getSchedule(email) {
     try {
-        const getUser = await User.findOne({ email: email })    
-        //
+        const getUser = await User.findOne({ email: email })
+        if (getUser) {
+            const schedules = await Schedules.find({ doctor_id: getUser._id })
+            return schedules
+        }
     } catch (error) {
         throw Error(`Cant get schedule ${error}`)
     }

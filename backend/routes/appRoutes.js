@@ -5,6 +5,6 @@ const appcontroller = require('../controllers/appController')
 router.get('/health', appcontroller.health)
 router.get('/free-trial', auth.userAuth, appcontroller.freeTrail)
 router.get('/subscription-check', auth.userAuth, appcontroller.subscriptionCheck)
-router.post('/set-schedule', auth.userAuth, appcontroller.setSchedule)
-
+router.post('/set-schedules', auth.userAuth, appcontroller.setSchedule)
+router.get('/get-schedules', auth.userAuth, appcontroller.getSchedule)
 module.exports= router
