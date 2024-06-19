@@ -62,8 +62,8 @@ const getSchedule = async (req, res) => {
 const deleteSchedule = async (req, res) => {
     try {
         const user = req.user
-        const { date, startTime, endTime } = req.body
-        const sub = await appService.deleteSchedule(user.email, date, startTime, endTime)
+        const { id } = req.params
+        const sub = await appService.deleteSchedule(user.email, id)
         if(sub){
             return res.json({ message: 'success' })
         }

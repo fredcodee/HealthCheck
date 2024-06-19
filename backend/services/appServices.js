@@ -118,11 +118,11 @@ async function getSchedule(email) {
     }
 }
 
-async function deleteSchedule(email, date, startTime, endTime) {
+async function deleteSchedule(email, id) {
     try{
         const getUser = await User.findOne({ email: email })
         if (getUser) {
-            await Schedules.findOneAndDelete({ doctor_id: getUser._id, date:date, startTime: startTime, endTime:endTime })
+            await Schedules.findOneAndDelete({ doctor_id: getUser._id, _id:id })
             return true
         }
     }

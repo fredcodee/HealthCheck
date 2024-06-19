@@ -14,7 +14,8 @@ const schedulesSchema = new mongoose.Schema({
         type: Date
     },
     taken:{
-        type:Boolean
+        type:Boolean,
+        default:false
     }
 
 })
