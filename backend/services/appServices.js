@@ -118,8 +118,21 @@ async function getSchedule(email) {
     }
 }
 
+async function deleteSchedule(email, date, startTime, endTime) {
+    try{
+        const getUser = await User.findOne({ email: email })
+        if (getUser) {
+            await Schedules.findOneAndDelete({ doctor_id: getUser._id, date:date, startTime: startTime, endTime:endTime })
+            return true
+        }
+    }
+    catch(error){
+        throw Error(`Cant delete schedule ${error}`)
+    }
+}
 
 
 
 
-module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule}
+
+module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule}

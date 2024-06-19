@@ -58,4 +58,21 @@ const getSchedule = async (req, res) => {
     }
 }
 
-module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule}
+
+const deleteSchedule = async (req, res) => {
+    try {
+        const user = req.user
+        const { date, startTime, endTime } = req.body
+        const sub = await appService.deleteSchedule(user.email, date, startTime, endTime)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'error deleting schedule' })
+    }
+    catch (error) {
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+
+module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule}
