@@ -57,7 +57,7 @@ const CreateSchedule = () => {
             </div>
             <div className='text-center'>
                 <h1>Create Your Schedule</h1>
-                <ScheduleForm />
+                <ScheduleForm  onSuccess={getSchedules} />
             </div>
             <hr />
             <div>
