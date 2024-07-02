@@ -13,7 +13,6 @@ async function subToFreeTrail(email) {
             getUser.subscription_Mode = true
             getUser.subscription_Type = 'Free'
             getUser.save()
-            console.log('true')
             return true
         }
         return false
@@ -83,7 +82,6 @@ const combineDateAndTime = async (dateObj, timeStr) => {
     const minutes = parseInt(timeParts[2], 10);
     const seconds = parseInt(timeParts[3], 10);
     const period = timeParts[4];
-    const timezone = timeParts[5];
 
     // Convert to 24-hour format
     if (period === 'PM' && hours !== 12) {
@@ -94,11 +92,6 @@ const combineDateAndTime = async (dateObj, timeStr) => {
 
     // Combine the date and time parts into a new Date object
     const combinedDate = new Date(year, month, day, hours, minutes, seconds);
-
-    // Apply timezone offset
-    const offsetMinutes = combinedDate.getTimezoneOffset();
-    combinedDate.setMinutes(combinedDate.getMinutes() - offsetMinutes);
-
     return combinedDate;
 };
 

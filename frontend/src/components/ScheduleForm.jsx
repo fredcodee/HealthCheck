@@ -13,10 +13,6 @@ const ScheduleForm = ({onSuccess}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Process the form data here
-        console.log('Selected Dates:', selectedDates);
-        console.log('Start Time:', startTime.toLocaleTimeString('en-US', { timeZoneName: 'short' }));
-        console.log('End Time:', endTime.toLocaleTimeString('en-US', { timeZoneName: 'short' }));
         addSchedule();
     };
 

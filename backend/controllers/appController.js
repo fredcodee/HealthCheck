@@ -50,8 +50,24 @@ const setSchedule = async (req, res) => {
 const getSchedule = async (req, res) => {
     try {
         const user = req.user
-        const schedule = await appService.getSchedule(user.email)
-        return res.json( schedule )
+        const schedules = await appService.getSchedule(user.email)
+        const groupDates = {}
+        // if (schedules.length > 0) {
+        //     for (const schedule of schedules) {
+        //         const dateToCheck= schedule.date.toLocaleDateString('en-US')
+        //         if (!groupDates[dateToCheck]) {
+        //             groupDates[dateToCheck] = []
+        //             groupDates[dateToCheck].push(schedule)
+                    
+        //         }
+        //         groupDates[dateToCheck].push(schedule)
+
+        //         //groupDates[schedule.date].push(schedule)
+        //     }
+
+        //     return res.json( groupDates )
+        // }
+        return res.json( schedules )
     }
     catch (error) {
         errorHandler.errorHandler(error, res)
