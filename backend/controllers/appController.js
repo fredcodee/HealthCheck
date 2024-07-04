@@ -52,22 +52,20 @@ const getSchedule = async (req, res) => {
         const user = req.user
         const schedules = await appService.getSchedule(user.email)
         const groupDates = {}
-        // if (schedules.length > 0) {
-        //     for (const schedule of schedules) {
-        //         const dateToCheck= schedule.date.toLocaleDateString('en-US')
-        //         if (!groupDates[dateToCheck]) {
-        //             groupDates[dateToCheck] = []
-        //             groupDates[dateToCheck].push(schedule)
+        if (schedules.length > 0) {
+            for (const schedule of schedules) {
+                const dateToCheck= schedule.date.toLocaleDateString()
+                if (!groupDates[dateToCheck]) {
+                    groupDates[dateToCheck] = []
+                    groupDates[dateToCheck].push(schedule)
                     
-        //         }
-        //         groupDates[dateToCheck].push(schedule)
+                }
+                else{
+                    groupDates[dateToCheck].push(schedule)}
+            }
 
-        //         //groupDates[schedule.date].push(schedule)
-        //     }
-
-        //     return res.json( groupDates )
-        // }
-        return res.json( schedules )
+            return res.json( groupDates )
+        }
     }
     catch (error) {
         errorHandler.errorHandler(error, res)

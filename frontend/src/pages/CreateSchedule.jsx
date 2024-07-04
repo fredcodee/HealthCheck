@@ -23,7 +23,7 @@ const CreateSchedule = () => {
                     Authorization: `Bearer ${token.replace(/"/g, '')}`
                 }
             })
-            setSchedules(schedules.data)
+            setSchedules(Object.entries(schedules.data))
         } catch (error) {
             setError(`An error occured while trying to get schedules`)
         }
@@ -57,7 +57,7 @@ const CreateSchedule = () => {
             </div>
             <div className='text-center'>
                 <h1>Create Your Schedule</h1>
-                <ScheduleForm  onSuccess={getSchedules} />
+                <ScheduleForm onSuccess={getSchedules} />
             </div>
             <hr />
             <div>
@@ -65,22 +65,26 @@ const CreateSchedule = () => {
                     <h3>Your current schedules</h3>
                 </div>
                 <div>
-                    {schedules.map((schedule, index) => (
-                        <div key={index}>
-                            <div className="card w-50">
-                                <div className="card-body">
-                                    <h5 className="card-title">{new Date(schedule.date).toLocaleDateString('en-US')}</h5>
-                                    <p className="card-text"><span>From</span> {new Date(schedule.startTime).toLocaleTimeString('en-US', {
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    hour12: true,
-                                })} <span>To</span>  {new Date(schedule.endTime).toLocaleTimeString('en-US', {
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    hour12: true,
-                                })}</p>
-                                    <a href="#" className="btn btn-danger" onClick={() => deleteSchedule(schedule._id)}>Delete</a>
-                                </div>
+                    {schedules.map(([date, events], index) => (
+                        <div key={index} className="card w-50">
+                            <div className="card-body">
+                                <h4 className="card-title">{date}</h4>
+                                {events.map(event => (
+                                    <div key={event._id}>
+                                            <p className="card-text">
+                                                <span>From</span> {new Date(event.startTime).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                })} <span>To</span> {new Date(event.endTime).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                })} <span className='pl-3'><a href="#" className="btn btn-danger" onClick={() => deleteSchedule(event._id)}>Delete</a></span>
+                                            </p>
+                                            
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}
