@@ -51,19 +51,19 @@ const getSchedule = async (req, res) => {
     try {
         const user = req.user
         const schedules = await appService.getSchedule(user.email)
-        const groupDates = {}
+        let groupDates = {}
         if (schedules.length > 0) {
             for (const schedule of schedules) {
                 const dateToCheck= schedule.date.toLocaleDateString()
                 if (!groupDates[dateToCheck]) {
                     groupDates[dateToCheck] = []
-                    groupDates[dateToCheck].push(schedule)
-                    
+                    groupDates[dateToCheck].push(schedule)      
                 }
                 else{
                     groupDates[dateToCheck].push(schedule)}
             }
 
+            groupDates =  await appService.sortDataByDate(groupDates)
             return res.json( groupDates )
         }
     }
@@ -84,6 +84,27 @@ const deleteSchedule = async (req, res) => {
         return res.status(401).json({ error: 'error deleting schedule' })
     }
     catch (error) {
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+const getRandomDoctorsInUsersLocation = async (req, res) => {
+    try{
+        const user = req.user
+        const doctors = await appService.getRandomDoctorsInUsersLocation(user.city)
+        return res.json(doctors)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+const bookAppointment = async (req, res) => {
+    try{
+        // all get doctors in users location
+        //
+    }
+    catch(error){
         errorHandler.errorHandler(error, res)
     }
 }

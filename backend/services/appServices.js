@@ -111,6 +111,19 @@ async function getSchedule(email) {
     }
 }
 
+async function sortDataByDate(data) {
+    // Convert object keys to an array and sort them
+    const sortedKeys = Object.keys(data).sort((a, b) => new Date(a) - new Date(b));
+    
+    // Create a new object with sorted keys
+    const sortedData = {};
+    sortedKeys.forEach(key => {
+        sortedData[key] = data[key];
+    });
+    
+    return sortedData;
+}
+
 async function deleteSchedule(email, id) {
     try{
         const getUser = await User.findOne({ email: email })
@@ -124,8 +137,19 @@ async function deleteSchedule(email, id) {
     }
 }
 
+async function getRandomDoctorsInUsersLocation(city) {
+    try {
+        const doctors = await User.find({ city: city, subscription_Mode: true,  account_type: 'Doctor' })
+        //choose random 3
+        const random = [...doctors].sort(() => 0.5 - Math.random()).slice(0, 3)
+        return random
+    } catch (error) {
+        throw Error(`Cant get random doctor ${error}`)
+    }
+}
 
 
 
 
-module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule}
+
+module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate}
