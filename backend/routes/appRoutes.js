@@ -8,4 +8,6 @@ router.get('/subscription-check', auth.userAuth, appcontroller.subscriptionCheck
 router.post('/set-schedules', auth.userAuth, appcontroller.setSchedule)
 router.get('/get-schedules', auth.userAuth, appcontroller.getSchedule)
 router.delete('/delete-schedule/:id', auth.userAuth, appcontroller.deleteSchedule)
+router.get('/get-random-doctors', auth.userAuth, appcontroller.getRandomDoctorsInUsersLocation)
+router.post('/book-appointment', auth.userAuth, appcontroller.bookAppointment)
 module.exports= router

@@ -137,9 +137,11 @@ async function deleteSchedule(email, id) {
     }
 }
 
-async function getRandomDoctorsInUsersLocation(city) {
+async function getRandomDoctorsInUsersLocation(city, email) {
     try {
         const doctors = await User.find({ city: city, subscription_Mode: true,  account_type: 'Doctor' })
+        //remove user
+        doctors.splice(doctors.indexOf(email), 1)
         //choose random 3
         const random = [...doctors].sort(() => 0.5 - Math.random()).slice(0, 3)
         return random
