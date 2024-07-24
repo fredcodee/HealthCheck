@@ -52,14 +52,32 @@ async function checkIfUserIsRegistered(email){
     }
 }
 
-async function addUserToDb(name, email, password, accountType){
+async function fix(){
+    try{
+        // for(const doctor of moreDoctors){
+        //     const newUser = await addUserToDb(doctor.name, doctor.email, doctor.password, doctor.accountType, doctor.bio, doctor.city, doctor.age, doctor.country, doctor.gender, doctor.phone)
+        //     console.log(newUser)
+        // }
+    }
+    catch(error){
+        throw new Error(`Cant add more users ${error}`)
+    }   
+}
+
+async function addUserToDb(name, email, password, accountType, bio, city, age, country, gender, phone){
     try {
         password = bcrypt.hashSync(password, 10)
          const user = new User({
              name : name || null,
              email: email || null,
              password: password || null,
-             account_type: accountType || null
+             account_type: accountType || null,
+             bio: bio || null,
+             city: city || null,
+             age: age || null,
+             country: country || null,
+             gender: gender || null,
+             phone: phone || null
          });
          await user.save();
          return user;
@@ -132,4 +150,4 @@ async function addUpdateProfileImage(imageName,path,userId){
 
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage}
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage, fix}

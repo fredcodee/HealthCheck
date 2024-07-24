@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     },
     profileImage:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Image'
+        ref:'Image',
+        default: null
     },
     phone:{
         type:String},

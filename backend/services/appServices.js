@@ -139,7 +139,7 @@ async function deleteSchedule(email, id) {
 
 async function getRandomDoctorsInUsersLocation(city, email) {
     try {
-        const doctors = await User.find({ city: city, subscription_Mode: true,  account_type: 'Doctor' })
+        const doctors = await User.find({ city: city,  account_type: 'Doctor' })
         //remove user
         doctors.splice(doctors.indexOf(email), 1)
         //choose random 3
@@ -151,7 +151,30 @@ async function getRandomDoctorsInUsersLocation(city, email) {
 }
 
 
+async function searchDoctor(namePrefix, city){
+    try{
+        if(namePrefix && city){
+            const doctors = await User.find({name: { $regex: `^${namePrefix}`, $options: 'i' }, city: city, account_type: 'Doctor' })
+            return doctors
+        }
+        else if(namePrefix && !city){
+            const doctors = await User.find({ name: { $regex: `^${namePrefix}`, $options: 'i' },  account_type: 'Doctor' })
+            return doctors
+        }
+        else if(city && !namePrefix){
+            const doctors = await User.find({ city: city,  account_type: 'Doctor' })
+            return doctors
+        }
+    }
+    catch(error){
+        throw Error(`Cant search doctor ${error}`)
+    }
+}
 
 
 
-module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate}
+
+
+module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
+    searchDoctor
+}

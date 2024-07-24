@@ -99,6 +99,17 @@ const getRandomDoctorsInUsersLocation = async (req, res) => {
     }
 }
 
+const  searchDoctor = async (req, res) => {
+    try{
+        const {name, city} = req.body
+        const doctors = await appService.searchDoctor(name, city)
+        return res.json(doctors)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
 const bookAppointment = async (req, res) => {
     try{
         // all get doctors in users location
@@ -110,4 +121,6 @@ const bookAppointment = async (req, res) => {
 }
 
 
-module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment }
+module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
+    searchDoctor
+ }
