@@ -8,7 +8,7 @@ const appointmentsSchema = new mongoose.Schema({
         ref:'User',
         required:true
     },
-    status:{type:String, default:'pending'}, //accepted, canceled, pending
+    status:{type:String, default:'pending'}, //accepted, canceled, pending, completed
     scheduled:{type: mongoose.Schema.Types.ObjectId,
         ref:'Schedules',
         required:true},

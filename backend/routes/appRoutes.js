@@ -16,6 +16,8 @@ router.post('/get-free-schedules', auth.userAuth, appcontroller.getFreeSchedules
 router.post('/review', auth.userAuth, appcontroller.review)
 router.get("/get-user-reviews", auth.userAuth, appcontroller.viewUserReviews)
 router.post("/get-doctor-reviews", auth.userAuth, appcontroller.viewDoctorReviews)
+router.get("/get-upcoming-appointments-patient", auth.userAuth, appcontroller.getUpcomingAppointmentsPatient)
+router.get("/get-upcoming-appointments-doctor", auth.userAuth, appcontroller.getUpcomingAppointmentsDoctor)
 
 router.get("/admin/fix", auth.userAuth, fix.fix)
 module.exports= router

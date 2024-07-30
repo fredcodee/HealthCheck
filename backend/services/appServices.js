@@ -243,8 +243,29 @@ async function viewDoctorReviews(doctor_id) {
     }
 }
 
+//get upcoming appointments
+async function getUpcomingAppointmentsPatient(userId) {
+    try {
+        const getAppointments = await Appointments.find({ user_id: userId, status: 'accepted' })
+        return getAppointments
+    } catch (error) {
+        throw Error(`Cant get upcoming appointments ${error}`)
+    }
+}
+
+//get upcoming appointments doctors
+async function getUpcomingAppointmentsDoctor(doctorId) {
+    try {
+        const getAppointments = await Appointments.find({ doctor_id: doctorId, status: 'accepted'})
+        return getAppointments
+    } catch (error) {
+        throw Error(`Cant get upcoming appointments ${error}`)
+    }
+}
+
 
 
 module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
-    searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews
+    searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
+    getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor
 }

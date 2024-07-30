@@ -194,7 +194,31 @@ const viewDoctorReviews = async (req, res) => {
     }
 }
 
+const getUpcomingAppointmentsPatient = async (req, res) => {
+    try{
+        const user = req.user
+        const appointments = await appService.getUpcomingAppointmentsPatient(user._id)
+        return res.json(appointments)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+const getUpcomingAppointmentsDoctor = async (req, res) => {
+    try{
+        const user = req.user
+        const appointments = await appService.getUpcomingAppointmentsDoctor(user._id)
+        return res.json(appointments)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
 
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
-    searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews
+    searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews, getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor,
+    
+
  }
