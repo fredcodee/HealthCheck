@@ -231,8 +231,9 @@ const getAllAppointments = async (req, res) => {
 //update appointment
 const updateAppointment = async (req, res) => {
     try{
+        const user = req.user
         const {appointmentId, scheduleId, status} = req.body
-        const sub = await appService.updateAppointment(appointmentId, scheduleId, status)
+        const sub = await appService.updateAppointment(user._id, appointmentId, scheduleId, status)
         if(sub){
             return res.json({ message: 'success' })
         }

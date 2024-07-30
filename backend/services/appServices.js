@@ -191,6 +191,7 @@ async function bookAppointment(email, doctor_id, schedule_id, reason) {
     try{
         const getSchedule = await Schedules.findOne({ _id: schedule_id, taken: false })
         const getUser = await User.findOne({ email: email })
+
         if (getSchedule) {
             const newAppointment = new Appointments({
                 user_id: getUser._id,
@@ -199,6 +200,11 @@ async function bookAppointment(email, doctor_id, schedule_id, reason) {
                 reason: reason
             })
             await newAppointment.save()
+           
+            if(getUser.free_trail_count > 0){
+                getUser.free_trail_count -= 1
+                await getUser.save()
+            }
             return true
         }
     }
@@ -274,10 +280,17 @@ async function getAllAppointments(userId) {
 }
 
 //update appointment
-async function updateAppointment(appointment_id, schedule_id, status) {
+async function updateAppointment(user_id,appointment_id, schedule_id, status) {
     try {
         const getAppointment = await Appointments.findOne({ _id: appointment_id })
         const getSchedule = await Schedules.findOne({ _id: schedule_id })
+        const getUser = await User.findOne({ _id: user_id })
+
+        if(getUser.free_trail_count > 0){
+            getUser.free_trail_count -= 1
+            await getUser.save()
+        }
+
         if (getAppointment && getSchedule) {
             getAppointment.status = status
             await getAppointment.save()
@@ -289,6 +302,7 @@ async function updateAppointment(appointment_id, schedule_id, status) {
                 getSchedule.taken = false
                 await getSchedule.save()
             }
+
             return true
         }
     } catch (error) {

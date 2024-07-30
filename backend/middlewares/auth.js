@@ -21,5 +21,18 @@ const userService = require('../services/userServices')
     }
   }
 
+  //check subscription
+  const checkSubscription = async (req, res, next) => {
+    try {
+      const user = req.user
+      if(user.subscription_Mode === 'Free' && user.free_trail_count <= 0) {
+        return res.status(401).send({ error: 'Free Subscription not allowed' })
+      }
+      next()
+    } catch (e) {
+      next(e)
+    }
+  }
+
   
-module.exports = {userAuth}
+module.exports = {userAuth, checkSubscription}
