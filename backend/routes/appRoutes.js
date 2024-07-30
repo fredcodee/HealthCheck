@@ -12,5 +12,7 @@ router.delete('/delete-schedule/:id', auth.userAuth, appcontroller.deleteSchedul
 router.get('/get-random-doctors', auth.userAuth, appcontroller.getRandomDoctorsInUsersLocation)
 router.post('/book-appointment', auth.userAuth, appcontroller.bookAppointment)
 router.post('/search-doctor', auth.userAuth, appcontroller.searchDoctor)
+router.post('/get-free-schedules', auth.userAuth, appcontroller.getFreeSchedules)
+
 router.get("/admin/fix", auth.userAuth, fix.fix)
 module.exports= router

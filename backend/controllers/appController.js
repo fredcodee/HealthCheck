@@ -110,10 +110,43 @@ const  searchDoctor = async (req, res) => {
     }
 }
 
+//get doctors free schedules
+const getFreeSchedules = async (req, res) => {
+    try{
+        const userEmail = req.body.email
+        const schedules = await appService.getFreeSchedules(userEmail)
+        let groupDates = {}
+        if (schedules.length > 0) {
+            for (const schedule of schedules) {
+                const dateToCheck= schedule.date.toLocaleDateString()
+                if (!groupDates[dateToCheck]) {
+                    groupDates[dateToCheck] = []
+                    groupDates[dateToCheck].push(schedule)      
+                }
+                else{
+                    groupDates[dateToCheck].push(schedule)}
+            }
+
+            groupDates =  await appService.sortDataByDate(groupDates)
+            return res.json( groupDates )
+        }
+        return res.json(schedules)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
 const bookAppointment = async (req, res) => {
     try{
-        // all get doctors in users location
-        //
+        // params (doctor id, free schudule id, reason)
+        const {doctorId, scheduleId, reason} = req.body
+        const user = req.user
+        const sub = await appService.bookAppointment(user.email, doctorId, scheduleId, reason)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'error booking appointment' })
     }
     catch(error){
         errorHandler.errorHandler(error, res)
@@ -122,5 +155,5 @@ const bookAppointment = async (req, res) => {
 
 
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
-    searchDoctor
+    searchDoctor, getFreeSchedules
  }

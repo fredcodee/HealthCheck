@@ -98,7 +98,7 @@ const combineDateAndTime = async (dateObj, timeStr) => {
 
 
 
-//get schedule (doctor)
+//get schedule (doctor) all
 async function getSchedule(email) {
     try {
         const getUser = await User.findOne({ email: email })
@@ -108,6 +108,19 @@ async function getSchedule(email) {
         }
     } catch (error) {
         throw Error(`Cant get schedule ${error}`)
+    }
+}
+
+//get doctor schedule , (open)
+async function getFreeSchedules(email) {
+    try {
+        const getUser = await User.findOne({ email: email , account_type: 'Doctor'})
+        if (getUser) {
+            const schedules = await Schedules.find({ doctor_id: getUser._id ,taken:false})
+            return schedules
+        }
+    } catch (error) {
+        throw Error(`Cant get doctor schedule ${error}`)
     }
 }
 
@@ -139,7 +152,7 @@ async function deleteSchedule(email, id) {
 
 async function getRandomDoctorsInUsersLocation(city, email) {
     try {
-        const doctors = await User.find({ city: city,  account_type: 'Doctor' })
+        const doctors = await User.find({ city: city,  account_type: 'Doctor' }) // add subscription_Mode: true
         //remove user
         doctors.splice(doctors.indexOf(email), 1)
         //choose random 3
@@ -172,9 +185,30 @@ async function searchDoctor(namePrefix, city){
 }
 
 
+//book appointment
+async function bookAppointment(email, doctor_id, schedule_id, reason) {
+    try{
+        const getSchedule = await Schedules.findOne({ _id: schedule_id, taken: false })
+        const getUser = await User.findOne({ email: email })
+        if (getSchedule) {
+            const newAppointment = new Appointments({
+                user_id: getUser._id,
+                doctor_id: doctor_id,
+                schedule_id: schedule_id,
+                reason: reason
+            })
+            await newAppointment.save()
+            return true
+        }
+    }
+    catch(error){
+        throw Error(`Cant book appointment ${error}`)
+    }
+}
+
 
 
 
 module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
-    searchDoctor
+    searchDoctor, getFreeSchedules, bookAppointment
 }
