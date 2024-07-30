@@ -1,6 +1,7 @@
 const User = require('../models/UserModel')
 const Appointments = require('../models/Appointments')
 const Schedules = require('../models/SchedulesModel')
+const Reviews = require('../models/ReviewsModel')
 
 
 
@@ -206,9 +207,44 @@ async function bookAppointment(email, doctor_id, schedule_id, reason) {
     }
 }
 
+//review doctor
+const reviewDoctor = async (user_id, doctor_id, rating, comments) => {
+    try {
+        const newReview = new Reviews({
+            user_id: user_id,
+            doctor_id: doctor_id,
+            content: comments,
+            rating: rating
+        })
+        await newReview.save()
+        return true
+    } catch (error) {
+        throw Error(`Cant review doctor ${error}`)
+    }
+}
+
+// view user reviews
+async function viewUserReviews(user_id) {
+    try {
+        const reviews = await Reviews.find({ user_id: user_id })
+        return reviews
+    } catch (error) {
+        throw Error(`Cant view user reviews ${error}`)
+    }
+}
+
+// view doctor reviews
+async function viewDoctorReviews(doctor_id) {
+    try {
+        const reviews = await Reviews.find({ doctor_id: doctor_id })
+        return reviews
+    } catch (error) {
+        throw Error(`Cant view doctor reviews ${error}`)
+    }
+}
 
 
 
 module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
-    searchDoctor, getFreeSchedules, bookAppointment
+    searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews
 }

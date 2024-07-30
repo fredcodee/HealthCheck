@@ -154,6 +154,47 @@ const bookAppointment = async (req, res) => {
 }
 
 
+//review
+const review = async (req, res) => {
+    try{
+        const {doctorId, rating,comments} = req.body
+        const user = req.user
+        const sub = await appService.reviewDoctor(user._id, doctorId, rating, comments)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'error booking appointment' })
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+//view user reviews
+const viewUserReviews = async (req, res) => {
+    try{
+        const user = req.user
+        const reviews = await appService.viewUserReviews(user._id)
+        return res.json(reviews)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+//view doctor reviews
+const viewDoctorReviews = async (req, res) => {
+    try{
+        const doctorId = req.body.doctorId
+        const reviews = await appService.viewDoctorReviews(doctorId)
+        return res.json(reviews)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
-    searchDoctor, getFreeSchedules
+    searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews
  }
