@@ -263,9 +263,43 @@ async function getUpcomingAppointmentsDoctor(doctorId) {
     }
 }
 
+//get all appointments
+async function getAllAppointments(userId) {
+    try {
+        const getAppointments = await Appointments.find({ doctor_id: userId })
+        return getAppointments
+    } catch (error) {
+        throw Error(`Cant get all appointments ${error}`)
+    }
+}
+
+//update appointment
+async function updateAppointment(appointment_id, schedule_id, status) {
+    try {
+        const getAppointment = await Appointments.findOne({ _id: appointment_id })
+        const getSchedule = await Schedules.findOne({ _id: schedule_id })
+        if (getAppointment && getSchedule) {
+            getAppointment.status = status
+            await getAppointment.save()
+            if(status === 'accepted' || status === 'completed'){
+                getSchedule.taken = true
+                await getSchedule.save()
+            }
+            else if(status === 'cancelled'){
+                getSchedule.taken = false
+                await getSchedule.save()
+            }
+            return true
+        }
+    } catch (error) {
+        throw Error(`Cant update appointment ${error}`) 
+    }
+}
+
+
 
 
 module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
-    getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor
+    getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment
 }
