@@ -82,6 +82,7 @@ const CreateSchedule = () => {
                                                     hour12: true,
                                                 })} <span className='pl-3'><a href="#" className="btn btn-danger" onClick={() => deleteSchedule(event._id)}>Delete</a></span>
                                             </p>
+                                            <p><span style={{ color: 'green' }}>status:</span> {event.taken ? 'Taken' : 'Available'}</p>
                                             
                                     </div>
                                 ))}
