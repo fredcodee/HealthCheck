@@ -310,10 +310,40 @@ async function updateAppointment(user_id,appointment_id, schedule_id, status) {
     }
 }
 
+async function getDoctorProfile(doctorId) {
+    try{
+        const doctor = await User.findOne({ _id: doctorId })
+        if (!doctor) throw new Error('Doctor not found')
+        const schedules = await Schedules.find({ doctor_id: doctor._id ,taken:false})
+            let groupDates = {}
+            if (schedules.length > 0) {
+                for (const schedule of schedules) {
+                    const dateToCheck= schedule.date.toLocaleDateString()
+                    if (!groupDates[dateToCheck]) {
+                        groupDates[dateToCheck] = []
+                        groupDates[dateToCheck].push(schedule)      
+                    }
+                    else{
+                        groupDates[dateToCheck].push(schedule)}
+                }
+                groupDates =  await sortDataByDate(groupDates)
+            }
+
+        const data  = {
+            doctorDetails: doctor,
+            freeSchedules: groupDates
+        }
+        return data
+    }
+    catch(error){
+        throw Error(`Cant get doctor profile ${error}`)
+    }
+}
+
 
 
 
 module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
-    getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment
+    getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment, getDoctorProfile
 }

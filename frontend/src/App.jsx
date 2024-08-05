@@ -15,6 +15,7 @@ import CancelPage from './pages/CancelPage';
 import AppointmentPage from './pages/AppointmentPage';
 import ProfilePage from './pages/ProfilePage';
 import CreateSchedule from './pages/CreateSchedule';
+import DoctorPageAppointment from './pages/DoctorPageAppointment';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Route path ="/appointment" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentPage/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/profile" element={<PrivateRoute>{<SubscriptionCheck> <ProfilePage/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/create-schedule" element={<PrivateRoute>{<SubscriptionCheck> <CreateSchedule/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/doctor-appointment/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorPageAppointment/> </SubscriptionCheck>} </PrivateRoute>} />
               </Routes>
         </AuthProvider>
       </BrowserRouter>

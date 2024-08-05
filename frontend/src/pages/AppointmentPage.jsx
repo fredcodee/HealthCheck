@@ -65,7 +65,7 @@ const AppointmentPage = () => {
       <hr />
       <div className='text-center'>
         {doctors?.map((doctor, index) => (
-          <a href={`/doctor/${doctor._id}`} key={index}>
+          <a href={`/doctor-appointment/${doctor._id}`} key={index} className='mb-2'>
             <div key={index} className="card w-50">
               <div className="card-body">
                 <h4 className="card-title">{doctor.name}</h4>
