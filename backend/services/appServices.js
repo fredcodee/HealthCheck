@@ -2,6 +2,7 @@ const User = require('../models/UserModel')
 const Appointments = require('../models/Appointments')
 const Schedules = require('../models/SchedulesModel')
 const Reviews = require('../models/ReviewsModel')
+const Image = require('../models/ImageModel')
 
 
 
@@ -26,7 +27,7 @@ async function subToFreeTrail(email) {
 //update subscription
 async function updateSubscription(email, type, subscriptionMode) {
     try {
-        const getUser = await User.findOne({ email: email })    
+        const getUser = await User.findOne({ email: email })
         getUser.subscription_Mode = subscriptionMode
         getUser.subscription_Type = type
         getUser.free_trail_count = 0
@@ -39,7 +40,7 @@ async function updateSubscription(email, type, subscriptionMode) {
 //set schedule (doctor)
 async function setSchedule(email, dates, startTime, endTime) {
     try {
-        const getUser = await User.findOne({ email: email })    
+        const getUser = await User.findOne({ email: email })
         if (getUser) {
             for (const date of dates) {
                 const combinedDateStartTime = await combineDateAndTime(date, startTime)
@@ -115,9 +116,9 @@ async function getSchedule(email) {
 //get doctor schedule , (open)
 async function getFreeSchedules(email) {
     try {
-        const getUser = await User.findOne({ email: email , account_type: 'Doctor'})
+        const getUser = await User.findOne({ email: email, account_type: 'Doctor' })
         if (getUser) {
-            const schedules = await Schedules.find({ doctor_id: getUser._id ,taken:false})
+            const schedules = await Schedules.find({ doctor_id: getUser._id, taken: false })
             return schedules
         }
     } catch (error) {
@@ -128,32 +129,32 @@ async function getFreeSchedules(email) {
 async function sortDataByDate(data) {
     // Convert object keys to an array and sort them
     const sortedKeys = Object.keys(data).sort((a, b) => new Date(a) - new Date(b));
-    
+
     // Create a new object with sorted keys
     const sortedData = {};
     sortedKeys.forEach(key => {
         sortedData[key] = data[key];
     });
-    
+
     return sortedData;
 }
 
 async function deleteSchedule(email, id) {
-    try{
+    try {
         const getUser = await User.findOne({ email: email })
         if (getUser) {
-            await Schedules.findOneAndDelete({ doctor_id: getUser._id, _id:id })
+            await Schedules.findOneAndDelete({ doctor_id: getUser._id, _id: id })
             return true
         }
     }
-    catch(error){
+    catch (error) {
         throw Error(`Cant delete schedule ${error}`)
     }
 }
 
 async function getRandomDoctorsInUsersLocation(city, email) {
     try {
-        const doctors = await User.find({ city: city,  account_type: 'Doctor' }) // add subscription_Mode: true
+        const doctors = await User.find({ city: city, account_type: 'Doctor' }) // add subscription_Mode: true
         //remove user
         doctors.splice(doctors.indexOf(email), 1)
         //choose random 3
@@ -165,22 +166,22 @@ async function getRandomDoctorsInUsersLocation(city, email) {
 }
 
 
-async function searchDoctor(namePrefix, city){
-    try{
-        if(namePrefix && city){
-            const doctors = await User.find({name: { $regex: `^${namePrefix}`, $options: 'i' }, city: city, account_type: 'Doctor' })
+async function searchDoctor(namePrefix, city) {
+    try {
+        if (namePrefix && city) {
+            const doctors = await User.find({ name: { $regex: `^${namePrefix}`, $options: 'i' }, city: city, account_type: 'Doctor' })
             return doctors
         }
-        else if(namePrefix && !city){
-            const doctors = await User.find({ name: { $regex: `^${namePrefix}`, $options: 'i' },  account_type: 'Doctor' })
+        else if (namePrefix && !city) {
+            const doctors = await User.find({ name: { $regex: `^${namePrefix}`, $options: 'i' }, account_type: 'Doctor' })
             return doctors
         }
-        else if(city && !namePrefix){
-            const doctors = await User.find({ city: city,  account_type: 'Doctor' })
+        else if (city && !namePrefix) {
+            const doctors = await User.find({ city: city, account_type: 'Doctor' })
             return doctors
         }
     }
-    catch(error){
+    catch (error) {
         throw Error(`Cant search doctor ${error}`)
     }
 }
@@ -188,7 +189,7 @@ async function searchDoctor(namePrefix, city){
 
 //book appointment
 async function bookAppointment(email, doctor_id, schedule_id, reason) {
-    try{
+    try {
         const getSchedule = await Schedules.findOne({ _id: schedule_id, taken: false })
         const getUser = await User.findOne({ email: email })
 
@@ -200,15 +201,15 @@ async function bookAppointment(email, doctor_id, schedule_id, reason) {
                 reason: reason
             })
             await newAppointment.save()
-           
-            if(getUser.free_trail_count > 0){
+
+            if (getUser.free_trail_count > 0) {
                 getUser.free_trail_count -= 1
                 await getUser.save()
             }
             return true
         }
     }
-    catch(error){
+    catch (error) {
         throw Error(`Cant book appointment ${error}`)
     }
 }
@@ -262,7 +263,7 @@ async function getUpcomingAppointmentsPatient(userId) {
 //get upcoming appointments doctors
 async function getUpcomingAppointmentsDoctor(doctorId) {
     try {
-        const getAppointments = await Appointments.find({ doctor_id: doctorId, status: 'accepted'})
+        const getAppointments = await Appointments.find({ doctor_id: doctorId, status: 'accepted' })
         return getAppointments
     } catch (error) {
         throw Error(`Cant get upcoming appointments ${error}`)
@@ -280,13 +281,13 @@ async function getAllAppointments(userId) {
 }
 
 //update appointment
-async function updateAppointment(user_id,appointment_id, schedule_id, status) {
+async function updateAppointment(user_id, appointment_id, schedule_id, status) {
     try {
         const getAppointment = await Appointments.findOne({ _id: appointment_id })
         const getSchedule = await Schedules.findOne({ _id: schedule_id })
         const getUser = await User.findOne({ _id: user_id })
 
-        if(getUser.free_trail_count > 0){
+        if (getUser.free_trail_count > 0) {
             getUser.free_trail_count -= 1
             await getUser.save()
         }
@@ -294,11 +295,11 @@ async function updateAppointment(user_id,appointment_id, schedule_id, status) {
         if (getAppointment && getSchedule) {
             getAppointment.status = status
             await getAppointment.save()
-            if(status === 'accepted' || status === 'completed'){
+            if (status === 'accepted' || status === 'completed') {
                 getSchedule.taken = true
                 await getSchedule.save()
             }
-            else if(status === 'cancelled'){
+            else if (status === 'cancelled') {
                 getSchedule.taken = false
                 await getSchedule.save()
             }
@@ -306,36 +307,47 @@ async function updateAppointment(user_id,appointment_id, schedule_id, status) {
             return true
         }
     } catch (error) {
-        throw Error(`Cant update appointment ${error}`) 
+        throw Error(`Cant update appointment ${error}`)
     }
 }
 
 async function getDoctorProfile(doctorId) {
-    try{
-        const doctor = await User.findOne({ _id: doctorId })
+    try {
+        const doctor = await User.findOne({ _id: doctorId }).lean()
         if (!doctor) throw new Error('Doctor not found')
-        const schedules = await Schedules.find({ doctor_id: doctor._id ,taken:false})
-            let groupDates = {}
-            if (schedules.length > 0) {
-                for (const schedule of schedules) {
-                    const dateToCheck= schedule.date.toLocaleDateString()
-                    if (!groupDates[dateToCheck]) {
-                        groupDates[dateToCheck] = []
-                        groupDates[dateToCheck].push(schedule)      
-                    }
-                    else{
-                        groupDates[dateToCheck].push(schedule)}
+        const schedules = await Schedules.find({ doctor_id: doctor._id, taken: false })
+        const profileImage = await Image.findOne({ user_id: doctor._id })
+        if(profileImage){
+            doctor.profile_image = profileImage.url
+            doctor.profile_image_name = profileImage.name
+        }
+        else{
+            doctor.profile_image = null
+            doctor.profile_image_name = null
+        }
+       
+        let groupDates = {}
+        if (schedules.length > 0) {
+            for (const schedule of schedules) {
+                const dateToCheck = schedule.date.toLocaleDateString()
+                if (!groupDates[dateToCheck]) {
+                    groupDates[dateToCheck] = []
+                    groupDates[dateToCheck].push(schedule)
                 }
-                groupDates =  await sortDataByDate(groupDates)
+                else {
+                    groupDates[dateToCheck].push(schedule)
+                }
             }
+            groupDates = await sortDataByDate(groupDates)
+        }
 
-        const data  = {
+        const data = {
             doctorDetails: doctor,
             freeSchedules: groupDates
         }
         return data
     }
-    catch(error){
+    catch (error) {
         throw Error(`Cant get doctor profile ${error}`)
     }
 }
@@ -343,7 +355,8 @@ async function getDoctorProfile(doctorId) {
 
 
 
-module.exports = {subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation,  sortDataByDate,
+module.exports = {
+    subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
     getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment, getDoctorProfile
 }
