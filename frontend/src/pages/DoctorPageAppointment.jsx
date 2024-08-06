@@ -1,21 +1,31 @@
-import React ,{ useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import Api from '../Api'
 import '../assets/styles/css/profilePage.css'
 import bg from '../assets/img/bg1.jpg'
 import userImg from '../assets/img/user.jpg'
+import PopUp from '../components/Popup'
 
 function DoctorPageAppointment() {
     const { id } = useParams();
     const token = localStorage.getItem('token') || false
     const [doctorDetails, setDoctorDetails] = useState([])
     const [freeSchedules, setFreeSchedules] = useState([])
+    const [showPopUpForBookAppointment, setShowPopUpForBookAppointment] = useState(false)
+    const [scheduleId, setScheduleId] = useState('')
+    const [scheduleTime, setScheduleTime] = useState('')
+    const [reason , setReason] = useState('')
     const imageSrc = import.meta.env.VITE_MODE == 'Production' ? import.meta.env.VITE_API_BASE_URL_PROD : import.meta.env.VITE_API_BASE_URL_DEV
     const [error, setError] = useState('')
 
     useEffect(() => {
         getDoctorProfile()
     }, [])
+
+
+    const togglePopUpForBookAppointment = () => {
+        setShowPopUpForBookAppointment(!showPopUpForBookAppointment)
+    }
 
     const getDoctorProfile = async () => {
         try {
@@ -42,10 +52,12 @@ function DoctorPageAppointment() {
         }
     }
 
-    const bookAppointment = async (scheduleId) => {
+    const bookAppointment = async (doctorId, scheduleId, reason) => {
         try {
             const data = {
-                scheduleId: scheduleId
+                doctorId: doctorId,
+                scheduleId: scheduleId,
+                reason: reason
             }
             await Api.post('api/book-appointment', data, {
                 headers: {
@@ -54,7 +66,9 @@ function DoctorPageAppointment() {
             })
                 .then((response) => {
                     if (response.status == 200) {
-                        setError("Appointment booked successfully")
+                        togglePopUpForBookAppointment()
+                        console.log(response.data)
+                        // redirect to appointment page
                     } else {
                         setError("error occured, please try again")
                     }
@@ -80,11 +94,46 @@ function DoctorPageAppointment() {
             </div>
 
             <div>
-            <div className="content-profile-page">
+                    {/* for popup for booking appointment */}
+                    {showPopUpForBookAppointment && <PopUp
+                        content={<>
+                            <div id="staticModal" data-modal-backdrop="static" tabIndex="-1" aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div className="relative w-full max-w-2xl max-h-full" style={{ margin: "auto" , backgroundColor: "white"}}>
+                                    <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700 ">
+                                        <div className="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 text-center">
+                                            <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                                Book Appointment
+                                            </h3>
+                                        </div>
+                                        <div className="p-6 space-y-6">
+                                            <div>
+                                                <h3>Reason *</h3>
+                                                <input type="text" name="reason" onChange={e => setReason(e.target.value)} 
+                                                style={{ width: "100%" }}
+                                                placeholder='pleas enter your reason for this appointment' 
+                                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" />
+                                            </div>
+                                            <div className='text-center p-3' style={{color: 'black'}}>
+                                                <p>Are you sure you want to book an appointment with {doctorDetails.name} for {scheduleTime} ?</p>
+                                                <button className="btn btn-primary" onClick={() => bookAppointment(doctorDetails._id, scheduleId, reason)}>Book</button>
+                                                <button className="btn btn-secondary " onClick={togglePopUpForBookAppointment}>Cancel</button>
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>}
+                    />}
+                </div>
+
+            <div>
+                <div className="content-profile-page">
                     <div className="profile-user-page card">
                         <div className="img-user-profile">
                             <img className="profile-bgHome" src={bg} />
-                            <img className="avatar" src={ doctorDetails.profile_image_name != null ? `${imageSrc}/images/${doctorDetails.profile_image_name}` 
+                            <img className="avatar" src={doctorDetails.profile_image_name != null ? `${imageSrc}/images/${doctorDetails.profile_image_name}`
                                 : userImg} alt="jofpin" />
                         </div>
                         <div className="user-profile-data">
@@ -100,8 +149,7 @@ function DoctorPageAppointment() {
                             <p>Gender: {doctorDetails.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li><a><strong>339</strong><span>Appointments</span></a></li>
-                            <li><a><strong>9/10</strong><span>Ratings</span></a></li>
+                            <li style={{ color: 'black' }}><strong>9/10</strong><span>Ratings</span></li>
                             <li><a><strong>444</strong><span>Reviews</span></a></li>
 
                         </ul>
@@ -114,32 +162,49 @@ function DoctorPageAppointment() {
                     <h3>Available Schedules</h3>
                 </div>
                 <div className='text-center'>
-                    {Object.keys(freeSchedules).length> 0 ? 
+                    {Object.keys(freeSchedules).length > 0 ?
                         freeSchedules?.map(([date, events], index) => (
                             <div key={index} className="card w-50 m-auto">
                                 <div className="card-body">
                                     <h4 className="card-title">{date}</h4>
                                     {events.map(event => (
                                         <div key={event._id}>
-                                                <p className="card-text">
-                                                    <span>From</span> {new Date(event.startTime).toLocaleTimeString('en-US', {
+                                            <p className="card-text">
+                                                <span>From</span> {new Date(event.startTime).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                })} <span>To</span> {new Date(event.endTime).toLocaleTimeString('en-US', {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    hour12: true,
+                                                })} <span className='mr-4'><a href="#" className="btn btn-primary"onClick={() => { 
+                                                    const formattedStartTime = new Date(event.startTime).toLocaleTimeString('en-US', {
                                                         hour: '2-digit',
                                                         minute: '2-digit',
                                                         hour12: true,
-                                                    })} <span>To</span> {new Date(event.endTime).toLocaleTimeString('en-US', {
+                                                    });
+                                                    const formattedEndTime = new Date(event.endTime).toLocaleTimeString('en-US', {
                                                         hour: '2-digit',
                                                         minute: '2-digit',
                                                         hour12: true,
-                                                    })} <span className='mr-4'><a href="#" className="btn btn-primary" onClick={() => bookAppointment(event._id)}>Book This time</a></span>
-                                                </p>
-                                                
+                                                    });
+                                                    const date = new Date(event.startTime).toLocaleDateString('en-US'); // Assuming you want to set the date part as well
+                                        
+                                                    togglePopUpForBookAppointment(); 
+                                                    setScheduleId(event._id); 
+                                                    setScheduleTime(`${date}, ${formattedStartTime} to ${formattedEndTime}`);
+                                                }}>Book This time</a></span>
+                                            </p>
+
                                         </div>
                                     ))}
                                 </div>
                             </div>
-                        )) :  <p>No available schedules</p>}
-                    
+                        )) : <p>No available schedules</p>}
+
                 </div>
+
             </div>
 
         </div>

@@ -9,7 +9,7 @@ const appointmentsSchema = new mongoose.Schema({
         required:true
     },
     status:{type:String, default:'pending'}, //accepted, cancelled, pending, completed
-    scheduled:{type: mongoose.Schema.Types.ObjectId,
+    schedule_id:{type: mongoose.Schema.Types.ObjectId,
         ref:'Schedules',
         required:true},
     reason:{
