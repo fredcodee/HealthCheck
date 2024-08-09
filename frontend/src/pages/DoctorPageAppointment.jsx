@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Api from '../Api'
 import '../assets/styles/css/profilePage.css'
 import bg from '../assets/img/bg1.jpg'
@@ -17,6 +17,7 @@ function DoctorPageAppointment() {
     const [reason , setReason] = useState('')
     const imageSrc = import.meta.env.VITE_MODE == 'Production' ? import.meta.env.VITE_API_BASE_URL_PROD : import.meta.env.VITE_API_BASE_URL_DEV
     const [error, setError] = useState('')
+    const history = useNavigate();
 
     useEffect(() => {
         getDoctorProfile()
@@ -67,8 +68,7 @@ function DoctorPageAppointment() {
                 .then((response) => {
                     if (response.status == 200) {
                         togglePopUpForBookAppointment()
-                        console.log(response.data)
-                        // redirect to appointment page
+                        history('/appointments/status')
                     } else {
                         setError("error occured, please try again")
                     }

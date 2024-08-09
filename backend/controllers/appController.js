@@ -205,6 +205,32 @@ const getUpcomingAppointmentsPatient = async (req, res) => {
     }
 }
 
+// get  appointments by params (accepted, cancelled, pending, completed)
+const appointmentsParamsForPatient = async (req, res) => {
+    try{
+        const user = req.user
+        const {params} = req.params // accepted, cancelled, pending, completed
+        const appointments = await appService.getAppointmentsParams(user._id, params)
+        return res.json(appointments)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+
+// get  appointments by params (accepted, cancelled, pending, completed)
+const appointmentsParamsForDoctor = async (req, res) => {
+    try{
+        const {doctorId, params} = req.params // accepted, cancelled, pending, completed
+        const appointments = await appService.getAppointmentsParamsForDoctor(doctorId, params)
+        return res.json(appointments)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
 const getUpcomingAppointmentsDoctor = async (req, res) => {
     try{
         const user = req.user
@@ -260,6 +286,5 @@ const getDoctorProfile =  async (req, res) => {
 
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
     searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews, getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor,
-    getAllAppointments, updateAppointment, getDoctorProfile
-
+    getAllAppointments, updateAppointment, getDoctorProfile, appointmentsParamsForPatient, appointmentsParamsForDoctor
  }
