@@ -353,19 +353,18 @@ async function getDoctorProfile(doctorId) {
 }
 
 
-async function getAppointmentsParams(user_id, params) {
+async function getAppointmentsParams(user_id, type, params) {
     try {
-        const getAppointments = await Appointments.find({ user_id: user_id, status: params }).populate('doctor_id schedule_id')
-        return getAppointments
-    } catch (error) {
-        throw Error(`Cant get pending appointments ${error}`)
-    }
-}
-
-async function getAppointmentsParamsForDoctor(doctor_id, params) {
-    try {
-        const getAppointments = await Appointments.find({ doctor_id: doctor_id, status: params }).populate('doctor_id schedule_id')
-        return getAppointments
+        //type = doctor or patient
+        //params = accepted, pending, cancelled, completed
+        if (type === 'doctor') {
+            const getAppointments = await Appointments.find({ doctor_id: user_id, status: params }).populate('doctor_id schedule_id')
+            return getAppointments
+        }
+        else if (type === 'patient') {
+            const getAppointments = await Appointments.find({ user_id: user_id, status: params }).populate('doctor_id schedule_id')
+            return getAppointments
+        }
     } catch (error) {
         throw Error(`Cant get pending appointments ${error}`)
     }
@@ -376,5 +375,5 @@ module.exports = {
     subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
     getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment, getDoctorProfile, 
-    getAppointmentsParams, getAppointmentsParamsForDoctor
+    getAppointmentsParams
 }
