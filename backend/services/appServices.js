@@ -357,11 +357,11 @@ async function getAppointmentsParams(user_id, type, params) {
     try {
         //type = doctor or patient
         //params = accepted, pending, cancelled, completed
-        if (type === 'doctor') {
+        if (type === 'Doctor') {
             const getAppointments = await Appointments.find({ doctor_id: user_id, status: params }).populate('doctor_id schedule_id')
             return getAppointments
         }
-        else if (type === 'patient') {
+        else if (type === 'Patient') {
             const getAppointments = await Appointments.find({ user_id: user_id, status: params }).populate('doctor_id schedule_id')
             return getAppointments
         }

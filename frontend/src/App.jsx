@@ -39,7 +39,7 @@ function App() {
                 <Route path ="/create-schedule" element={<PrivateRoute>{<SubscriptionCheck> <CreateSchedule/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/doctor-appointment/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorPageAppointment/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/appointments/status" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentStatusPage/> </SubscriptionCheck>} </PrivateRoute>} />
-              </Routes>
+                </Routes>
         </AuthProvider>
       </BrowserRouter>
     </>

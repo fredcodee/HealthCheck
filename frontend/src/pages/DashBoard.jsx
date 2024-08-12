@@ -34,7 +34,7 @@ const DashBoard = () => {
               </div>
               
               <div className='card'>
-                <a href="">
+                <a href="/appointments/status">
                   <div className='card-body'>
                   Appointments and status
                   </div>
