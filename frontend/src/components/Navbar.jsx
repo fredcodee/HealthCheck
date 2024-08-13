@@ -31,9 +31,9 @@ const Navbar = () => {
                             token ?( 
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
                                 <a href="/dashboard" className="nav-item nav-link">Dashboard</a>
-                                <a href="appointment.html" className="nav-item nav-link">My Appointments</a>
+                                <a href="/appointments/status" className="nav-item nav-link">My Appointments</a>
                                 <a href="/profile" className="nav-item nav-link">My Profile</a>
-                                <a href="contact.html" className="nav-item nav-link">Contact</a>
+                                <a href="https://thefredcode.com/" className="nav-item nav-link">Contact</a>
                                 <a href="#" className="nav-item nav-link" onClick={handleLogout}>Logout</a>
                             </div>
                             ):

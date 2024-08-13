@@ -1,5 +1,6 @@
-import React, { useEffect , useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Api from '../Api'
+import '../assets/styles/css/appointmentStatusPage.css'
 
 const AppointmentStatusPage = () => {
     const [account_type, setAccountType] = useState('')
@@ -42,7 +43,6 @@ const AppointmentStatusPage = () => {
                 }
             })
             setPendingAppointments(response.data)
-            console.log(response.data)
         } catch (error) {
             console.error(error)
         }
@@ -76,37 +76,154 @@ const AppointmentStatusPage = () => {
         }
     }
     return (
-        <div>AppointmentStatusPage
-            <div>
-                <h3>pending Appointments</h3>
-                <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={(e) => getPendingAppointments()}>
-                       view all
-                    </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {
-                            pendingAppointments?.map((appointment, index) => {
-                                return (
-                                    <a className="dropdown-item" key={index}>
-                                        <div>
-                                            <p>Doctor: {appointment.doctor_id.name} </p>
-                                            <p>Patient: {appointment.user_id.name}</p>
-                                            <p>Date: {appointment.schedule_id.date}</p>
-                                        </div>
-                                    </a>
-                                )
-                            })
-                        }
+        <div>
+            <div className='pt-3'>
+                <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
+            </div>
+            <div className='text-center'>
+                <div>
+                    <h3>Pending Appointments</h3>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={(e) => getPendingAppointments()}>
+                            view all
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {pendingAppointments?.length == 0 ? <div className='text-center'><p>No pending appointments</p></div> :
+                                <div>
+                                    {
+                                        pendingAppointments?.map((appointment, index) => {
+                                            return (
+                                                <a className="dropdown-item" key={index}>
+                                                    <div>
+                                                        <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
+                                                        <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>
+                                                        <p>Date: {new Date(appointment.schedule_id.date).toLocaleDateString('en-US', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric',
+                                                        })}</p>
+                                                        <p>Time: {new Date(appointment.schedule_id.startTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })} <span>To</span> {new Date(appointment.schedule_id.endTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })}
+                                                        </p>
+                                                        <p>Status: <span style={{ color: 'orange' }}>{appointment.status}</span></p>
+                                                    </div>
+                                                    <hr className='mt-2' />
+                                                </a>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <hr className='mt-2' />
+                <div>
+                    <h3>Upcoming Appointments</h3>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={(e) => getUpcomingAppointments()}>
+                            view all
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {upcomingAppointments?.length > 0 ? (
+                                <div>
+                                    {
+                                        upcomingAppointments?.map((appointment, index) => {
+                                            return (
+                                                <a className="dropdown-item" key={index}>
+                                                    <div>
+                                                        <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
+                                                        <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>
+                                                        <p>Date: {new Date(appointment.schedule_id.date).toLocaleDateString('en-US', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric',
+                                                        })}</p>
+                                                        <p>Time: {new Date(appointment.schedule_id.startTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })} <span>To</span> {new Date(appointment.schedule_id.endTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })}
+                                                        </p>
+                                                        <p>Status: <span style={{ color: 'blue' }}>{appointment.status}</span></p>
+                                                    </div>
+                                                    <hr className='mt-2' />
+                                                </a>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : (
+                                <div className='text-center'>
+                                    <p>No past appointments</p>
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+                </div>
+                <hr className='mt-2' />
+                <div>
+                    <h3>Past Appointments</h3>
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={(e) => getPastAppointments()}>
+                            view all
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {upcomingAppointments?.length > 0 ? (
+                                <div>
+                                    {
+                                        pastAppointments?.map((appointment, index) => {
+                                            return (
+                                                <a className="dropdown-item" key={index}>
+                                                    <div>
+                                                        <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
+                                                        <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>
+                                                        <p>Date: {new Date(appointment.schedule_id.date).toLocaleDateString('en-US', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric',
+                                                        })}</p>
+                                                        <p>Time: {new Date(appointment.schedule_id.startTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })} <span>To</span> {new Date(appointment.schedule_id.endTime).toLocaleTimeString('en-US', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit',
+                                                            hour12: true,
+                                                        })}
+                                                        </p>
+                                                        <p>Status: <span style={{ color: 'grey' }}>{appointment.status}</span></p>
+                                                    </div>
+                                                    <hr className='mt-2' />
+                                                </a>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            ) : (
+                                <div className='text-center'>
+                                    <p>No upcoming appointments</p>
+                                </div>
+                            )}
+
+                        </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <h3>Upcoming Appointments</h3>
-            </div>
-            <div>
-                <h3>Past Appointments</h3>
-            </div>
-
         </div>
     )
 }
