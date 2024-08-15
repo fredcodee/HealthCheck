@@ -371,9 +371,20 @@ async function getAppointmentsParams(user_id, type, params) {
 }
 
 
+async function getAppointmentById(id) {
+    try {
+        const appointment = await Appointments.findOne({ _id: id }).populate('doctor_id schedule_id user_id')
+        return appointment
+    }
+    catch (error) {
+        throw Error(`Cant get appointment ${error}`)
+    }
+}
+
+
 module.exports = {
     subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
     getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment, getDoctorProfile, 
-    getAppointmentsParams
+    getAppointmentsParams, getAppointmentById
 }

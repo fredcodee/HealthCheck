@@ -243,6 +243,16 @@ const getAllAppointments = async (req, res) => {
         errorHandler.errorHandler(error, res)
     }
 }
+const getAppointmentById = async (req, res) => {
+    try{
+        const {id} = req.params
+        const appointment = await appService.getAppointmentById(id)
+        return res.json(appointment)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
 
 //update appointment
 const updateAppointment = async (req, res) => {
@@ -276,5 +286,5 @@ const getDoctorProfile =  async (req, res) => {
 
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
     searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews, getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor,
-    getAllAppointments, updateAppointment, getDoctorProfile, appointmentsParams,
+    getAllAppointments, updateAppointment, getDoctorProfile, appointmentsParams,getAppointmentById
  }

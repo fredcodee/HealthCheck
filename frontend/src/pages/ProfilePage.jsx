@@ -48,12 +48,12 @@ const ProfilePage = () => {
                         setCountry(response.data.country)
                         setCity(response.data.city)
                     } else {
-                        setError(response.data.message)
+                        setError("An error occured while trying to get profile details")
                     }
                 })
         }
         catch (error) {
-            setError(error.response.data.message)
+            setError("An error occured while trying to get profile details")
         }
     }
 

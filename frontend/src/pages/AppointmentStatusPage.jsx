@@ -76,7 +76,7 @@ const AppointmentStatusPage = () => {
         }
     }
     return (
-        <div>
+        <div className='container'>
             <div className='pt-3'>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
             </div>
@@ -93,7 +93,7 @@ const AppointmentStatusPage = () => {
                                     {
                                         pendingAppointments?.map((appointment, index) => {
                                             return (
-                                                <a className="dropdown-item" key={index}>
+                                                <a className="dropdown-item" key={index} href={`/appointment-details/${appointment._id}`}>
                                                     <div>
                                                         <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
                                                         <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>
@@ -138,7 +138,7 @@ const AppointmentStatusPage = () => {
                                     {
                                         upcomingAppointments?.map((appointment, index) => {
                                             return (
-                                                <a className="dropdown-item" key={index}>
+                                                <a className="dropdown-item" key={index}  href={`/appointment-details/${appointment._id}`}>
                                                     <div>
                                                         <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
                                                         <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>
@@ -187,7 +187,7 @@ const AppointmentStatusPage = () => {
                                     {
                                         pastAppointments?.map((appointment, index) => {
                                             return (
-                                                <a className="dropdown-item" key={index}>
+                                                <a className="dropdown-item" key={index}  href={`/appointment-details/${appointment._id}`}>
                                                     <div>
                                                         <p>Doctor: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.doctor_id.name} </span></p>
                                                         <p>Patient: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment.user_id.name}</span></p>

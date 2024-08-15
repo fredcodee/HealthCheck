@@ -17,6 +17,7 @@ import ProfilePage from './pages/ProfilePage';
 import CreateSchedule from './pages/CreateSchedule';
 import DoctorPageAppointment from './pages/DoctorPageAppointment';
 import AppointmentStatusPage from './pages/AppointmentStatusPage';
+import AppointmentDetails from './pages/AppointmentDetails';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
                 <Route path ="/create-schedule" element={<PrivateRoute>{<SubscriptionCheck> <CreateSchedule/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/doctor-appointment/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorPageAppointment/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/appointments/status" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentStatusPage/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/appointment-details/:id" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentDetails/> </SubscriptionCheck>} </PrivateRoute>} />
                 </Routes>
         </AuthProvider>
       </BrowserRouter>
