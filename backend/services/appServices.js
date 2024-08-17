@@ -295,7 +295,11 @@ async function updateAppointment(user_id, appointment_id, schedule_id, status) {
         if (getAppointment && getSchedule) {
             getAppointment.status = status
             await getAppointment.save()
+            
+            //set schedule taken to true
             if (status === 'accepted' || status === 'completed') {
+                //find all other appointments for this schedule and set status to cancelled except this  apointment id
+                await Appointments.updateMany({ schedule_id: getSchedule._id, _id: { $ne: getAppointment._id } }, { $set: { status: 'cancelled' } })
                 getSchedule.taken = true
                 await getSchedule.save()
             }
@@ -356,7 +360,7 @@ async function getDoctorProfile(doctorId) {
 async function getAppointmentsParams(user_id, type, params) {
     try {
         //type = doctor or patient
-        //params = accepted, pending, cancelled, completed
+        //params = accepted, pending, canceled, completed
         if (type === 'Doctor') {
             const getAppointments = await Appointments.find({ doctor_id: user_id, status: params }).populate('doctor_id schedule_id user_id')
             return getAppointments
