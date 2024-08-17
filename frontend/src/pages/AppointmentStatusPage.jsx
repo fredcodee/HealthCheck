@@ -182,7 +182,7 @@ const AppointmentStatusPage = () => {
                             view all
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            {upcomingAppointments?.length > 0 ? (
+                            {pastAppointments?.length > 0 ? (
                                 <div>
                                     {
                                         pastAppointments?.map((appointment, index) => {
@@ -216,7 +216,7 @@ const AppointmentStatusPage = () => {
                                 </div>
                             ) : (
                                 <div className='text-center'>
-                                    <p>No upcoming appointments</p>
+                                    <p>No History yet</p>
                                 </div>
                             )}
 

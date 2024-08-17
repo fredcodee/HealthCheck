@@ -24,8 +24,12 @@ const userService = require('../services/userServices')
   //check subscription
   const checkSubscription = async (req, res, next) => {
     try {
-      const user = req.user
-      if(user.subscription_Mode === 'Free' && user.free_trail_count <= 0) {
+      let token = req.header('Authorization')
+      token = token.replace('Bearer ', '')
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      const user = await userService.getUserById(decoded.id)
+      if(user.subscription_Mode && user.free_trail_count <= 0 && user.subscription_Type == 'Free') {
+        console.log("Free Subscription not allowed")
         return res.status(401).send({ error: 'Free Subscription not allowed' })
       }
       next()
