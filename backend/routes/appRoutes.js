@@ -23,5 +23,9 @@ router.post('/update-appointment', auth.userAuth, auth.checkSubscription, appcon
 router.post('/get-doctor-profile', auth.userAuth, appcontroller.getDoctorProfile)
 router.get('/appointments/:type/:params', auth.userAuth, appcontroller.appointmentsParams)
 router.get("/get-appointment-details/:id", auth.userAuth, appcontroller.getAppointmentById)
+router.post("/rate-appointment", auth.userAuth,  appcontroller.rateAppointment)
+router.post("/review-doctor", auth.userAuth, appcontroller.reviewDoctor)
+router.get("/get-doctor-reviews", auth.userAuth, appcontroller.getDoctorReviews)
+router.get('/doctor-stats/:id', auth.userAuth, appcontroller.getDoctorStats)
 router.get("/admin/fix", auth.userAuth, fix.fix)
 module.exports= router

@@ -284,7 +284,63 @@ const getDoctorProfile =  async (req, res) => {
 }
 
 
+//rate appointment after completed
+const rateAppointment = async (req, res) => {
+    try{
+        const user = req.user
+        const {appointmentId, rating} = req.body
+        const sub = await appService.rateAppointment(user._id, appointmentId, rating)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'error rating appointment' })
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+//review
+const reviewDoctor = async (req, res) => {
+    try{
+        const user = req.user
+        const {doctorId, comments} = req.body
+        const sub = await appService.reviewDoctor(user._id,doctorId, comments)
+        if(sub){
+            return res.json({ message: 'success' })
+        }
+        return res.status(401).json({ error: 'error reviewing doctor' })
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+//get doctor reviews
+const getDoctorReviews = async (req, res) => {
+    try{
+        const {doctorId} = req.body
+        const reviews = await appService.viewDoctorReviews(doctorId)
+        return res.json(reviews)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+const getDoctorStats = async (req, res) => {
+    try{
+        const {id} = req.params
+        const stats = await appService.getDoctorStats(id)
+        return res.json(stats)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
+
+
 module.exports = { health, freeTrail, subscriptionCheck , setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, bookAppointment,
     searchDoctor, getFreeSchedules, review, viewUserReviews, viewDoctorReviews, getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor,
-    getAllAppointments, updateAppointment, getDoctorProfile, appointmentsParams,getAppointmentById
+    getAllAppointments, updateAppointment, getDoctorProfile, appointmentsParams,getAppointmentById, rateAppointment, reviewDoctor, getDoctorReviews,
+    getDoctorStats
  }

@@ -17,6 +17,10 @@ const appointmentsSchema = new mongoose.Schema({
     },
     notes:{
         type:String
+    },
+    rating:{
+        type:Number,  // 0-5
+        default:null
     }
     
 })

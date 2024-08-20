@@ -214,21 +214,7 @@ async function bookAppointment(email, doctor_id, schedule_id, reason) {
     }
 }
 
-//review doctor
-const reviewDoctor = async (user_id, doctor_id, rating, comments) => {
-    try {
-        const newReview = new Reviews({
-            user_id: user_id,
-            doctor_id: doctor_id,
-            content: comments,
-            rating: rating
-        })
-        await newReview.save()
-        return true
-    } catch (error) {
-        throw Error(`Cant review doctor ${error}`)
-    }
-}
+
 
 // view user reviews
 async function viewUserReviews(user_id) {
@@ -386,9 +372,65 @@ async function getAppointmentById(id) {
 }
 
 
+async function rateAppointment(user_id, appointment_id, rating) {
+    try {
+        const getAppointment = await Appointments.findOne({ _id: appointment_id })
+        if (getAppointment && getAppointment.user_id === user_id && getAppointment.status === 'completed') {
+            getAppointment.rating = rating
+            await getAppointment.save()
+            return true
+        }
+    } catch (error) {
+        throw Error(`Cant rate appointment ${error}`)
+    }
+}
+
+async function reviewDoctor(user_id, doctor_id,comments) {
+    try {
+        const newReview = new Reviews({
+            user_id: user_id,
+            doctor_id: doctor_id,
+            content: comments
+        })
+        await newReview.save()
+        return true
+    } catch (error) {
+        throw Error(`Cant review doctor ${error}`)
+    }
+}
+async function getDoctorStats(user_id) {
+    try {
+        const getDoctor = await User.findOne({ _id: user_id })
+        if (getDoctor) {
+           //num of app completed
+           const getNumOfApp = await Appointments.find({ doctor_id: user_id, status: 'completed' })
+           const numOfApp = getNumOfApp.length
+
+           // total ratings  calculation
+           let numOfRatings = 0
+           let totalRatings = 0
+           for (const app of getNumOfApp) {
+               totalRatings += app.rating
+               if(app.rating) {
+                   numOfRatings+=1
+               }
+           }
+           const avgRating = totalRatings / numOfRatings
+           const data = {
+               numOfAppointments: numOfApp,
+               avgRating: avgRating 
+           }
+
+           return data
+        }
+    } catch (error) {
+        throw Error(`Cant get doctor stats ${error}`)
+    }
+}
+
 module.exports = {
     subToFreeTrail, updateSubscription, setSchedule, getSchedule, deleteSchedule, getRandomDoctorsInUsersLocation, sortDataByDate,
     searchDoctor, getFreeSchedules, bookAppointment, reviewDoctor, viewUserReviews, viewDoctorReviews,
     getUpcomingAppointmentsPatient, getUpcomingAppointmentsDoctor, getAllAppointments, updateAppointment, getDoctorProfile, 
-    getAppointmentsParams, getAppointmentById
+    getAppointmentsParams, getAppointmentById, rateAppointment, getDoctorStats
 }

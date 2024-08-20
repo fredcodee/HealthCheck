@@ -5,7 +5,6 @@ const reviewsSchema = new mongoose.Schema({
         required:true
     },
     content:{ type:String},
-    rating:{type:Number}, // 0-5
     doctor_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref:'User',
