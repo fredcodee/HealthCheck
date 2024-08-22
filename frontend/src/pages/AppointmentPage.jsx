@@ -21,8 +21,6 @@ const AppointmentPage = () => {
         }
       })
 
-      console.log(response)
-
       if (response.data.length > 0) {
         return setDoctors(response.data)
       }
@@ -31,7 +29,6 @@ const AppointmentPage = () => {
 
     } catch (error) {
       setError("error occured, please try again")
-      console.error(error)
     }
   }
 

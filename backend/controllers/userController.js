@@ -71,7 +71,6 @@ const checkToken = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
     try{
-        // console.log(req.user)
         const user = await userService.getUserById(req.user._id)
         return res.json(user)
     }

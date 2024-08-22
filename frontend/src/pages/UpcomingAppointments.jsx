@@ -31,7 +31,6 @@ const UpcomingAppointments = () => {
       })
     }
     catch (error) {
-      console.error(error)
       setError("error occured, please try again")
     }
   }

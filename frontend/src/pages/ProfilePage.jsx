@@ -84,7 +84,6 @@ const ProfilePage = () => {
         }
         catch (error) {
             setError("error occured, please try again")
-            console.error(error)
         }
     }
 
@@ -107,7 +106,6 @@ const ProfilePage = () => {
         }
         catch (error) {
             setError("error occured, please try again")
-            console.error(error)
         }
     }
     const editProfile = async (data) => {

@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AuthContext from '../context/AuthContext'
 
 const Navbar = () => {
-    const [token, setToken] =useState(null)
-    const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
+    const [token, setToken] = useState(null)
+    const { logoutUser} = useContext(AuthContext)
 
-    useEffect(()=>{
+    useEffect(() => {
         setToken(localStorage.getItem('token'))
-    },[])
+    }, [])
 
-
-
-    const handleLogout = async()=>{
-        localStorage.removeItem('token');
-        localStorage.removeItem('AccountType');
-        localStorage.removeItem('FreeTrail');
-        localStorage.removeItem('subscription_Mode');
-        localStorage.removeItem('type');
-        window.location.reload()
+    const handleLogout = async () => {
+        await logoutUser();
     }
     return (
         <div>
@@ -28,8 +22,8 @@ const Navbar = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarCollapse">
-                        {
-                            token ?( 
+                    {
+                        token ? (
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
                                 <a href="/dashboard" className="nav-item nav-link">Dashboard</a>
                                 <a href="/appointments/status" className="nav-item nav-link">My Appointments</a>
@@ -37,7 +31,7 @@ const Navbar = () => {
                                 <a href="https://thefredcode.com/" className="nav-item nav-link">Contact</a>
                                 <a href="#" className="nav-item nav-link" onClick={handleLogout}>Logout</a>
                             </div>
-                            ):
+                        ) :
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
                                 <a href="/" className="nav-item nav-link active">Home</a>
                                 <a href="about.html" className="nav-item nav-link">About</a>
@@ -47,15 +41,12 @@ const Navbar = () => {
                                 <a href="contact.html" className="nav-item nav-link">Contact</a>
                                 <a href="/login" className="nav-item nav-link">Login</a>
                             </div>
-                            
-                        }
 
-                    
-                    {accountType == 'Patient' && accountType && 
-                    <a href="/appointment" className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Book Appointment<i className="fa fa-arrow-right ms-3"></i></a>
                     }
-                        
-                    </div>
+
+
+                    <a href="/appointment" className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Book Appointment<i className="fa fa-arrow-right ms-3"></i></a>
+                </div>
             </nav>
         </div>
     )

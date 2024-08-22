@@ -52,7 +52,6 @@ const pricePage = () => {
             }
         } catch (error) {
             setError('Failed to create checkout session, try again later');
-            console.error(error);
         }
     };
 
@@ -72,7 +71,6 @@ const pricePage = () => {
         }
         catch (error) {
             setError('Could not change to free trial, try again later');
-            console.error(error);
         }
     }
 

@@ -27,7 +27,6 @@ const DashBoard = () => {
       })
     }
     catch(error){
-      console.error(error)
       setError("An error occured while trying to get profile details")
     }
 

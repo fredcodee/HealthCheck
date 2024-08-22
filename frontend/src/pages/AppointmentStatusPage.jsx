@@ -8,6 +8,7 @@ const AppointmentStatusPage = () => {
     const [upcomingAppointments, setUpcomingAppointments] = useState([])
     const [pastAppointments, setPastAppointments] = useState([])
     const token = localStorage.getItem('token') || false
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         getUserProfile()
@@ -44,7 +45,7 @@ const AppointmentStatusPage = () => {
             })
             setPendingAppointments(response.data)
         } catch (error) {
-            console.error(error)
+            setError(error.response.data.message)
         }
     }
     const getUpcomingAppointments = async () => {
@@ -58,7 +59,7 @@ const AppointmentStatusPage = () => {
             })
             setUpcomingAppointments(response.data)
         } catch (error) {
-            console.error(error)
+            setError(error.response.data.message)
         }
     }
     const getPastAppointments = async () => {
@@ -72,7 +73,7 @@ const AppointmentStatusPage = () => {
             })
             setPastAppointments(response.data)
         } catch (error) {
-            console.error(error)
+            setError(error.response.data.message)
         }
     }
     return (

@@ -13,7 +13,6 @@ const DoctorReviewsPage = () => {
 
     const getDoctorReviews = async () => {
         try {
-            console.log(id)
             const data = {
                 doctorId: id
             }
@@ -28,7 +27,6 @@ const DoctorReviewsPage = () => {
             })
         }
         catch (error) {
-            console.error(error)
             setError('error occured, please try again')
         }
     }

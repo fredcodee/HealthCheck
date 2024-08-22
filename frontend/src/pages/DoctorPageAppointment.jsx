@@ -54,7 +54,7 @@ function DoctorPageAppointment() {
         }
         catch (error) {
             setError("error occured, please try again")
-            console.error(error)
+       
         }
     }
 
@@ -76,7 +76,6 @@ function DoctorPageAppointment() {
         }
         catch (error) {
             setError("error occured, please try again")
-            console.error(error)
         }
     }
 
@@ -99,7 +98,6 @@ function DoctorPageAppointment() {
         }
         catch (error) {
             setError("error occured, please try again")
-            console.error(error)
         }
     }
 

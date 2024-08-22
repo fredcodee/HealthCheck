@@ -40,7 +40,6 @@ const CreateSchedule = () => {
             setSuccess(`Schedule deleted successfully`)
         } catch (error) {
             setError(`An error occured while trying to delete schedule`)
-            console.error(error)
         }
     }
 
