@@ -27,5 +27,4 @@ router.post("/rate-appointment", auth.userAuth,  appcontroller.rateAppointment) 
 router.post("/review-doctor", auth.userAuth, appcontroller.reviewDoctor)  // add check subscription
 router.get("/get-doctor-reviews", auth.userAuth, appcontroller.getDoctorReviews)
 router.get('/doctor-stats/:id', auth.userAuth, appcontroller.getDoctorStats)
-router.get("/admin/fix", auth.userAuth, fix.fix)
 module.exports= router

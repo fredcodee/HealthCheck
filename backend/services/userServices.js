@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/UserModel')
 const Image = require('../models/ImageModel')
+const Review = require('../models/ReviewsModel')
+const Appointments = require('../models/Appointments') 
 const bcrypt = require('bcrypt')
 
 
@@ -17,7 +19,23 @@ async function generateToken(user) {
 
 async function getUserById(id) {
     try {
-        const user = await User.findById(id)
+        const user = await User.findById(id).lean()
+        console.log(id)
+        if(!user){
+            throw new Error("user not found")
+        }
+        if (user.account_type === 'Patient') {
+            //num of app completed
+           const getNumOfApp = await Appointments.find({ user_id: user_id, status: 'completed' })
+           user.numOfAppointments = getNumOfApp.length
+        }
+
+        if(user.account_type === 'Doctor'){
+            const profileImage = await Image.findOne({user_id: user._id})
+            user.profile_image = profileImage.url
+            user.profile_image_name = profileImage.name        
+        }
+
         return user;
     } catch (error) {
         throw new Error(`Cant get user details ${error}`);
@@ -52,17 +70,6 @@ async function checkIfUserIsRegistered(email){
     }
 }
 
-async function fix(){
-    try{
-        // for(const doctor of moreDoctors){
-        //     const newUser = await addUserToDb(doctor.name, doctor.email, doctor.password, doctor.accountType, doctor.bio, doctor.city, doctor.age, doctor.country, doctor.gender, doctor.phone)
-        //     console.log(newUser)
-        // }
-    }
-    catch(error){
-        throw new Error(`Cant add more users ${error}`)
-    }   
-}
 
 async function addUserToDb(name, email, password, accountType, bio, city, age, country, gender, phone){
     try {
@@ -150,4 +157,4 @@ async function addUpdateProfileImage(imageName,path,userId){
 
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage, fix}
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage}

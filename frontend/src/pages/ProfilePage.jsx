@@ -20,6 +20,9 @@ const ProfilePage = () => {
     const [success, setSuccess] = useState('')
     const [showPopUpForEditProfile, setShowPopUpForEditProfile] = useState(false)
     const [selectedImage, setSelectedImage] = useState(null);
+    const [numOfAppointments, setNumOfAppointments] = useState('')
+    const [reviews, setReviews] = useState([])
+    const [rating, setRating] = useState('')
     const imageSrc = import.meta.env.VITE_MODE == 'Production' ? import.meta.env.VITE_API_BASE_URL_PROD : import.meta.env.VITE_API_BASE_URL_DEV
     const togglePopUpForEditprofile = () => {
         setShowPopUpForEditProfile(!showPopUpForEditProfile)
@@ -29,6 +32,13 @@ const ProfilePage = () => {
     useEffect(() => {
         getUserProfile()
     }, [])
+
+    useEffect(() => {
+        if (user) {
+            getDoctorStats()
+            getDoctorReviews()
+        }
+    }, [user])
 
     const getUserProfile = async () => {
         try {
@@ -56,7 +66,50 @@ const ProfilePage = () => {
             setError("An error occured while trying to get profile details")
         }
     }
+    const getDoctorStats = async () => {
+        try{
+            await Api.get(`api/doctor-stats/${user._id}`, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            })
+                .then((response) => {
+                    if (response.status == 200) {
+                        setNumOfAppointments(response.data.numOfAppointments)
+                        setRating(response.data.avgRating)
+                    } else {
+                        setError("error occured, please try again")
+                    }
+                })
+        }
+        catch (error) {
+            setError("error occured, please try again")
+            console.error(error)
+        }
+    }
 
+    const getDoctorReviews = async () => {
+        try{
+            const data = {
+                doctorId: user._id
+            }
+            await Api.post('api/get-doctor-reviews',data, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            }).then((response) => {
+                    if (response.status == 200) {
+                        setReviews(response.data)
+                    } else {
+                        setError("error occured, please try again")
+                    }
+                })
+        }
+        catch (error) {
+            setError("error occured, please try again")
+            console.error(error)
+        }
+    }
     const editProfile = async (data) => {
         try {
             const data = {
@@ -265,9 +318,9 @@ const ProfilePage = () => {
                             <p>Gender: {user.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li><a><strong>339</strong><span>Appointments</span></a></li>
-                            <li><a><strong>9/10</strong><span>Ratings</span></a></li>
-                            <li><a><strong>444</strong><span>Reviews</span></a></li>
+                            <li style={{ color: 'black' }}><strong>{numOfAppointments}</strong><span>Appointments</span></li>
+                            <li style={{ color: 'black' }}><strong>{rating === null ? "no ratings yet " : rating}/5</strong><span>Ratings</span></li>
+                            <li><a><strong>{reviews.length}</strong><span>Reviews</span></a></li>
 
                         </ul>
                     </div>
@@ -399,8 +452,7 @@ const ProfilePage = () => {
                             <p>Gender:<span>{user.gender}</span>  </p>
                         </div>
                         <ul className="data-user">
-                            <li><a><strong>3390</strong><span>Appointments</span></a></li>
-                            <li><a><strong>718</strong><span>cancelled</span></a></li>
+                            <li><a><strong>{user.numOfAppointments? user.numOfAppointments : 0}</strong><span>Appointments</span></a></li>
                         </ul>
                     </div>
                 </div>

@@ -15,12 +15,17 @@ function DoctorPageAppointment() {
     const [scheduleId, setScheduleId] = useState('')
     const [scheduleTime, setScheduleTime] = useState('')
     const [reason , setReason] = useState('')
+    const [numOfAppointments, setNumOfAppointments] = useState('')
+    const [reviews, setReviews] = useState([])
+    const [rating, setRating] = useState('')
     const imageSrc = import.meta.env.VITE_MODE == 'Production' ? import.meta.env.VITE_API_BASE_URL_PROD : import.meta.env.VITE_API_BASE_URL_DEV
     const [error, setError] = useState('')
     const history = useNavigate();
 
     useEffect(() => {
         getDoctorProfile()
+        getDoctorStats()
+        getDoctorReviews()
     }, [])
 
 
@@ -42,6 +47,51 @@ function DoctorPageAppointment() {
                     if (response.status == 200) {
                         setDoctorDetails(response.data.doctorDetails)
                         setFreeSchedules(Object.entries(response.data.freeSchedules))
+                    } else {
+                        setError("error occured, please try again")
+                    }
+                })
+        }
+        catch (error) {
+            setError("error occured, please try again")
+            console.error(error)
+        }
+    }
+
+    const getDoctorStats = async () => {
+        try{
+            await Api.get(`api/doctor-stats/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            })
+                .then((response) => {
+                    if (response.status == 200) {
+                        setNumOfAppointments(response.data.numOfAppointments)
+                        setRating(response.data.avgRating)
+                    } else {
+                        setError("error occured, please try again")
+                    }
+                })
+        }
+        catch (error) {
+            setError("error occured, please try again")
+            console.error(error)
+        }
+    }
+
+    const getDoctorReviews = async () => {
+        try{
+            const data = {
+                doctorId: id
+            }
+            await Api.post('api/get-doctor-reviews',data, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            }).then((response) => {
+                    if (response.status == 200) {
+                        setReviews(response.data)
                     } else {
                         setError("error occured, please try again")
                     }
@@ -95,7 +145,7 @@ function DoctorPageAppointment() {
             </div>
 
             <div className='text-center'>
-                <h1>Book An Appointment with {doctorDetails.name}</h1>
+                <h1>Book An Appointment With {doctorDetails.name}</h1>
             </div>
 
             <div>
@@ -154,8 +204,9 @@ function DoctorPageAppointment() {
                             <p>Gender: {doctorDetails.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li style={{ color: 'black' }}><strong>9/10</strong><span>Ratings</span></li>
-                            <li><a><strong>444</strong><span>Reviews</span></a></li>
+                            <li style={{ color: 'black' }}><strong>{numOfAppointments}</strong><span>Appointments</span></li>
+                            <li style={{ color: 'black' }}><strong>{rating === null ? "no ratings yet " : rating}/5</strong><span>Ratings</span></li>
+                            <li><a><strong>{reviews.length}</strong><span>Reviews</span></a></li>
 
                         </ul>
                     </div>

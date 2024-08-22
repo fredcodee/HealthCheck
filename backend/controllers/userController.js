@@ -71,17 +71,8 @@ const checkToken = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
     try{
-        const user = await User.findById(req.user.id).lean()
-
-        if(!user){
-            return res.status(404).json({message: "user not found"})
-        }
-
-        if(user.account_type === 'Doctor'){
-            const profileImage = await Image.findOne({user_id: user._id})
-            user.profile_image = profileImage.url
-            user.profile_image_name = profileImage.name        }
-
+        // console.log(req.user)
+        const user = await userService.getUserById(req.user._id)
         return res.json(user)
     }
     catch(error){

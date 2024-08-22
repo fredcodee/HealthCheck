@@ -79,7 +79,7 @@ const DashBoard = () => {
               <div className='card'>
                 <a href="">
                   <div className='card-body'>
-                  View your Reports, Reviews and comments
+                  View your Reviews and comments
                   </div>
                 </a>
               </div>
