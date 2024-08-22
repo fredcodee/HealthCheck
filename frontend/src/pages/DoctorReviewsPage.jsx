@@ -34,6 +34,9 @@ const DoctorReviewsPage = () => {
     }
     return (
         <div className='container'>
+            <div className='pt-3'>
+                <a href="/dashboard" style={{ color: 'green' }}>Back to Dashboard</a>
+            </div>
             <div className='text-center'>
                 <h3>Your Reviews</h3>
             </div>

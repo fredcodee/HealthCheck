@@ -239,7 +239,7 @@ async function viewDoctorReviews(doctor_id) {
 //get upcoming appointments
 async function getUpcomingAppointmentsPatient(userId) {
     try {
-        const getAppointments = await Appointments.find({ user_id: userId, status: 'accepted' })
+        const getAppointments = await Appointments.find({ user_id: userId, status: 'accepted' }).populate('doctor_id schedule_id user_id')
         return getAppointments
     } catch (error) {
         throw Error(`Cant get upcoming appointments ${error}`)
@@ -249,7 +249,7 @@ async function getUpcomingAppointmentsPatient(userId) {
 //get upcoming appointments doctors
 async function getUpcomingAppointmentsDoctor(doctorId) {
     try {
-        const getAppointments = await Appointments.find({ doctor_id: doctorId, status: 'accepted' })
+        const getAppointments = await Appointments.find({ doctor_id: doctorId, status: 'accepted' }).populate('doctor_id schedule_id user_id')
         return getAppointments
     } catch (error) {
         throw Error(`Cant get upcoming appointments ${error}`)

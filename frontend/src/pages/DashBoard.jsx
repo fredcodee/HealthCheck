@@ -1,10 +1,37 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
+import Api from '../Api'
+
 
 const DashBoard = () => {
   const token = localStorage.getItem('token') || false
   const type =  localStorage.getItem('type') || false
   const accountType = localStorage.getItem('AccountType') ? localStorage.getItem('AccountType').replace(/"/g, '') : null;
+  const [user, setUser] = useState('')
+  const [error, setError] = useState('')
 
+  useEffect(()=>{
+    getProfile()
+  }, [])
+
+
+  const getProfile = async ()=>{
+    try{
+      await Api.get('api/user/profile', {
+        headers: {
+          Authorization: `Bearer ${token.replace(/"/g, '')}`
+        }
+      }).then((response)=>{
+        if(response.status == 200){
+          setUser(response.data)
+        }
+      })
+    }
+    catch(error){
+      console.error(error)
+      setError("An error occured while trying to get profile details")
+    }
+
+  }
 
   return (
     <div className='container'>
@@ -42,19 +69,20 @@ const DashBoard = () => {
               </div>
 
               <div className='card'>
-                <a href="/reviews">
+                <a href={`/doctor-reviews/${user._id}`}>
                   <div className='card-body'>
                   Reports, Reviews and comments
                   </div>
                 </a>
               </div>
-              <hr />
-              <div className='text-center'>
+              <div className='card'>
                 <a href="/upcoming-appointments">
                   <div  className='card-body'>
-                  <h3>Upcoming Appointments</h3>  
+                    Upcoming Appointments
                   </div></a>
               </div>
+              <hr />
+              
 
             </div>
           </div>
@@ -80,19 +108,20 @@ const DashBoard = () => {
               </div>
 
               <div className='card'>
-                <a href="/reviews">
+                <a href='/reviews'>
                   <div className='card-body'>
                   View your Reviews and comments
                   </div>
                 </a>
               </div>
-              <hr />
-              <div className='text-center'>
+              <div className='card'>
                 <a href="/upcoming-appointments">
                   <div  className='card-body'>
-                  <h3>Upcoming Appointments</h3>  
+                  Upcoming Appointments
                   </div></a>
               </div>
+              <hr />
+              
 
             </div>
           </div>
