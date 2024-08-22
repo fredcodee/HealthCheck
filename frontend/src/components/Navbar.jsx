@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const Navbar = () => {
     const [token, setToken] =useState(null)
+    const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
 
     useEffect(()=>{
         setToken(localStorage.getItem('token'))
@@ -48,9 +49,13 @@ const Navbar = () => {
                             </div>
                             
                         }
-                        
+
+                    
+                    {accountType == 'Patient' && accountType && 
                     <a href="/appointment" className="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Book Appointment<i className="fa fa-arrow-right ms-3"></i></a>
-                </div>
+                    }
+                        
+                    </div>
             </nav>
         </div>
     )

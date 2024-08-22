@@ -18,6 +18,10 @@ import CreateSchedule from './pages/CreateSchedule';
 import DoctorPageAppointment from './pages/DoctorPageAppointment';
 import AppointmentStatusPage from './pages/AppointmentStatusPage';
 import AppointmentDetails from './pages/AppointmentDetails';
+import ReviewsPage from './pages/ReviewsPage';
+import DoctorReviewsPage from './pages/DoctorReviewsPage';
+import UpcomingAppointments from './pages/UpcomingAppointments';
+import CompletedAppointments from './pages/CompletedAppointments';
 
 function App() {
 
@@ -41,6 +45,10 @@ function App() {
                 <Route path ="/doctor-appointment/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorPageAppointment/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/appointments/status" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentStatusPage/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/appointment-details/:id" element={<PrivateRoute>{<SubscriptionCheck> <AppointmentDetails/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/reviews" element={<PrivateRoute>{<SubscriptionCheck> <ReviewsPage/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/doctor-reviews/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorReviewsPage/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/upcoming-appointments" element={<PrivateRoute>{<SubscriptionCheck> <UpcomingAppointments/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path ="/completed-appointments" element={<PrivateRoute>{<SubscriptionCheck> <CompletedAppointments/> </SubscriptionCheck>} </PrivateRoute>} />
                 </Routes>
         </AuthProvider>
       </BrowserRouter>

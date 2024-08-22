@@ -204,9 +204,9 @@ function DoctorPageAppointment() {
                             <p>Gender: {doctorDetails.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li style={{ color: 'black' }}><strong>{numOfAppointments}</strong><span>Appointments</span></li>
+                            <li style={{ color: 'black' }}><a href='/appointments/status'><strong>{numOfAppointments}</strong><span>Appointments</span></a></li>
                             <li style={{ color: 'black' }}><strong>{rating === null ? "no ratings yet " : rating}/5</strong><span>Ratings</span></li>
-                            <li><a><strong>{reviews.length}</strong><span>Reviews</span></a></li>
+                            <li><a href={`/doctor-reviews/${doctorDetails._id}`}><strong>{reviews.length}</strong><span>Reviews</span></a></li>
 
                         </ul>
                     </div>

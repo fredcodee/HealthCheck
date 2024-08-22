@@ -318,9 +318,9 @@ const ProfilePage = () => {
                             <p>Gender: {user.gender}</p>
                         </div>
                         <ul className="data-user">
-                            <li style={{ color: 'black' }}><strong>{numOfAppointments}</strong><span>Appointments</span></li>
+                            <li style={{ color: 'black' }}><a href='/appointments/status'><strong>{numOfAppointments}</strong><span>Appointments</span></a></li>
                             <li style={{ color: 'black' }}><strong>{rating === null ? "no ratings yet " : rating}/5</strong><span>Ratings</span></li>
-                            <li><a><strong>{reviews.length}</strong><span>Reviews</span></a></li>
+                            <li><a href= {`/doctor-reviews/${user._id}`}><strong>{reviews.length}</strong><span>Reviews</span></a></li>
 
                         </ul>
                     </div>
@@ -452,7 +452,7 @@ const ProfilePage = () => {
                             <p>Gender:<span>{user.gender}</span>  </p>
                         </div>
                         <ul className="data-user">
-                            <li><a><strong>{user.numOfAppointments? user.numOfAppointments : 0}</strong><span>Appointments</span></a></li>
+                            <li><a href='/completed-appointments'><strong>{user.numOfAppointments? user.numOfAppointments : 0}</strong><span>Appointments</span></a></li>
                         </ul>
                     </div>
                 </div>

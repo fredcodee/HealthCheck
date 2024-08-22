@@ -229,7 +229,7 @@ async function viewUserReviews(user_id) {
 // view doctor reviews
 async function viewDoctorReviews(doctor_id) {
     try {
-        const reviews = await Reviews.find({ doctor_id: doctor_id })
+        const reviews = await Reviews.find({ doctor_id: doctor_id }).populate('user_id')
         return reviews
     } catch (error) {
         throw Error(`Cant view doctor reviews ${error}`)

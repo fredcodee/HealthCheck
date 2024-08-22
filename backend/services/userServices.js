@@ -20,7 +20,6 @@ async function generateToken(user) {
 async function getUserById(id) {
     try {
         const user = await User.findById(id).lean()
-        console.log(id)
         if(!user){
             throw new Error("user not found")
         }
@@ -157,4 +156,14 @@ async function addUpdateProfileImage(imageName,path,userId){
 
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage}
+async function myReviews(user_id){
+    try{
+        const reviews = await Review.find({user_id:user_id}).populate('doctor_id')
+        return reviews
+    }
+    catch(err){
+        throw new Error(`Cant get my reviews ${err}`)
+    }
+}
+
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage, myReviews}

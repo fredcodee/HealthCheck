@@ -114,7 +114,18 @@ const editProfilePicForDoctors = async (req, res) => {
     }
 }
 
+const getMyReviews = async (req, res) => {
+    try{
+        const user = req.user
+        const reviews = await userService.myReviews(user._id)
+        return res.json(reviews)
+    }
+    catch(error){
+        errorHandler.errorHandler(error, res)
+    }
+}
 
 
 
-module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile, editProfilePicForDoctors}
+
+module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile, editProfilePicForDoctors, getMyReviews}

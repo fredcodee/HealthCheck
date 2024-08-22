@@ -42,7 +42,7 @@ const DashBoard = () => {
               </div>
 
               <div className='card'>
-                <a href="">
+                <a href="/reviews">
                   <div className='card-body'>
                   Reports, Reviews and comments
                   </div>
@@ -50,7 +50,10 @@ const DashBoard = () => {
               </div>
               <hr />
               <div className='text-center'>
-                <h3>Upcoming Appointments</h3>
+                <a href="/upcoming-appointments">
+                  <div  className='card-body'>
+                  <h3>Upcoming Appointments</h3>  
+                  </div></a>
               </div>
 
             </div>
@@ -61,7 +64,7 @@ const DashBoard = () => {
           <div>
             <div>
               <div className='card'>
-                <a href="">
+                <a href="/appointment">
                   <div className='card-body'>
                   Book an Appointment
                   </div>
@@ -69,7 +72,7 @@ const DashBoard = () => {
               </div>
               
               <div className='card'>
-                <a href="">
+                <a href="/appointments/status">
                   <div className='card-body'>
                   View your Appointments and status
                   </div>
@@ -77,7 +80,7 @@ const DashBoard = () => {
               </div>
 
               <div className='card'>
-                <a href="">
+                <a href="/reviews">
                   <div className='card-body'>
                   View your Reviews and comments
                   </div>
@@ -85,7 +88,10 @@ const DashBoard = () => {
               </div>
               <hr />
               <div className='text-center'>
-                <h3>Upcoming Appointments</h3>
+                <a href="/upcoming-appointments">
+                  <div  className='card-body'>
+                  <h3>Upcoming Appointments</h3>  
+                  </div></a>
               </div>
 
             </div>
