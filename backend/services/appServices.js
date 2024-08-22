@@ -361,9 +361,17 @@ async function getAppointmentsParams(user_id, type, params) {
 }
 
 
-async function getAppointmentById(id) {
+async function getAppointmentById(id, userId) {
     try {
-        const appointment = await Appointments.findOne({ _id: id }).populate('doctor_id schedule_id user_id')
+        const appointment = await Appointments.findOne({ _id: id }).populate('doctor_id schedule_id user_id').lean()
+        // check if user has review doctor
+        const hasReview = await Reviews.findOne({ user_id: userId, doctor_id: appointment.doctor_id })
+        if (hasReview) {
+            appointment.has_review = true
+        }
+        else {
+            appointment.has_review = false
+        }
         return appointment
     }
     catch (error) {

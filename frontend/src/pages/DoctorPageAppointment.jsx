@@ -75,8 +75,11 @@ function DoctorPageAppointment() {
                 })
         }
         catch (error) {
-            setError("error occured, please try again")
-            console.error(error)
+            if (error.response.status == 401) {
+                setError('unauthorized user');
+            }
+            else{
+            setError(`An error occured while trying to update appointment status, try again later :)`)}
         }
     }
 
@@ -86,7 +89,9 @@ function DoctorPageAppointment() {
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
             </div>
             <div className='pt-3'>
-                {error ? <div className='alert alert-danger'>{error}</div> : null}
+                {error && <div className='alert alert-danger'>
+                    {error == "unauthorized user" ? <p>Please upgrade your account to use this feature <span><a href="/pricing">Upgrade</a></span></p> : error}
+                    </div>}
             </div>
 
             <div className='text-center'>

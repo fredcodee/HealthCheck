@@ -245,8 +245,9 @@ const getAllAppointments = async (req, res) => {
 }
 const getAppointmentById = async (req, res) => {
     try{
+        const user = req.user
         const {id} = req.params
-        const appointment = await appService.getAppointmentById(id)
+        const appointment = await appService.getAppointmentById(id, user._id)
         return res.json(appointment)
     }
     catch(error){

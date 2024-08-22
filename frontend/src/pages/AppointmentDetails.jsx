@@ -9,6 +9,8 @@ const AppointmentDetails = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState('')
+    const [rating , setRating] = useState('')
+    const [review, setReview] = useState('')
     const token = localStorage.getItem('token') || false
 
     useEffect(() => {
@@ -51,23 +53,90 @@ const AppointmentDetails = () => {
                     setError(false);
                     getAppointmentDetail();
                     setSuccess('Appointment status updated successfully');
-                } else {
-                    setError('An error occured while trying to update appointment status');
-                }
+                } 
+                 else {
+                        setError('An error occured while trying to update appointment status, try again later :)');
+                    }
             })
 
         } catch (error) {
-            setError(`An error occured while trying to update appointment status`)
+            if (error.response.status == 401) {
+                setError('unauthorized user');
+            }
+            else{
+            setError(`An error occured while trying to update appointment status, try again later :)`)}
         }
     }
 
+    const submitReview= async () => {
+        try {
+            const data = {
+                doctorId: appointment.doctor_id,
+                comments: review
+            }
+
+            await Api.post('api/review-doctor', data, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    setError(false);
+                    getAppointmentDetail();
+                    setSuccess('Review added successfully');
+                } 
+                 else {
+                        setError('An error occured while trying to add review, try again later :)');
+                    }
+            })
+
+        } catch (error) {
+            if (error.response.status == 401) {
+                setError('unauthorized user');
+            }
+            else{
+            setError(`An error occured while trying to add review, try again later :)`)}
+        }
+    }
+
+    const submitRating = async()=>{
+        try{
+            const data = {
+                appointmentId: appointment._id,
+                rating: rating
+            }
+
+            await Api.post('api/rate-appointment', data, {
+                headers: {
+                    Authorization: `Bearer ${token.replace(/"/g, '')}`
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    setError(false);
+                    getAppointmentDetail();
+                    setSuccess('Rating added successfully');
+                }
+                 else {
+                        setError('An error occured while trying to add rating, try again later :)');
+                    }
+            })
+        }catch(error){
+            if (error.response.status == 401) {
+                setError('unauthorized user');
+            }
+            else{
+            setError(`An error occured while trying to add rating, try again later :)`)}
+        }
+    }
     return (
         <div className='container'>
             <div className='pt-3'>
                 <a href="/appointments/status" style={{ color: 'green' }}>Back to Appointment page</a>
             </div>
 
-            {error && <div className='alert alert-danger'>{error}</div>}
+            {error && <div className='alert alert-danger'>
+                {error == "unauthorized user" ? <p>Please upgrade your account to use this feature <span><a href="/pricing">Upgrade</a></span></p> : error}
+                </div>}
             {!error && success && <div className="alert alert-success">{success}</div>}
             {!error && appointment?.length == 0 && <p>Loading appointment details...</p>}
             {!error && loading &&
@@ -97,8 +166,9 @@ const AppointmentDetails = () => {
                             </p>
                             <p>Reason: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment?.reason}</span></p>
                             <p>Status: <span style={{ color: 'orange' }}>{appointment?.status}</span></p>
+                            {appointment?.rating && <p>Rating: <span style={{ color: 'black', fontWeight: 'bold' }}>{appointment?.rating}</span></p>}
 
-                            {accountType == 'Doctor' &&
+                            {accountType == 'Doctor' && appointment?.status != 'completed' &&
                                 <div className="dropdown">
                                     <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Update Status
@@ -127,6 +197,38 @@ const AppointmentDetails = () => {
                                     </div>
                                 </div>}
                         </div>
+                    </div>
+                    <hr />
+                    <div className='text-center'>
+                        {accountType == 'Patient' && appointment?.status == 'completed' && appointment?.rating == null &&
+                            <div>
+                                <h3> Rate your Session with {appointment?.doctor_id.name}</h3>
+                                <div>
+                                    <select className="form-select" aria-label="Default select example" onChange={(e) => setRating(e.target.value)}>
+                                        <option value="0">select rating</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div className='pt-2'>
+                                    <button className="btn btn-primary" onClick={submitRating}>Submit Rating</button>
+                                </div>
+                            </div>
+                        }
+                        {accountType == 'Patient' && appointment?.status == 'completed' && !appointment?.has_review  &&
+                            <div className='mt-5'>
+                                <h3> Write a review about {appointment?.doctor_id.name}</h3>
+                                <div>
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(e) => setReview(e.target.value)}></textarea>
+                                </div>
+                                <div className='pt-2'>
+                                    <button className="btn btn-primary" onClick={submitReview}>Submit Review</button>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             }
