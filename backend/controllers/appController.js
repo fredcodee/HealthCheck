@@ -30,7 +30,7 @@ const freeTrail = async (req, res) => {
     }
 }
 
-//set schedule (doctor)
+
 const setSchedule = async (req, res) => {
     try {
         const user = req.user
@@ -46,7 +46,6 @@ const setSchedule = async (req, res) => {
     }
 }
 
-//get schedule (doctor)
 const getSchedule = async (req, res) => {
     try {
         const user = req.user
@@ -110,7 +109,7 @@ const  searchDoctor = async (req, res) => {
     }
 }
 
-//get doctors free schedules
+
 const getFreeSchedules = async (req, res) => {
     try{
         const userEmail = req.body.email
@@ -139,7 +138,6 @@ const getFreeSchedules = async (req, res) => {
 
 const bookAppointment = async (req, res) => {
     try{
-        // params (doctor id, free schudule id, reason)
         const {doctorId, scheduleId, reason} = req.body
         const user = req.user
         const sub = await appService.bookAppointment(user.email, doctorId, scheduleId, reason)
@@ -154,7 +152,7 @@ const bookAppointment = async (req, res) => {
 }
 
 
-//review
+
 const review = async (req, res) => {
     try{
         const {doctorId, rating,comments} = req.body
@@ -170,7 +168,7 @@ const review = async (req, res) => {
     }
 }
 
-//view user reviews
+
 const viewUserReviews = async (req, res) => {
     try{
         const user = req.user
@@ -182,7 +180,7 @@ const viewUserReviews = async (req, res) => {
     }
 }
 
-//view doctor reviews
+
 const viewDoctorReviews = async (req, res) => {
     try{
         const doctorId = req.body.doctorId
@@ -205,12 +203,10 @@ const getUpcomingAppointmentsPatient = async (req, res) => {
     }
 }
 
-// get  appointments(accepted, cancelled, pending, completed)
+
 const appointmentsParams = async (req, res) => {
     try{
         const user = req.user
-        //type = doctor or patient
-        //params = accepted, pending, cancelled, completed
         const {type,params} = req.params 
         const appointments = await appService.getAppointmentsParams(user._id,type, params)
         return res.json(appointments)
@@ -232,7 +228,7 @@ const getUpcomingAppointmentsDoctor = async (req, res) => {
     }
 }
 
-//get all appointments
+
 const getAllAppointments = async (req, res) => {
     try{
         const user = req.user
@@ -255,7 +251,7 @@ const getAppointmentById = async (req, res) => {
     }
 }
 
-//update appointment
+
 const updateAppointment = async (req, res) => {
     try{
         const user = req.user
@@ -272,7 +268,7 @@ const updateAppointment = async (req, res) => {
 }
 
 
-//get doctor profile
+
 const getDoctorProfile =  async (req, res) => {
     try{
         const {doctorId} =  req.body
@@ -285,7 +281,7 @@ const getDoctorProfile =  async (req, res) => {
 }
 
 
-//rate appointment after completed
+
 const rateAppointment = async (req, res) => {
     try{
         const user = req.user
@@ -300,7 +296,7 @@ const rateAppointment = async (req, res) => {
         errorHandler.errorHandler(error, res)
     }
 }
-//review
+
 const reviewDoctor = async (req, res) => {
     try{
         const user = req.user
@@ -316,7 +312,7 @@ const reviewDoctor = async (req, res) => {
     }
 }
 
-//get doctor reviews
+
 const getDoctorReviews = async (req, res) => {
     try{
         const {doctorId} = req.body
