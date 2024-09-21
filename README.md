@@ -1,6 +1,6 @@
 # HealthCheck
 A Doctor's appointment saas webapp built with MERN stack 
-## What problem does TeamManagement solve ?
+## What problem does HealthCheck solve ?
 - Streamlined Appointment Scheduling: It allows patients to easily book appointments with doctors, reducing the need for phone calls or in-person visits to schedule a time.
 
 - Efficient Time Management: Doctors can manage their schedules more effectively by viewing appointments in a centralized system, minimizing the risk of double-booking or missed appointments.
@@ -12,7 +12,7 @@ A Doctor's appointment saas webapp built with MERN stack
 - Data Security: Built with modern web technologies, the app can securely manage sensitive patient data, ensuring compliance with health regulations.
 
 - Scalability: As a SaaS product, it can be scaled to serve multiple clinics or hospitals, making it a versatile solution for healthcare providers of various sizes.
-- 
+
 ### Tools:
 - Nodejs
 - Espress api
