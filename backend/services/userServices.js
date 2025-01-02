@@ -88,13 +88,26 @@ async function addUserToDb(name, email, password, accountType, bio, city, age, c
          await user.save();
          return user;
     } catch (error) {
-        throw new Error(`cant add user to database ${error}`)
+        throw new Error(`error adding user ${error}`)
     }
 }
 
-async function googleAuth(name, email, sub, accountType){
+async function googleAuthLogin(name, email, sub){
     try {
-        const user  = await User.findOne({email:email})
+        const user  = await User.findOne({email:email, googleId:sub, name:name})
+        if(!user){
+            throw new Error(`user not found`)
+        } 
+        return user
+    } catch (error) {
+       throw new Error(`error from google auth ${error}`) 
+    }
+}
+
+async function googleAuthRegister(name, email, sub, accountType){
+    try {
+        const user  = await
+        User.findOne({email:email, googleId:sub, name:name})
         if(!user){
             const user = new User({
                 name : name,
@@ -104,11 +117,11 @@ async function googleAuth(name, email, sub, accountType){
             })
             await user.save()
             return user
-        }   
+        }
         return user
     } catch (error) {
-       throw new Error(`caant save user from google auth ${error}`) 
-    }
+         throw new Error(`error from google auth ${error}`) 
+     }
 }
 
 async function editUserProfile(name, email,bio,city, age,country,gender,phone){
@@ -166,4 +179,4 @@ async function myReviews(user_id){
     }
 }
 
-module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuth, addUserToDb, editUserProfile, addUpdateProfileImage, myReviews}
+module.exports={generateToken,getUserById, findAndVerifyUserCredentials,checkIfUserIsRegistered, googleAuthLogin, googleAuthRegister, addUserToDb, editUserProfile, addUpdateProfileImage, myReviews}

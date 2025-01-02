@@ -41,11 +41,23 @@ const login = async (req, res) => {
 }
 
 //google auth handler
+//login
+const googleAuthLogin = async (req, res) => {
+    try {
+        const { name, email, sub} = req.body
+        const userAuth = await userService.googleAuthLogin(name, email, sub)
+        const token = await userService.generateToken(userAuth)
+        return res.json({ request: "user details are valid", token: token, accountType:userAuth.account_type, freeTrail:userAuth.free_trail_count, subscription_mode: userAuth.subscription_Mode})
+    } catch (error) {
+        errorHandler.errorHandler(error, res)
+    }
+}
 
-const googleAuth = async (req, res) => {
+//register
+const googleAuthRegister = async (req, res) => {
     try {
         const { name, email, sub ,accountType} = req.body
-        const userAuth = await userService.googleAuth(name, email, sub, accountType)
+        const userAuth = await userService.googleAuthRegister(name, email, sub, accountType)
         const token = await userService.generateToken(userAuth)
         return res.json({ request: "user details are valid", token: token, accountType:userAuth.account_type, freeTrail:userAuth.free_trail_count, subscription_mode: userAuth.subscription_Mode})
     } catch (error) {
@@ -127,4 +139,4 @@ const getMyReviews = async (req, res) => {
 
 
 
-module.exports = { register, checkToken, googleAuth, login, getUserDetails, editProfile, editProfilePicForDoctors, getMyReviews}
+module.exports = { register, checkToken, googleAuthLogin, googleAuthRegister, login, getUserDetails, editProfile, editProfilePicForDoctors, getMyReviews}
