@@ -21,7 +21,7 @@ const Navbar = () => {
                 <button type="button" className="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarCollapse">
+                <div className="navbar-collapse" id="navbarCollapse">
                     {
                         token ? (
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
@@ -34,11 +34,11 @@ const Navbar = () => {
                         ) :
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
                                 <a href="/" className="nav-item nav-link active">Home</a>
-                                <a href="about.html" className="nav-item nav-link">About</a>
+                                <a href="#about" className="nav-item nav-link">About</a>
                                 <a href="/pricing" className="nav-item nav-link">Pricing</a>
-                                <a href="service.html" className="nav-item nav-link">Service</a>
-                                <a href="testimonial.html" className="nav-item nav-link">Testimonial</a>
-                                <a href="contact.html" className="nav-item nav-link">Contact</a>
+                                <a href="#service" className="nav-item nav-link">Service</a>
+                                <a href="#testimonial" className="nav-item nav-link">Testimonial</a>
+                                <a href="https://thefredcode.com/" className="nav-item nav-link">Contact</a>
                                 <a href="/login" className="nav-item nav-link">Login</a>
                             </div>
 

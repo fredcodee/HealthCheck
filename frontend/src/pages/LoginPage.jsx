@@ -16,61 +16,62 @@ const LoginPage = () => {
 
 
 
-
   return (
-    <div>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-heading">
-            <h2 className="text-center">Login</h2>
-          </div>
-          <hr />
-          <div className="modal-body">
-            <form action="" role="form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <div className="input-group">
-                  <span className="input-group-addon">
-                    <span className="glyphicon glyphicon-user"></span>
-                  </span>
-                  <input type="email" className="form-control" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-                </div>
-              </div>
-              <div className="form-group">
-                <div className="input-group">
-                  <span className="input-group-addon">
-                    <span className="glyphicon glyphicon-lock"></span>
-                  </span>
-                  <input type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-
-                </div>
-
-              </div>
-
-              <div className="form-group text-center" style={{ paddingTop: '2rem' }}>
-                <button type="submit" className="btn btn-success btn-lg">Login</button>
-              </div>
-              <div className='pt-3'>
-                {error && <div className='text-center' style={{ color: 'red' }}>{error}</div>}
-              </div>
-
-            </form>
-          </div>
-          <hr />
-          <div className='pt-3 text-center'>
-            <p className='text-center font-bold'>or Login with</p>
-            <div className='pb-3 text-center'>
-              <GoogleLogin onSuccess={credentialResponse => {
-                handleGoogleAuth(credentialResponse.credential)
-              }} />
-            </div>
-
-            <br />
-            <small>Don't have an account yet  <span><a href="/register" className='text-blue-600'>Register here :)</a></span></small>
-          </div>
-
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <div className='pt-3'>
+          {error && <div className='alert alert-danger text-center' style={{ color: 'red' }}>{error}</div>}
         </div>
+        <h1 className="text-2xl font-bold mb-6 text-center text-blue-600">Login</h1>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="you@example.com"
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="••••••••"
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+        <div className="mt-4 flex justify-center">
+            <GoogleLogin onSuccess={credentialResponse => {
+              handleGoogleAuth(credentialResponse.credential)
+            }} />
+        </div>
+            <div>
+              <p className="mt-4 text-center text-sm text-gray-600">
+                Don't have an account? <a href="/register" className="text-blue-600 hover:underline">Sign up</a>
+              </p>
+            </div>
       </div>
-
     </div>
   )
 }

@@ -9,6 +9,7 @@ import team_4 from '../assets/img/team-4.jpg'
 import testimonial_1 from '../assets/img/testimonial-1.jpg'
 import testimonial_2 from '../assets/img/testimonial-2.jpg'
 import testimonial_3 from '../assets/img/testimonial-3.jpg'
+import '../assets/styles/css/index.css'
 
 const HomePage = () => {
     return (
@@ -45,7 +46,7 @@ const HomePage = () => {
             {/* <!-- Header Start --> */}
             <div className="container-fluid header bg-primary p-0 mb-5">
                 <div className="row g-0 align-items-center flex-column-reverse flex-lg-row">
-                    <div className="col-lg-6 p-5 wow fadeIn" data-wow-delay="0.1s">
+                    <div className="col-lg-6 p-5 " data-wow-delay="0.1s">
                         <h1 className="display-4 text-white mb-5">Your Trusted Healthcare Partner Book Appointments with Ease</h1>
                         <div className="row g-4">
                             <div className="col-sm-4">
@@ -80,7 +81,7 @@ const HomePage = () => {
             {/* <!-- Header End */}
 
             {/* <!-- About Start --> */}
-            <div className="container-xxl py-5">
+            <div className="container-xxl py-5" id='about'> 
                 <div className="container">
                     <div className="row g-5">
                         <div className="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
@@ -104,7 +105,7 @@ const HomePage = () => {
             {/* <!-- About End --> */}
 
             {/* <!-- Service Start --> */}
-            <div className="container-xxl py-5">
+            <div className="container-xxl py-5" id='service'>
                 <div className="container">
                     <div className="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style={{ maxWidth: "600px" }}>
                         <p className="d-inline-block border rounded-pill py-1 px-4">Services</p>
@@ -404,7 +405,7 @@ const HomePage = () => {
 
 
             {/* <!-- Testimonial Start --> */}
-            <div className="container-xxl py-5">
+            <div className="container-xxl py-5" id='testimonial'>
                 <div className="container">
                     <div className="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style={{ maxWidth: "600px" }}>
                         <p className="d-inline-block border rounded-pill py-1 px-4">Testimonial</p>

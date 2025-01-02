@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
         localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
         localStorage.setItem('subscription_Mode', JSON.stringify(response.data.subscription_mode))
-        setError('')
+        setError(null);
         history('/dashboard')
 
       }
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       const response = await Api.post('api/user/register', data);
 
       if (response.status === 201 || response.status === 200) {
-        setError('')
+        setError(null)
         history('/login');
       } else {
         const data = await response.data;
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
               localStorage.setItem('AccountType', JSON.stringify(response.data.accountType))
               localStorage.setItem('FreeTrail', JSON.stringify(response.data.freeTrail))
               localStorage.setItem('subscription_Mode', JSON.stringify(response.data.subscription_mode))
-              setError('')
+              setError(null)
               history('/dashboard');
             }
           })
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('AccountType')
     localStorage.removeItem('FreeTrail')
     localStorage.removeItem('subscription_Mode')
-    setError('')
+    setError(null)
     history('/login');
   };
 
