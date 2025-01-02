@@ -7,8 +7,8 @@ const SignUpPage = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [accountType, setAccountType] = useState('')
-  const { registerUser, handleGoogleAuth, error } = useContext(AuthContext);
+  const [accountType, setAccountType] = useState(null)
+  const { registerUser, handleGoogleAuthRegister, error } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +69,7 @@ const SignUpPage = () => {
             <label htmlFor="account" className="block text-sm font-medium text-gray-700" >Select acccount type</label>
             <select className="form-control form-control-lg text-sm" id='account'
               onChange={e => setAccountType(e.target.value)}>
-              <option value={""} className='text-center'>Select Account type</option>
+              <option value={null} className='text-center'>Select Account type</option>
               <option value={"Doctor"}>Doctor</option>
               <option value={"Patient"}>Patient</option>
             </select>
@@ -85,7 +85,7 @@ const SignUpPage = () => {
         </form>
         <div className="mt-4 flex justify-center">
           <GoogleLogin onSuccess={credentialResponse => {
-            handleGoogleAuth(credentialResponse.credential)
+            handleGoogleAuthRegister(credentialResponse.credential, accountType)
           }} />
         </div>
         <div>

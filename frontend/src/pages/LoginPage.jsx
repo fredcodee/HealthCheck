@@ -7,7 +7,7 @@ import AuthContext from '../context/AuthContext';
 const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { loginUser, handleGoogleAuth, error } = useContext(AuthContext);
+  const { loginUser, handleGoogleAuthLogin, error } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +63,7 @@ const LoginPage = () => {
         </form>
         <div className="mt-4 flex justify-center">
             <GoogleLogin onSuccess={credentialResponse => {
-              handleGoogleAuth(credentialResponse.credential)
+              handleGoogleAuthLogin(credentialResponse.credential)
             }} />
         </div>
             <div>
