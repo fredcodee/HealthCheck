@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Api from '../Api'
 import '../assets/styles/css/appointmentStatusPage.css'
+import Navbar from '../components/Navbar'
 
 const AppointmentStatusPage = () => {
     const [account_type, setAccountType] = useState('')
@@ -77,7 +78,9 @@ const AppointmentStatusPage = () => {
         }
     }
     return (
-        <div className='container'>
+        <div>
+            <Navbar />
+            <div className='container'>
             <div className='pt-3'>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
             </div>
@@ -226,6 +229,8 @@ const AppointmentStatusPage = () => {
                 </div>
             </div>
         </div>
+        </div>
+        
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Api from '../Api'
 import ScheduleForm from '../components/ScheduleForm'
+import Navbar from '../components/Navbar'
 
 const CreateSchedule = () => {
     const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
@@ -46,6 +47,9 @@ const CreateSchedule = () => {
 
 
     return (
+        <div>
+            <Navbar />
+
         <div className='container'>
             <div>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
@@ -94,6 +98,7 @@ const CreateSchedule = () => {
                 </div>
             </div>
 
+        </div>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import '../assets/styles/css/pricePage.css'
+import Navbar from '../components/Navbar';
 import Api from '../Api';
 const pricePage = () => {
     const [accountType, setAccountType] = useState(null);
@@ -76,6 +77,7 @@ const pricePage = () => {
 
     return (
         <div>
+            <Navbar />
             <section className='text-center'>
                 <div style={{ color: 'black' , fontFamily: 'cursive'}}>
                     <p>Welcome, please choose a Subscription package to avail all our features </p>

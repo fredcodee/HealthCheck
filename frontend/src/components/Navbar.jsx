@@ -7,7 +7,7 @@ const Navbar = () => {
 
     useEffect(() => {
         setToken(localStorage.getItem('token'))
-    }, [])
+    }, [ token ])
 
     const handleLogout = async () => {
         await logoutUser();

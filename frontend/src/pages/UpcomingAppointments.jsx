@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Api from '../Api'
+import Navbar from '../components/Navbar'
 
 const UpcomingAppointments = () => {
   const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
@@ -38,6 +39,8 @@ const UpcomingAppointments = () => {
 
 
   return (
+    <div>
+      <Navbar />
     <div className='container'>
       <div className='pt-3'>
         <a href="/dashboard" style={{ color: 'green' }}>Back to Dashboard</a>
@@ -87,6 +90,7 @@ const UpcomingAppointments = () => {
       </div>
 
 
+    </div>
     </div>
 
   )

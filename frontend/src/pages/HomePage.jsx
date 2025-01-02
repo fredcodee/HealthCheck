@@ -10,10 +10,12 @@ import testimonial_1 from '../assets/img/testimonial-1.jpg'
 import testimonial_2 from '../assets/img/testimonial-2.jpg'
 import testimonial_3 from '../assets/img/testimonial-3.jpg'
 import '../assets/styles/css/index.css'
+import Navbar from '../components/Navbar'
 
 const HomePage = () => {
     return (
         <div>
+            <Navbar />
             {/* <!-- Topbar Start --> */}
             <div className="container-fluid bg-light p-0 wow fadeIn" data-wow-delay="0.1s">
                 <div className="row gx-0 d-none d-lg-flex">

@@ -5,6 +5,7 @@ import '../assets/styles/css/profilePage.css'
 import bg from '../assets/img/bg1.jpg'
 import userImg from '../assets/img/user.jpg'
 import PopUp from '../components/Popup'
+import Navbar from '../components/Navbar'
 
 function DoctorPageAppointment() {
     const { id } = useParams();
@@ -132,6 +133,9 @@ function DoctorPageAppointment() {
     }
 
     return (
+        <div>
+            <Navbar />
+        
         <div className='container'>
             <div className='pt-3'>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
@@ -261,6 +265,7 @@ function DoctorPageAppointment() {
 
             </div>
 
+        </div>
         </div>
     )
 }

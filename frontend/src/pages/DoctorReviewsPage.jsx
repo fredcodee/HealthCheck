@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Api from '../Api'
+import Narbar from '../components/Navbar'
 const DoctorReviewsPage = () => {
     const { id } = useParams()
     const token = localStorage.getItem('token') || false
@@ -31,6 +32,8 @@ const DoctorReviewsPage = () => {
         }
     }
     return (
+        <div>
+            <Narbar />
         <div className='container'>
             <div className='pt-3'>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Dashboard</a>
@@ -53,6 +56,7 @@ const DoctorReviewsPage = () => {
                      </ul>
             </div>
 
+        </div>
         </div>
     )
 }

@@ -1,7 +1,10 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
 const SuccessPage = () => {
     return (
+        <div>
+            <Navbar />
         <section>
           <div className="product Box-root">
             <div className="description Box-root text-center">
@@ -13,6 +16,7 @@ const SuccessPage = () => {
             </div>
           </div>
         </section>
+        </div>
       );
 }
 

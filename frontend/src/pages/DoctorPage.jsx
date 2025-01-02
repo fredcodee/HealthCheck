@@ -1,8 +1,10 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
 const DoctorPage = () => {
   return (
     <div>
+        <Navbar />
         <div className="content-profile-page">
                 <div className="profile-user-page card">
                     <div className="img-user-profile">

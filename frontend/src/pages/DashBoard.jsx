@@ -1,5 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import Api from '../Api'
+import Navbar from '../components/Navbar'
 
 
 const DashBoard = () => {
@@ -33,7 +34,9 @@ const DashBoard = () => {
   }
 
   return (
-    <div className='container'>
+    <div>
+      <Navbar />
+      <div className='container'>
       <div>
         { type ?(
           type.replace(/"/g, '') == 'Free' ?
@@ -126,6 +129,8 @@ const DashBoard = () => {
           </div>
         ) }
     </div>
+    </div>
+    
   )
 }
 

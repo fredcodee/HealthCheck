@@ -4,6 +4,7 @@ import bg from '../assets/img/bg1.jpg'
 import userImg from '../assets/img/user.jpg'
 import PopUp from '../components/Popup'
 import Api from '../Api'
+import Navbar from '../components/Navbar'
 
 const ProfilePage = () => {
     const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
@@ -161,6 +162,7 @@ const ProfilePage = () => {
 
     return (
         <div>
+            <Navbar />
             <div className='text-center'>
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && <div className="alert alert-success">{success}</div>}

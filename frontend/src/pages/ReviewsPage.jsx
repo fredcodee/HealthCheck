@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Api from '../Api'
+import Navbar from '../components/Navbar'
 
 const ReviewsPage = () => {
     const token = localStorage.getItem('token') || false
@@ -27,6 +28,8 @@ const ReviewsPage = () => {
         }
     }
     return (
+        <div>
+            <Navbar />
         <div className='container'>
             <div className='pt-3'>
                 <a href="/dashboard" style={{ color: 'green' }}>Back to Dashboard</a>
@@ -50,6 +53,7 @@ const ReviewsPage = () => {
                 </ul>
             </div>
 
+        </div>
         </div>
     )
 }

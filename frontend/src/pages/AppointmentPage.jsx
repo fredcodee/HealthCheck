@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Api from '../Api'
+import Navbar from '../components/Navbar'
 
 
 const AppointmentPage = () => {
@@ -33,7 +34,9 @@ const AppointmentPage = () => {
   }
 
   return (
-    <div className='container'>
+    <div>
+      <Navbar />
+      <div className='container'>
       <div className='pt-3'>
         <a href="/dashboard" style={{ color: 'green' }}>Back to Home</a>
       </div>
@@ -78,6 +81,8 @@ const AppointmentPage = () => {
 
       </div>
     </div>
+    </div>
+    
   )
 }
 

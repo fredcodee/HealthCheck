@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Api from '../Api'
 import { useParams } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
 const AppointmentDetails = () => {
     const accountType = localStorage.getItem('AccountType').replace(/"/g, '') || false
@@ -129,7 +130,9 @@ const AppointmentDetails = () => {
         }
     }
     return (
-        <div className='container'>
+        <div>   
+            <Navbar />
+            <div className='container'>
             <div className='pt-3'>
                 <a href="/appointments/status" style={{ color: 'green' }}>Back to Appointment page</a>
             </div>
@@ -233,6 +236,8 @@ const AppointmentDetails = () => {
                 </div>
             }
         </div>
+        </div>
+        
     )
 }
 
