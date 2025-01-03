@@ -8,7 +8,7 @@ const PrivateRoute = ({ children, ...rest }) => {
 
   useEffect(()=>{
     checkToken()
-  },[])
+  },[ token])
 
 
   const checkToken = async () => {

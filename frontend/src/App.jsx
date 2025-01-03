@@ -4,7 +4,6 @@ import { AuthProvider } from "./context/AuthContext";
 import  PrivateRoute from './context/PrivateRoute';
 import SubscriptionCheck from './context/SubscriptionCheck';
 import HomePage from './pages/HomePage';
-import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashBoard from './pages/DashBoard';
