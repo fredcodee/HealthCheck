@@ -27,4 +27,5 @@ router.post("/rate-appointment", auth.userAuth, auth.checkSubscription,  appcont
 router.post("/review-doctor", auth.userAuth, auth.checkSubscription, appcontroller.reviewDoctor)  
 router.get("/get-doctor-reviews", auth.userAuth, appcontroller.getDoctorReviews)
 router.get('/doctor-stats/:id', auth.userAuth, appcontroller.getDoctorStats)
+router.post('/script', appcontroller.parsedatatodb)
 module.exports= router

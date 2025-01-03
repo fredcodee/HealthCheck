@@ -25,8 +25,10 @@ async function getUserById(id) {
         }
         if (user.account_type === 'Patient') {
             //num of app completed
-           const getNumOfApp = await Appointments.find({ user_id: user_id, status: 'completed' })
-           user.numOfAppointments = getNumOfApp.length
+           const getNumOfApp = await Appointments.find({ user_id: user._id, status: 'completed' })
+           if (getNumOfApp) {
+                user.numOfAppointmentsCompleted = getNumOfApp.length
+           }
         }
 
         if(user.account_type === 'Doctor'){

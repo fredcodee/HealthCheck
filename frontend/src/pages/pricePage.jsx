@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import '../assets/styles/css/pricePage.css'
 import Navbar from '../components/Navbar';
 import Api from '../Api';
@@ -82,8 +82,8 @@ const pricePage = () => {
         <div>
             <Navbar />
             <section className="pricing">
-                <div>
-                    {error && <p className="error-message">{error} !</p>}
+                <div className='pt-3'>
+                    {error && <div className='alert alert-danger text-center' style={{ color: 'red' }}>{error}</div>}
                 </div>
                 <h1>Welcome, please choose a Subscription package to avail all our features </h1>
                 <div className="pricing-plans">
@@ -107,7 +107,7 @@ const pricePage = () => {
                                     type == "Free" && subscription_Mode == "true" ? (
                                         <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
                                             <i class="fa fa-lock p-2" aria-hidden="true"></i>
-                                             Current plan
+                                            Current plan
                                         </button>
                                     ) : (
                                         <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
@@ -138,21 +138,21 @@ const pricePage = () => {
                                     </li>
                                 </ul>
                                 <form onSubmit={handleSubmit}>
-                                        {/* Add a hidden field with the lookup_key of your Price */}
-                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_MONTH_PRICE_ID} />
-                                        {
-                                            type == "Month" ? (
-                                                <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
-                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
-                                                    Current plan
-                                                </button>
-                                            ) : (
-                                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
-                                                    Subscribe
-                                                </button>
-                                            )
-                                        }
-                                    </form>
+                                    {/* Add a hidden field with the lookup_key of your Price */}
+                                    <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_MONTH_PRICE_ID} />
+                                    {
+                                        type == "Month" ? (
+                                            <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
+                                                <i class="fa fa-lock p-2" aria-hidden="true"></i>
+                                                Current plan
+                                            </button>
+                                        ) : (
+                                            <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
+                                                Subscribe
+                                            </button>
+                                        )
+                                    }
+                                </form>
                             </div>
                         ) : (
                             <div className="plan">
@@ -174,21 +174,21 @@ const pricePage = () => {
                                     </li>
                                 </ul>
                                 <form onSubmit={handleSubmit}>
-                                        {/* Add a hidden field with the lookup_key of your Price */}
-                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_MONTH_PRICE_ID} />
-                                        {
-                                            type == "Month" ? (
-                                                <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
-                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
-                                                    Current plan
-                                                </button>
-                                            ) : (
-                                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary mb-4'>
-                                                    Subscribe
-                                                </button>
-                                            )
-                                        }
-                                    </form>
+                                    {/* Add a hidden field with the lookup_key of your Price */}
+                                    <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_MONTH_PRICE_ID} />
+                                    {
+                                        type == "Month" ? (
+                                            <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
+                                                <i class="fa fa-lock p-2" aria-hidden="true"></i>
+                                                Current plan
+                                            </button>
+                                        ) : (
+                                            <button id="checkout-and-portal-button" type="submit" className='btn btn-primary mb-4'>
+                                                Subscribe
+                                            </button>
+                                        )
+                                    }
+                                </form>
                             </div>
                         )}
                         {accountType == "Patient" ? (
@@ -209,21 +209,21 @@ const pricePage = () => {
                                     <li>Launch discount</li>
                                 </ul>
                                 <form onSubmit={handleSubmit}>
-                                        {/* Add a hidden field with the lookup_key of your Price */}
-                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_YEAR_PRICE_ID} />
-                                        {
-                                            type == "Yearly" ? (
-                                                <button id="checkout-and-portal-button" type="button" className='btn btn-secondary mb-4'>
-                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
-                                                    Current plan
-                                                </button>
-                                            ) : (
-                                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary  mb-4'>
-                                                    Subscribe
-                                                </button>
-                                            )
-                                        }
-                                    </form>
+                                    {/* Add a hidden field with the lookup_key of your Price */}
+                                    <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_PATIENT_YEAR_PRICE_ID} />
+                                    {
+                                        type == "Yearly" ? (
+                                            <button id="checkout-and-portal-button" type="button" className='btn btn-secondary mb-4'>
+                                                <i class="fa fa-lock p-2" aria-hidden="true"></i>
+                                                Current plan
+                                            </button>
+                                        ) : (
+                                            <button id="checkout-and-portal-button" type="submit" className='btn btn-primary  mb-4'>
+                                                Subscribe
+                                            </button>
+                                        )
+                                    }
+                                </form>
                             </div>
                         ) : (
                             <div className="plan">
@@ -243,21 +243,21 @@ const pricePage = () => {
                                     <li>Launch discount</li>
                                 </ul>
                                 <form onSubmit={handleSubmit}>
-                                        {/* Add a hidden field with the lookup_key of your Price */}
-                                        <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_YEAR_PRICE_ID} />
-                                        {
-                                            type == "Yearly" ? (
-                                                <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
-                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
-                                                    Current plan
-                                                </button>
-                                            ) : (
-                                                <button id="checkout-and-portal-button" type="submit" className='btn btn-primary  mb-4'>
-                                                    Subscribe
-                                                </button>
-                                            )
-                                        }
-                                    </form>
+                                    {/* Add a hidden field with the lookup_key of your Price */}
+                                    <input type="hidden" name="lookup_key" value={import.meta.env.VITE_STRIPE_DOCTOR_YEAR_PRICE_ID} />
+                                    {
+                                        type == "Yearly" ? (
+                                            <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
+                                                <i class="fa fa-lock p-2" aria-hidden="true"></i>
+                                                Current plan
+                                            </button>
+                                        ) : (
+                                            <button id="checkout-and-portal-button" type="submit" className='btn btn-primary  mb-4'>
+                                                Subscribe
+                                            </button>
+                                        )
+                                    }
+                                </form>
                             </div>)}
 
                     </div>
