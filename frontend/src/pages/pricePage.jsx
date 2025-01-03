@@ -106,12 +106,12 @@ const pricePage = () => {
                                 {
                                     type == "Free" && subscription_Mode == "true" ? (
                                         <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
-                                            <i class="fa fa-lock" aria-hidden="true"></i>
-                                            Current plan
+                                            <i class="fa fa-lock p-2" aria-hidden="true"></i>
+                                             Current plan
                                         </button>
                                     ) : (
                                         <button id="checkout-and-portal-button" type="submit" className='btn btn-primary'>
-                                            Start free trial
+                                            free trial
                                         </button>
                                     )
                                 }
@@ -143,7 +143,7 @@ const pricePage = () => {
                                         {
                                             type == "Month" ? (
                                                 <button id="checkout-and-portal-button" type="button" className='btn btn-secondary'>
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
                                                     Current plan
                                                 </button>
                                             ) : (
@@ -179,7 +179,7 @@ const pricePage = () => {
                                         {
                                             type == "Month" ? (
                                                 <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
                                                     Current plan
                                                 </button>
                                             ) : (
@@ -214,7 +214,7 @@ const pricePage = () => {
                                         {
                                             type == "Yearly" ? (
                                                 <button id="checkout-and-portal-button" type="button" className='btn btn-secondary mb-4'>
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
                                                     Current plan
                                                 </button>
                                             ) : (
@@ -248,7 +248,7 @@ const pricePage = () => {
                                         {
                                             type == "Yearly" ? (
                                                 <button id="checkout-and-portal-button" type="button" className='btn btn-secondary  mb-4'>
-                                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                                    <i class="fa fa-lock p-2" aria-hidden="true"></i>
                                                     Current plan
                                                 </button>
                                             ) : (

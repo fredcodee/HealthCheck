@@ -25,16 +25,3 @@ A Doctor's appointment saas webapp built with MERN stack
 
 ### Home Page
 ![alt text](https://github.com/fredcodee/HealthCheck/blob/main/appviewImages/hompage.jpg)
-
-### Pricing Page
-![alt text](https://github.com/fredcodee/HealthCheck/blob/main/appviewImages/pricingpage.jpg)
-
-### Dashboard
-![alt text](https://github.com/fredcodee/HealthCheck/blob/main/appviewImages/dashboard.jpg)
-
-### Doctor profile
-![alt text](https://github.com/fredcodee/HealthCheck/blob/main/appviewImages/profilepage.jpg)
-
-### Search Doctors near you
-![alt text](https://github.com/fredcodee/HealthCheck/blob/main/appviewImages/searchfordoctors.jpg)
-
