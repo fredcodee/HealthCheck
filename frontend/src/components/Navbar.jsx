@@ -35,7 +35,7 @@ const Navbar = () => {
                             <div className="navbar-nav ms-auto p-4 p-lg-0">
                                 <a href="/" className="nav-item nav-link active">Home</a>
                                 <a href="#about" className="nav-item nav-link">About</a>
-                                <a href="/pricing" className="nav-item nav-link">Pricing</a>
+                                <a href="/prices" className="nav-item nav-link">Pricing</a>
                                 <a href="#service" className="nav-item nav-link">Service</a>
                                 <a href="#testimonial" className="nav-item nav-link">Testimonial</a>
                                 <a href="https://thefredcode.com/" className="nav-item nav-link">Contact</a>

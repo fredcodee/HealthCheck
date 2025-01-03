@@ -31,8 +31,10 @@ async function getUserById(id) {
 
         if(user.account_type === 'Doctor'){
             const profileImage = await Image.findOne({user_id: user._id})
-            user.profile_image = profileImage.url
-            user.profile_image_name = profileImage.name        
+            if (profileImage) {
+                user.profile_image = profileImage.url
+                user.profile_image_name = profileImage.name
+            }    
         }
 
         return user;

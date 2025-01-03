@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import {useNavigate} from 'react-router-dom'
 import '../assets/styles/css/pricePage.css'
 import Navbar from '../components/Navbar';
 import Api from '../Api';
@@ -8,6 +9,8 @@ const pricePage = () => {
     const [type, setType] = useState(null);
     const [subscription_Mode, setSubscription_Mode] = useState(null);
     const [error, setError] = useState('');
+    const history = useNavigate();
+
 
     useEffect(() => {
         const storedAccountType = localStorage.getItem('AccountType') ? localStorage.getItem('AccountType').replace(/"/g, '') : null;
@@ -65,7 +68,7 @@ const pricePage = () => {
                 }
             }).then((response) => {
                 if (response.status == 200) {
-                    window.location.href = '/dashboard'
+                    history('/dashboard');
                 }
                 setError('Could not change to free trial, try again later');
             })

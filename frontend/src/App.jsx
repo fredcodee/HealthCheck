@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import DashBoard from './pages/DashBoard';
 import Error from './pages/404';
+import Pricing from './pages/Pricing';
 import PricePage from './pages/pricePage';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage/>} />
                 <Route path="/register" element={<SignUpPage />} />
+                <Route path="/prices" element={<Pricing />} />
                 <Route path="/error" element={<Error />} /> 
                 <Route path = "/dashboard" element={<PrivateRoute> {<SubscriptionCheck><DashBoard /> </SubscriptionCheck>}</PrivateRoute>} />
                 <Route path ="/pricing" element={<PrivateRoute><PricePage/> </PrivateRoute>} />
