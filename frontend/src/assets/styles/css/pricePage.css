@@ -2,7 +2,7 @@
     margin-top: 3rem;
 }
 .btn-primary:hover{
-    background-color: orange;
+    background-color: blue;
 }
 hr{
     margin-top: 7rem;
@@ -14,3 +14,131 @@ hr{
     margin-top: 3rem;
     color: red;
 }
+
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
+  body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+  }
+  
+  ol, ul {
+    list-style: none;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .pricing {
+    padding: 2rem 1rem;
+  }
+  
+  .pricing h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .pricing-plans {
+    background-color: hsl(10, 5%, 90%);
+    width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .plans-container {
+    display: flex;
+    max-width: 960px;
+    margin: 0 auto;
+    justify-content: space-evenly;
+    gap: 2rem;
+  }
+  
+  .plan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.5rem;
+    padding: 0 4rem;
+    min-height: 400px;
+    max-width: 60%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .plan ul {
+    list-style-position: inside;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 0;
+  }
+  
+  .plan ul li::marker {
+    content: '✔️ ';
+    width: 10px;
+    height: 10px;
+  }
+  
+  .plan:first-child li:last-child::marker {
+    content: 'ⓧ ';
+  }
+  
+  .price {
+    font-size: 3.5rem;
+    font-weight: 400;
+  }
+  
+  .period {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .plan button {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background: black;
+    color: white;
+  }
+  
+  .offer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  
+  @media (max-width: 720px) {
+    .plans-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .pricing-plans > p {
+    text-align: center;
+    padding: 1rem 0;
+    margin: 0;
+  }
+  
+  .most-popular {
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 5rem;
+    text-align: center;
+    background-color: gray;
+  }
+  
