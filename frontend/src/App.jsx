@@ -48,6 +48,7 @@ function App() {
                 <Route path ="/reviews" element={<PrivateRoute>{<SubscriptionCheck> <ReviewsPage/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/doctor-reviews/:id" element={<PrivateRoute>{<SubscriptionCheck> <DoctorReviewsPage/> </SubscriptionCheck>} </PrivateRoute>} />
                 <Route path ="/upcoming-appointments" element={<PrivateRoute>{<SubscriptionCheck> <UpcomingAppointments/> </SubscriptionCheck>} </PrivateRoute>} />
+                <Route path="*" element={<Error />} />
                </Routes>
         </AuthProvider>
       </BrowserRouter>
