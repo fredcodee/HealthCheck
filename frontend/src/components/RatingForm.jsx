@@ -3,7 +3,7 @@ import { Star } from 'lucide-react'
 
 
 const RatingForm = ({ onSubmitRating }) => {
-    const [rating, setRating] = useState<number>(0)
+    const [rating, setRating] = useState(0)
 
     return (
         <div className="px-4 py-5 sm:px-6">

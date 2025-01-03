@@ -382,8 +382,8 @@ async function getAppointmentById(id, userId) {
 
 async function rateAppointment(user_id, appointment_id, rating) {
     try {
-        const getAppointment = await Appointments.findOne({ _id: appointment_id })
-        if (getAppointment && getAppointment.user_id === user_id && getAppointment.status === 'completed') {
+        const getAppointment = await Appointments.findOne({ _id: appointment_id, user_id: user_id , status: 'completed' })
+        if (getAppointment) {
             getAppointment.rating = rating
             await getAppointment.save()
             return true
